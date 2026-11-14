@@ -594,9 +594,10 @@ def spec_acumulado():
 CSS_BASE = "*{font-family:'Segoe UI',sans-serif;box-sizing:border-box}html,body{margin:0}.vazio{font-size:13px;color:#8A8886}"
 CSS_CTX = CSS_BASE + ".ctx{font-size:12px;color:#605E5C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" \
     ".ctx b{color:#191919;font-weight:600}.ctx span{margin:0 8px;color:#C8C6C4}"
-CSS_KPI = CSS_BASE + """.cab{font-size:11px;color:#605E5C;margin:0 2px 6px 2px}
+CSS_KPI = CSS_BASE + """html,body{overflow:hidden}
+.cab{font-size:11px;color:#605E5C;margin:0 2px 4px 2px;line-height:1.3}
 .kpis{display:flex;gap:10px}
-.card{flex:1;background:#FFFFFF;border:1px solid #E1DFDD;border-top:3px solid #191919;padding:8px 12px;min-width:0;container-type:inline-size;overflow:hidden}
+.card{flex:1;background:#FFFFFF;border:1px solid #E1DFDD;border-top:3px solid #191919;padding:6px 12px;min-width:0;container-type:inline-size;overflow:hidden}
 .card.el{border-top-color:#F2C811}
 .rot{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#605E5C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .val{font-size:clamp(15px,13cqi,24px);font-weight:600;color:#191919;line-height:1.15;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
