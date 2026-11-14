@@ -235,4 +235,4 @@ def test_rodar_sql_idempotente(con):
     segunda = rodar_sql(con, PASTA_SQL)
 
     assert primeira == segunda
-    assert len(primeira) == 7
+    assert len(primeira) == 8
