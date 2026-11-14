@@ -7,6 +7,7 @@ Regera tudo do zero: modelo, páginas, tour de documentação, filtro cruzado do
 e roda o validador no fim. Alterações feitas à mão no Desktop se perdem; mude este script em vez disso.
 """
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -20,6 +21,7 @@ import relatorio
 RAIZ = AQUI.parent.parent
 NOME = "CarroEletricoCombustao"
 PBI = RAIZ / "powerbi"
+ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}  # filhos escrevem em UTF-8 mesmo com o console em cp1252
 
 
 def desktop_aberto() -> bool:
@@ -31,7 +33,7 @@ def desktop_aberto() -> bool:
 
 def rodar(script: str, *args: str):
     r = subprocess.run([sys.executable, str(AQUI / script), *args], capture_output=True, text=True, encoding="utf-8",
-                       check=False)
+                       check=False, env=ENV)
     print(r.stdout.strip())
     if r.returncode != 0:
         print(r.stderr)
@@ -50,7 +52,7 @@ def gerar(pbi: Path) -> int:
     rodar("interatividade_pbir.py", d, "estados/mapa", "estados/ranking", "estados/dispersao")
     rodar("gerar_tour_pbir.py", d, str(AQUI / "tour.json"))
     rodar("layout_celular_pbir.py", d, str(AQUI / "celular.json"))
-    r = subprocess.run([sys.executable, str(AQUI / "validar_pbip.py"), str(pbi)], text=True, encoding="utf-8", check=False)
+    r = subprocess.run([sys.executable, str(AQUI / "validar_pbip.py"), str(pbi)], text=True, encoding="utf-8", check=False, env=ENV)
     return r.returncode
 
 

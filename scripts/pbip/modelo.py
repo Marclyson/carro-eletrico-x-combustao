@@ -181,7 +181,7 @@ def tabelas() -> list[Tabela]:
     T.append(Tabela("Veículos", "Carro e energia, com o consumo do PBE Veicular do Inmetro (gold/dim_veiculo)", vei,
                     m_parquet("dim_veiculo.parquet", vei)))
 
-    ene = [Col("energia", chave=True, oculta=True), Col("Energia"), Col("ordem", tipo="int64", oculta=True)]
+    ene = [Col("energia", chave=True, oculta=True), Col("Tipo de energia"), Col("ordem", tipo="int64", oculta=True)]
     ene[1].ordenar = "ordem"
     T.append(Tabela("Energias", "Gasolina, etanol e eletricidade", ene,
                     m_tabela_fixa(ene, [("gasolina", "Gasolina", 1), ("etanol", "Etanol", 2),

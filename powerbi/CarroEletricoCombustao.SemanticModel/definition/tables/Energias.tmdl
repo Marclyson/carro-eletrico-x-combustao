@@ -10,11 +10,11 @@ table Energias
 		summarizeBy: none
 		sourceColumn: energia
 
-	column Energia
+	column 'Tipo de energia'
 		dataType: string
-		lineageTag: 6bd8af4b-7504-5213-b40d-b79926fcb4b6
+		lineageTag: b2f51684-98b8-521f-90b1-48870b4fa735
 		summarizeBy: none
-		sourceColumn: Energia
+		sourceColumn: Tipo de energia
 		sortByColumn: ordem
 
 	column ordem
@@ -29,7 +29,7 @@ table Energias
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"energia" = type text, #"Energia" = type text, #"ordem" = Int64.Type],
+				        type table [#"energia" = type text, #"Tipo de energia" = type text, #"ordem" = Int64.Type],
 				        {
 				        {"gasolina", "Gasolina", 1},
 				        {"etanol", "Etanol", 2},

@@ -26,3 +26,18 @@ def test_medidas_sem_duplicata_e_textos_balanceados(tmp_path):
     nomes = [linha.split(" =")[0].strip() for linha in tmdl.splitlines() if linha.startswith("\tmeasure ")]
     assert len(nomes) == len(set(nomes))
     assert tmdl.count('"') % 2 == 0
+
+
+def test_nomes_unicos_sem_diferenca_de_maiusculas(tmp_path):
+    """O Analysis Services compara nomes sem ligar para maiúsculas: 'energia' e 'Energia' quebram a abertura."""
+    import re
+
+    gerar_pbip.gerar(tmp_path)
+    tabelas = tmp_path / f"{gerar_pbip.NOME}.SemanticModel" / "definition" / "tables"
+    medidas_modelo = []
+    for arquivo in tabelas.glob("*.tmdl"):
+        texto = arquivo.read_text(encoding="utf-8")
+        nomes = [n.strip("'").lower() for n in re.findall(r"^\t(?:column|measure) ('[^']+'|[^\s=]+)", texto, re.MULTILINE)]
+        assert len(nomes) == len(set(nomes)), arquivo.name
+        medidas_modelo += [n.strip("'").lower() for n in re.findall(r"^\tmeasure ('[^']+'|[^\s=]+)", texto, re.MULTILINE)]
+    assert len(medidas_modelo) == len(set(medidas_modelo))
