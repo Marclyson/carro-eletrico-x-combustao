@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.4.0/schema.json",
+  "name": "dica_ano",
+  "displayName": "Dica: ano de uso",
+  "displayOption": "ActualSize",
+  "height": 320,
+  "width": 380,
+  "type": "Tooltip",
+  "visibility": "HiddenInViewMode"
+}

@@ -15,7 +15,7 @@ def test_gera_pbip_valido(tmp_path):
     assert gerar_pbip.gerar(tmp_path) == 0
     relatorio = tmp_path / f"{gerar_pbip.NOME}.Report" / "definition"
     paginas = json.loads((relatorio / "pages" / "pages.json").read_text(encoding="utf-8"))["pageOrder"]
-    assert paginas == ["visao_geral", "impostos", "estados", "simulador", "metodo", "dica_mes", "dica_uf"]
+    assert paginas == ["visao_geral", "impostos", "estados", "simulador", "metodo", "dica_mes", "dica_uf", "dica_tributos", "dica_ano"]
     for pagina in paginas[:5]:  # botão Documentação em todas as páginas do relatório
         assert any((relatorio / "pages" / pagina / "visuals").glob("tour_*_btn_doc"))
 
@@ -28,7 +28,9 @@ def test_paginas_ocultas_dicas_e_gaveta(tmp_path):
     assert [n for n, p in pg.items() if p.get("visibility") != "HiddenInViewMode"] == ["visao_geral"]
     assert pg["dica_uf"]["type"] == pg["dica_mes"]["type"] == "Tooltip"
     for pagina, visual, dica in [("visao_geral", "linha_custo", "dica_mes"), ("estados", "mapa", "dica_uf"),
-                                 ("estados", "dispersao", "dica_uf")]:
+                                 ("estados", "dispersao", "dica_uf"),
+                                 ("impostos", "parcelas_gasolina", "dica_tributos"),
+                                 ("impostos", "pct_tributos", "dica_tributos"), ("simulador", "curva", "dica_ano")]:
         v = json.loads((rel / "pages" / pagina / "visuals" / visual / "visual.json").read_text(encoding="utf-8"))
         assert v["visual"]["visualContainerObjects"]["visualTooltip"][0]["properties"]["section"]["expr"]["Literal"][
             "Value"] == f"'{dica}'"

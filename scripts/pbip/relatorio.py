@@ -327,6 +327,16 @@ def fmt_r(campo, casas=2):
     return f"format(datum['{campo}'], '$,.{casas}f')"
 
 
+def coluna_dica_mes(tooltip):
+    """Retângulo quase transparente do início ao fim de cada mês, na altura toda: o mouse em qualquer ponto da
+    coluna pega o mês certo (a área e a linha devolvem o primeiro ponto da série) e leva a página de dica."""
+    return {"transform": [{"calculate": "datetime(year(datum['Mês']), month(datum['Mês']) + 1, 1)", "as": "_fim"}],
+            "mark": {"type": "rect", "color": INK, "opacity": 0.01},
+            "encoding": {"x": {"field": "Mês", "type": "temporal", "title": None}, "x2": {"field": "_fim"},
+                         "y": {"value": 0}, "y2": {"value": {"expr": "height"}}, "tooltip": tooltip}}
+
+
+
 def spec_parcelas(parcelas, gasolina):
     """Áreas empilhadas por parcela. A dica mostra o total, cada parcela com a sua parte e o regime do mês,
     sem 'null': até mai./2023 o ICMS da gasolina está dentro do preço."""
@@ -362,21 +372,22 @@ def spec_parcelas(parcelas, gasolina):
         "data": {"name": "dataset"}, "width": "container", "height": "container",
         "transform": [{"filter": f"isValid(datum['{campos[-1]}']) || isValid(datum['{campos[0]}'])"},
                       {"calculate": soma, "as": "total"}, {"filter": "datum.total > 0"},
-                      {"calculate": "format(datum.total, '$,.2f')", "as": "Total por 100 km"}, *dicas,
-                      {"fold": campos, "as": ["serie", "valor"]},
-                      {"calculate": "isValid(datum.valor) ? datum.valor : 0", "as": "valor"},
-                      {"calculate": calc_rot, "as": "Parcela"}, {"calculate": calc_ord, "as": "ordem"}],
-        "mark": {"type": "area", "interpolate": "step-after"},
-        "encoding": {
-            "x": EIXO_MES,
-            "y": {"field": "valor", "type": "quantitative", "stack": "zero", "title": "R$ por 100 km",
-                  "axis": {"format": "$,.0f", "tickCount": 5}},
-            "color": {"field": "Parcela", "type": "nominal",
-                      "scale": {"domain": [r for _, r, _ in parcelas], "range": [k for _, _, k in parcelas]},
-                      "legend": {"orient": "top", "title": None, "direction": "horizontal", "columns": 3,
-                                 "labelLimit": 220}},
-            "order": {"field": "ordem", "type": "quantitative"},
-            "tooltip": [TT_MES, {"field": "Total por 100 km"}] + [{"field": c} for c in tt]}}
+                      {"calculate": "format(datum.total, '$,.2f')", "as": "Total por 100 km"}, *dicas],
+        "layer": [
+            {"transform": [{"fold": campos, "as": ["serie", "valor"]},
+                           {"calculate": "isValid(datum.valor) ? datum.valor : 0", "as": "valor"},
+                           {"calculate": calc_rot, "as": "Parcela"}, {"calculate": calc_ord, "as": "ordem"}],
+             "mark": {"type": "area", "interpolate": "step-after"},
+             "encoding": {
+                 "x": EIXO_MES,
+                 "y": {"field": "valor", "type": "quantitative", "stack": "zero", "title": "R$ por 100 km",
+                       "axis": {"format": "$,.0f", "tickCount": 5}},
+                 "color": {"field": "Parcela", "type": "nominal",
+                           "scale": {"domain": [r for _, r, _ in parcelas], "range": [k for _, _, k in parcelas]},
+                           "legend": {"orient": "top", "title": None, "direction": "horizontal", "columns": 3,
+                                      "labelLimit": 220}},
+                 "order": {"field": "ordem", "type": "quantitative"}}},
+            coluna_dica_mes([TT_MES, {"field": "Total por 100 km"}] + [{"field": c} for c in tt])]}
 
 
 def spec_pct_tributos():
@@ -390,22 +401,24 @@ def spec_pct_tributos():
             {"calculate": f"isValid(datum['{ga}']) ? format(datum['{ga}'], '.1%') + (datum.so_federais ? "
                           "' (só PIS/Cofins e CIDE)' : ' (ICMS, PIS/Cofins e CIDE)') : '—'", "as": "Gasolina"},
             {"calculate": f"isValid(datum['{el}']) && isValid(datum['{ga}']) ? (datum['{el}'] > datum['{ga}'] ? "
-                          "'a conta de luz' : 'a gasolina') : '—'", "as": "Mais tributada"},
-            {"fold": [el, ga], "as": ["serie", "valor"]}, {"filter": "isValid(datum.valor)"},
-            {"calculate": f"datum.serie == '{el}' ? 'Eletricidade' : (datum.so_federais ? 'Gasolina (só federais)' : "
-                          "'Gasolina (federais e ICMS)')", "as": "Série"}],
-        "mark": {"type": "line", "interpolate": "step-after"},
-        "encoding": {
-            "x": EIXO_MES,
-            "y": {"field": "valor", "type": "quantitative", "title": "% do preço",
-                  "axis": {"format": ".0%", "tickCount": 4}},
-            "color": {"field": "Série", "type": "nominal",
-                      "scale": {"domain": ["Eletricidade", "Gasolina (federais e ICMS)", "Gasolina (só federais)"],
-                                "range": [COR_ELETRICO, INK, CINZA_CLARO]},
-                      "legend": {"orient": "top", "title": None, "direction": "horizontal"}},
-            "strokeDash": {"condition": {"test": "datum['Série'] == 'Gasolina (só federais)'", "value": [4, 3]},
-                           "value": [1, 0]},
-            "tooltip": [TT_MES, {"field": "Eletricidade"}, {"field": "Gasolina"}, {"field": "Mais tributada"}]}}
+                          "'a conta de luz' : 'a gasolina') : '—'", "as": "Mais tributada"}],
+        "layer": [
+            {"transform": [
+                {"fold": [el, ga], "as": ["serie", "valor"]}, {"filter": "isValid(datum.valor)"},
+                {"calculate": f"datum.serie == '{el}' ? 'Eletricidade' : (datum.so_federais ? 'Gasolina (só federais)' : "
+                              "'Gasolina (federais e ICMS)')", "as": "Série"}],
+             "mark": {"type": "line", "interpolate": "step-after"},
+             "encoding": {
+                 "x": EIXO_MES,
+                 "y": {"field": "valor", "type": "quantitative", "title": "% do preço",
+                       "axis": {"format": ".0%", "tickCount": 4}},
+                 "color": {"field": "Série", "type": "nominal",
+                           "scale": {"domain": ["Eletricidade", "Gasolina (federais e ICMS)", "Gasolina (só federais)"],
+                                     "range": [COR_ELETRICO, INK, CINZA_CLARO]},
+                           "legend": {"orient": "top", "title": None, "direction": "horizontal"}},
+                 "strokeDash": {"condition": {"test": "datum['Série'] == 'Gasolina (só federais)'", "value": [4, 3]},
+                                "value": [1, 0]}}},
+            coluna_dica_mes([TT_MES, {"field": "Eletricidade"}, {"field": "Gasolina"}, {"field": "Mais tributada"}])]}
 
 
 ROTULO_METRICA = ("indexof(datum['Métrica escolhida'], 'ICMS') >= 0 ? format(datum['Valor do mapa'], '.1%') : "
@@ -531,12 +544,11 @@ def spec_acumulado():
              "as": "Saldo no ano"},
             {"calculate": f"format(datum['{c}'], '$,.0f')", "as": "tt_c"},
             {"calculate": f"format(datum['{e}'], '$,.0f')", "as": "tt_e"},
-            {"fold": series, "as": ["serie", "valor"]}, {"filter": "isValid(datum.valor)"},
-            {"calculate": f"datum.serie == '{c}' ? datum['Rótulo combustão'] : datum['Rótulo elétrico']", "as": "Carro"},
-            {"calculate": f"datum.serie == '{c}' ? 1 : 2", "as": "tipo"}],
+            # último ano com valor: o Power BI manda todos os anos do eixo (as medidas de rótulo nunca ficam vazias)
+            {"calculate": f"isValid(datum['{c}']) || isValid(datum['{e}']) ? datum['Ano de uso'] : null", "as": "_a_ok"},
+            {"joinaggregate": [{"op": "max", "field": "_a_ok", "as": "amax"}]}],
         "layer": [
-            {"transform": [{"joinaggregate": [{"op": "max", "field": "Ano de uso", "as": "amax"}]},
-                           {"window": [{"op": "row_number", "as": "k"}]}, {"filter": "datum.k == 1"},
+            {"transform": [{"window": [{"op": "row_number", "as": "k"}]}, {"filter": "datum.k == 1"},
                            {"filter": "isValid(datum['Anos para pagar']) && datum['Anos para pagar'] > 0 && "
                                       "datum['Anos para pagar'] <= datum.amax"}],
              "layer": [
@@ -548,7 +560,12 @@ def spec_acumulado():
                              "fontSize": 11, "fontWeight": "bold", "color": AMARELO_ESCURO},
                     "encoding": {"x": {"field": "Anos para pagar", "type": "quantitative"}, "y": {"value": 4},
                                  "text": {"value": "empata aqui"}}} for alinhar in ("left", "right")]]},
-            {"mark": {"type": "line", "strokeWidth": 3, "point": {"filled": True, "size": 40}},
+            {"transform": [
+                {"fold": series, "as": ["serie", "valor"]}, {"filter": "isValid(datum.valor)"},
+                {"calculate": f"datum.serie == '{c}' ? datum['Rótulo combustão'] : datum['Rótulo elétrico']",
+                 "as": "Carro"},
+                {"calculate": f"datum.serie == '{c}' ? 1 : 2", "as": "tipo"}],
+             "mark": {"type": "line", "strokeWidth": 3, "point": {"filled": True, "size": 40}},
              "encoding": {
                  "x": {"field": "Ano de uso", "type": "quantitative", "title": "Anos de uso",
                        "axis": {"tickMinStep": 1, "format": "d"}},
@@ -556,11 +573,18 @@ def spec_acumulado():
                        "scale": {"zero": False}, "axis": {"format": "$,.0f", "tickCount": 5}},
                  "color": {"field": "Carro", "type": "nominal", "sort": {"field": "tipo", "op": "min"},
                            "scale": {"range": [INK, COR_ELETRICO]},
-                           "legend": {"orient": "top", "title": None, "direction": "horizontal"}},
-                 "tooltip": [{"field": "Ano de uso", "title": "Ano de uso"},
-                             {"field": "tt_c", "title": "Combustão: compra + energia"},
-                             {"field": "tt_e", "title": "Elétrico: compra + energia"},
-                             {"field": "Saldo no ano"}]}}]}
+                           "legend": {"orient": "top", "title": None, "direction": "horizontal"}}}},
+            # coluna de um ano inteiro (cortada nas pontas para não alargar o eixo): leva a página de dica
+            {"transform": [{"filter": f"isValid(datum['{c}']) || isValid(datum['{e}'])"},
+                           {"calculate": "max(datum['Ano de uso'] - 0.5, 0)", "as": "_x0"},
+                           {"calculate": "min(datum['Ano de uso'] + 0.5, datum.amax)", "as": "_x1"}],
+             "mark": {"type": "rect", "color": INK, "opacity": 0.01},
+             "encoding": {"x": {"field": "_x0", "type": "quantitative", "title": "Anos de uso"}, "x2": {"field": "_x1"},
+                          "y": {"value": 0}, "y2": {"value": {"expr": "height"}},
+                          "tooltip": [{"field": "Ano de uso", "title": "Ano de uso"},
+                                      {"field": "tt_c", "title": "Combustão: compra + energia"},
+                                      {"field": "tt_e", "title": "Elétrico: compra + energia"},
+                                      {"field": "Saldo no ano"}]}}]}
 
 
 # ----------------------------------------------------------------------------------------------
@@ -972,6 +996,126 @@ RETURN
             & IF ( _ress <> "", "<div class='n'>Nos 12 meses: " & _ress & ".</div>" )
             & "</div>"
     )""", "Dica de ferramenta da UF (página dica_uf), acionada pelo mapa, pelo ranking e pela dispersão")
+
+    add("html Dica tributos", """VAR _f = MAX ( 'Calendário'[Mês] )
+VAR _aa = EDATE ( _f, -12 )
+VAR _dentro = _f < DATE ( 2023, 6, 1 )
+VAR _gs = [Gasolina: sem tributos]
+VAR _gd = [Gasolina: sem federais, ICMS dentro]
+VAR _gi = [Gasolina: ICMS]
+VAR _gp = [Gasolina: PIS/Cofins]
+VAR _gc = [Gasolina: CIDE]
+VAR _gt = _gs + _gd + _gi + _gp + _gc
+VAR _es = [Eletricidade: sem tributos]
+VAR _ei = [Eletricidade: ICMS]
+VAR _ep = [Eletricidade: PIS/Cofins]
+VAR _et = _es + _ei + _ep
+VAR _pg = [% tributos gasolina]
+VAR _pe = [% tributos eletricidade]
+VAR _pgA = CALCULATE ( [% tributos gasolina], REMOVEFILTERS ( 'Calendário' ), 'Calendário'[Mês] = _aa )
+VAR _peA = CALCULATE ( [% tributos eletricidade], REMOVEFILTERS ( 'Calendário' ), 'Calendário'[Mês] = _aa )
+VAR _uf =
+    IF (
+        ISFILTERED ( 'Estados' ) && HASONEVALUE ( 'Estados'[UF] ),
+        SELECTEDVALUE ( 'Estados'[Estado] ),
+        "Brasil, média das capitais"
+    )
+VAR _val = IF ( [_Real], "em reais de " & FORMAT ( [_Último mês com dados], "mmm/yyyy" ) & " (IPCA)", "nominais" )
+VAR _marco = [Marco legal]
+RETURN
+    IF (
+        NOT HASONEVALUE ( 'Calendário'[Mês] ) || ( ISBLANK ( _gt ) && ISBLANK ( _et ) ),
+        "<div class='tt'><div class='l'>Sem dados para este mês.</div></div>",
+        "<div class='tt'><div class='k'>Tributos · " & _uf & "</div><div class='t'>" & FORMAT ( _f, "mmmm \\d\\e yyyy" )
+            & "</div><div class='g'><div><div class='l'>Gasolina · " & [_Nome combustão] & "</div><div class='v'>"
+            & IF ( ISBLANK ( _gt ), "—", FORMAT ( _gt, "R$ #,0.00" ) ) & "<small> /100 km</small></div><div class='l'>"
+            & FORMAT ( _pg, "0%" ) & " de tributos" & IF ( _dentro, " federais" ) & IF ( ISBLANK ( _pgA ) || ISBLANK ( _pg ), "", " · " & IF ( _pg >= _pgA, "<span class='ruim'>▲ ", "<span class='bom'>▼ " ) & FORMAT ( ABS ( _pg - _pgA ) * 100, "0.0" ) & " p.p.</span> em 12 meses" ) & "</div></div>"
+            & "<div><div class='l'>Eletricidade · " & [_Nome elétrico] & "</div><div class='v'>"
+            & IF ( ISBLANK ( _et ), "—", FORMAT ( _et, "R$ #,0.00" ) ) & "<small> /100 km</small></div><div class='l'>"
+            & FORMAT ( _pe, "0%" ) & " de tributos" & IF ( ISBLANK ( _peA ) || ISBLANK ( _pe ), "", " · " & IF ( _pe >= _peA, "<span class='ruim'>▲ ", "<span class='bom'>▼ " ) & FORMAT ( ABS ( _pe - _peA ) * 100, "0.0" ) & " p.p.</span> em 12 meses" ) & "</div></div></div>"
+            & IF ( NOT ISBLANK ( _gt ),
+                "<div class='l'>Gasolina: " & IF ( _dentro,
+                    "preço com ICMS " & FORMAT ( DIVIDE ( _gd, _gt ), "0%" ),
+                    "sem tributos " & FORMAT ( DIVIDE ( _gs, _gt ), "0%" ) & " · <span style='color:#F2C811'>ICMS "
+                        & FORMAT ( DIVIDE ( _gi, _gt ), "0%" ) & "</span>" )
+                & " · PIS/Cofins " & FORMAT ( DIVIDE ( _gp, _gt ), "0%" ) & " · CIDE " & FORMAT ( DIVIDE ( _gc, _gt ), "0%" )
+                & "</div>" & IF ( _dentro, "<div class='bar' style='margin:3px 0 6px'><span style='width:" & FORMAT ( DIVIDE ( _gd, _gt ) * 100, "0.0", "en-US" ) & "%;background:#B3B0AD'></span><span style='width:" & FORMAT ( DIVIDE ( _gp, _gt ) * 100, "0.0", "en-US" ) & "%;background:#8A8886'></span><span style='width:" & FORMAT ( DIVIDE ( _gc, _gt ) * 100, "0.0", "en-US" ) & "%;background:#605E5C'></span></div>", "<div class='bar' style='margin:3px 0 6px'><span style='width:" & FORMAT ( DIVIDE ( _gs, _gt ) * 100, "0.0", "en-US" ) & "%;background:#E1DFDD'></span><span style='width:" & FORMAT ( DIVIDE ( _gi, _gt ) * 100, "0.0", "en-US" ) & "%;background:#F2C811'></span><span style='width:" & FORMAT ( DIVIDE ( _gp, _gt ) * 100, "0.0", "en-US" ) & "%;background:#8A8886'></span><span style='width:" & FORMAT ( DIVIDE ( _gc, _gt ) * 100, "0.0", "en-US" ) & "%;background:#605E5C'></span></div>" ) )
+            & IF ( NOT ISBLANK ( _et ),
+                "<div class='l'>Eletricidade: tarifa + bandeira " & FORMAT ( DIVIDE ( _es, _et ), "0%" )
+                & " · <span style='color:#F2C811'>ICMS " & FORMAT ( DIVIDE ( _ei, _et ), "0%" ) & "</span> · PIS/Cofins "
+                & FORMAT ( DIVIDE ( _ep, _et ), "0%" ) & "</div>" & "<div class='bar' style='margin:3px 0 6px'><span style='width:" & FORMAT ( DIVIDE ( _es, _et ) * 100, "0.0", "en-US" ) & "%;background:#E1DFDD'></span><span style='width:" & FORMAT ( DIVIDE ( _ei, _et ) * 100, "0.0", "en-US" ) & "%;background:#F2C811'></span><span style='width:" & FORMAT ( DIVIDE ( _ep, _et ) * 100, "0.0", "en-US" ) & "%;background:#8A8886'></span></div>" )
+            & "<div class='c'>A cada 100 km, <b>" & FORMAT ( _gi + _gp + _gc, "R$ #,0.00" ) & "</b> da gasolina são "
+            & IF ( _dentro, "tributos federais (o ICMS está dentro do preço)", "tributos" ) & ", contra <b>"
+            & FORMAT ( _ei + _ep, "R$ #,0.00" ) & "</b> na eletricidade.</div>"
+            & IF ( NOT ISBLANK ( _pg ) && NOT ISBLANK ( _pe ),
+                "<div class='c'>Em % do preço, a mais tributada é " & IF ( _pe > _pg, "a conta de luz", "a gasolina" )
+                & IF ( _dentro, ", com a gasolina contando só os tributos federais", "" ) & ".</div>" )
+            & "<div class='f'>Preço: gasolina " & FORMAT ( [Preço gasolina], "R$ #,0.00" ) & "/l · eletricidade "
+            & FORMAT ( [Preço eletricidade], "R$ #,0.00" ) & "/kWh · valores " & _val & "</div>"
+            & IF ( _dentro, "<div class='n'>Até mai./2023 o ICMS da gasolina era um percentual de cada estado e fica "
+                & "dentro do preço; desde jun./2023 é um valor por litro e aparece separado.</div>" )
+            & IF ( NOT ISBLANK ( _marco ), "<div class='n'>" & _marco & "</div>" )
+            & "</div>"
+    )""", "Dica de ferramenta dos tributos do mês (página dica_tributos), acionada pelos gráficos da página Impostos")
+
+    add("html Dica ano", """VAR _a = SELECTEDVALUE ( 'Ano de uso'[Ano de uso] )
+VAR _pc = [Preço do carro a combustão]
+VAR _pe = [Preço do carro elétrico]
+VAR _cc = [Custo por ano combustão]
+VAR _ce = [Custo por ano elétrico]
+VAR _tc = [Custo acumulado combustão]
+VAR _te = [Custo acumulado elétrico]
+VAR _dif = _pe - _pc
+VAR _eco = _a * ( _cc - _ce )
+VAR _cob = MAX ( MIN ( DIVIDE ( _eco, _dif ), 1 ), 0 )
+VAR _saldo = _tc - _te
+VAR _anos = [Anos para pagar]
+VAR _nc = [_Nome combustão]
+VAR _ne = [_Nome elétrico]
+VAR _f = MAX ( 'Calendário'[Mês] )
+VAR _uf =
+    IF (
+        ISFILTERED ( 'Estados' ) && HASONEVALUE ( 'Estados'[UF] ),
+        SELECTEDVALUE ( 'Estados'[Estado] ),
+        "Brasil, média das capitais"
+    )
+RETURN
+    IF (
+        ISBLANK ( _tc ) || ISBLANK ( _te ),
+        "<div class='tt'><div class='l'>Passe o mouse sobre um ano da curva.</div></div>",
+        "<div class='tt'><div class='k'>Simulador · " & _uf & "</div><div class='t'>"
+            & IF ( _a = 0, "Na compra", "Depois de " & _a & IF ( _a = 1, " ano", " anos" ) ) & " <small>· "
+            & FORMAT ( _a * [Km por ano escolhido], "#,0" ) & " km rodados</small></div>"
+            & "<div class='g'><div><div class='l'>" & _nc & " (gasolina)</div><div class='v'>" & FORMAT ( _tc, "R$ #,0" )
+            & "</div><div class='l'>compra " & FORMAT ( _pc, "R$ #,0" ) & " + energia " & FORMAT ( _a * _cc, "R$ #,0" )
+            & "</div></div><div><div class='l'>" & _ne & " (elétrico)</div><div class='v'>" & FORMAT ( _te, "R$ #,0" )
+            & "</div><div class='l'>compra " & FORMAT ( _pe, "R$ #,0" ) & " + energia " & FORMAT ( _a * _ce, "R$ #,0" )
+            & "</div></div></div>"
+            & "<div class='c'>Saldo: <b>" & FORMAT ( ABS ( _saldo ), "R$ #,0" ) & "</b> a favor do "
+            & IF ( _saldo >= 0, _ne, _nc ) & ".</div>"
+            & IF ( _dif > 0,
+                "<div class='l'>A economia em energia já cobriu " & FORMAT ( _cob, "0%" ) & " dos "
+                    & FORMAT ( _dif, "R$ #,0" ) & " que o elétrico custa a mais na compra</div>"
+                    & "<div class='bar' style='margin:3px 0 7px'><span style='width:"
+                    & FORMAT ( _cob * 100, "0.0", "en-US" ) & "%;background:#F2C811'></span></div>",
+                "<div class='c'>Na compra, o elétrico sai " & FORMAT ( -_dif, "R$ #,0" ) & " mais barato.</div>" )
+            & "<div class='c'>Energia por ano: " & FORMAT ( _cc, "R$ #,0" ) & " no " & _nc & " e "
+            & FORMAT ( _ce, "R$ #,0" ) & " no " & _ne & " (" & FORMAT ( ABS ( _cc - _ce ), "R$ #,0" )
+            & IF ( _cc >= _ce, " a menos", " a mais" ) & " com o elétrico).</div>"
+            & "<div class='c'>"
+            & SWITCH (
+                TRUE (),
+                _dif <= 0 && _cc >= _ce, "Sem empate a esperar: o elétrico fica à frente desde a compra.",
+                _dif <= 0, "O elétrico sai mais barato na compra, mas a energia dele custa mais: a vantagem cai a cada ano.",
+                ISBLANK ( _anos ), "As curvas não se encontram: a energia do elétrico sai mais cara.",
+                _a >= _anos, "As curvas empataram em " & FORMAT ( _anos, "0.0" ) & " anos; daí em diante o elétrico fica à frente.",
+                "Empate em " & FORMAT ( _anos, "0.0" ) & " anos; faltam " & FORMAT ( _anos - _a, "0.0" ) & "."
+            )
+            & "</div><div class='f'>" & FORMAT ( [Recarga em casa escolhida], "0%" ) & " da recarga em casa (tarifa "
+            & LOWER ( [Tarifa em casa escolhida] ) & "), o resto a " & FORMAT ( [Carregador escolhido], "R$ #,0.00" )
+            & "/kWh. Energia com o preço médio de " & FORMAT ( EDATE ( _f, -11 ), "mmm/yyyy" ) & " a "
+            & FORMAT ( _f, "mmm/yyyy" ) & ". Fora da conta: manutenção, seguro, IPVA e depreciação.</div></div>"
+    )""", "Dica de ferramenta da curva do simulador (página dica_ano), por ano de uso")
     return M
 
 
@@ -1095,7 +1239,9 @@ ENTRADAS = [("filtro_km", "Km por ano", "Km por ano", "Km por ano", "12000L", Tr
              "Preço combustão (R$)", None, False),
             ("filtro_preco_eletrico", "Preço do carro elétrico (R$)", "Preço do carro elétrico (R$)",
              "Preço elétrico (R$)", None, False)]
-DICAS = [("dica_mes", "Dica: mês", "html Dica mês", 380, 330), ("dica_uf", "Dica: estado", "html Dica UF", 380, 330)]
+DICAS = [("dica_mes", "Dica: mês", "html Dica mês", 380, 330), ("dica_uf", "Dica: estado", "html Dica UF", 380, 330),
+         ("dica_tributos", "Dica: tributos", "html Dica tributos", 380, 330),
+         ("dica_ano", "Dica: ano de uso", "html Dica ano", 380, 320)]
 # realce cruzado entre os três gráficos da página Estados; os destaques ignoram o clique
 INTERACOES_ESTADOS = [{"source": a, "target": b, "type": "HighlightFilter"}
                       for a in ("mapa", "ranking", "dispersao") for b in ("mapa", "ranking", "dispersao") if a != b] \
@@ -1127,15 +1273,18 @@ def montar_paginas() -> list[Pagina]:
     p.add("parcelas_gasolina", 24, Y0, 610, 330, deneb_visual(
         [proj_c("Calendário", "Mês")] + [proj_m(c) for c, _, _ in PARCELAS_GAS], spec_parcelas(PARCELAS_GAS, True),
         "Gasolina: R$ por 100 km, em parcelas",
-        "Áreas empilhadas com o custo de 100 km a gasolina separado em preço sem tributos, ICMS, PIS/Cofins e CIDE"))
+        "Áreas empilhadas com o custo de 100 km a gasolina separado em preço sem tributos, ICMS, PIS/Cofins e CIDE",
+        dica="dica_tributos"))
     p.add("parcelas_eletricidade", 646, Y0, 610, 330, deneb_visual(
         [proj_c("Calendário", "Mês")] + [proj_m(c) for c, _, _ in PARCELAS_ELE], spec_parcelas(PARCELAS_ELE, False),
         "Eletricidade: R$ por 100 km, em parcelas",
-        "Áreas empilhadas com o custo de 100 km com eletricidade separado em tarifa com bandeira, ICMS e PIS/Cofins"))
+        "Áreas empilhadas com o custo de 100 km com eletricidade separado em tarifa com bandeira, ICMS e PIS/Cofins",
+        dica="dica_tributos"))
     p.add("pct_tributos", 24, 466, 610, 242, deneb_visual(
         [proj_c("Calendário", "Mês"), proj_m("% tributos eletricidade"), proj_m("% tributos gasolina")],
         spec_pct_tributos(), "Quanto do preço é tributo",
-        "Linhas com a parte do preço da eletricidade e da gasolina que é tributo, mês a mês"))
+        "Linhas com a parte do preço da eletricidade e da gasolina que é tributo, mês a mês",
+        dica="dica_tributos"))
     p.add("marcos", 646, 466, 610, 242, html_visual("html Marcos", CSS_TEXTO, padding=10,
                                                      alt="Tabela com os marcos legais e a norma de cada um"))
 
@@ -1182,7 +1331,8 @@ def montar_paginas() -> list[Pagina]:
         [proj_c("Ano de uso", "Ano de uso"), proj_m("Custo acumulado combustão"), proj_m("Custo acumulado elétrico"),
          proj_m("Rótulo combustão"), proj_m("Rótulo elétrico"), proj_m("Anos para pagar")],
         spec_acumulado(), "Custo acumulado: compra mais energia",
-        "Linhas com o custo acumulado dos dois carros por ano de uso; a linha amarela marca o ano em que empatam"))
+        "Linhas com o custo acumulado dos dois carros por ano de uso; a linha amarela marca o ano em que empatam",
+        dica="dica_ano"))
 
     p = P["metodo"]
     cabecalho(p, None, gaveta=False)
