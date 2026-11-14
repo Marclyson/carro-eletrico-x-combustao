@@ -89,3 +89,12 @@ def test_distribuidora_capital_uma_por_uf():
     assert all(linha["cnpj"].isdigit() and not linha["cnpj"].startswith("0") for linha in linhas)
     neoenergia_pe = next(linha for linha in linhas if linha["uf"] == "PE")
     assert int(neoenergia_pe["cnpj"]) == 10835932000108
+
+
+def test_precos_carros_com_data_e_fonte():
+    linhas = {linha["veiculo"]: linha for linha in ler("precos_carros.csv")}
+    assert set(linhas) == {"kwid", "polo_track", "dolphin_mini", "e_kwid"}
+    assert int(linhas["kwid"]["preco_tabela"]) == 82790
+    assert int(linhas["dolphin_mini"]["preco_tabela"]) == 118990
+    assert linhas["e_kwid"]["preco_tabela"] == ""  # fora de linha
+    assert all(linha["link_fonte"].startswith("https://") and linha["data_consulta"] for linha in linhas.values())
