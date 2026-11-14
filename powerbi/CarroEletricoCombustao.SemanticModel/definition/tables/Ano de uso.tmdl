@@ -1,0 +1,20 @@
+/// Eixo da curva de custo acumulado
+table 'Ano de uso'
+	lineageTag: 3c2a37ad-ff94-5633-925c-151d2c2376e2
+
+	column 'Ano de uso'
+		dataType: int64
+		formatString: 0
+		lineageTag: 04eeaa6d-8639-5b7f-abde-c5753ffc5c1b
+		summarizeBy: none
+		sourceColumn: Ano de uso
+
+	partition 'Ano de uso' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"Ano de uso" = Int64.Type], List.Transform(List.Numbers(0, 16, 1), each {_}))
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/2.2.0/schema.json",
+  "position": {
+    "x": 8.0,
+    "y": 700,
+    "z": 9000,
+    "width": 308.0,
+    "height": 320,
+    "tabOrder": 9000
+  },
+  "objects": {
+    "vega": [
+      {
+        "properties": {
+          "jsonSpec": {
+            "expr": {
+              "Literal": {
+                "Value": "'{\n  \"data\": {\n    \"name\": \"dataset\"\n  },\n  \"width\": \"container\",\n  \"height\": \"container\",\n  \"encoding\": {\n    \"x\": {\n      \"field\": \"Mês\",\n      \"type\": \"temporal\",\n      \"timeUnit\": \"yearmonth\",\n      \"title\": null,\n      \"axis\": {\n        \"format\": \"%Y\",\n        \"tickCount\": \"year\",\n        \"labelAlign\": \"left\",\n        \"labelPadding\": 6,\n        \"labelOverlap\": \"greedy\"\n      }\n    }\n  },\n  \"layer\": [\n    {\n      \"transform\": [\n        {\n          \"filter\": \"isValid(datum[''Marco legal'']) && datum[''Marco legal''] != ''''\"\n        },\n        {\n          \"window\": [\n            {\n              \"op\": \"row_number\",\n              \"as\": \"i\"\n            }\n          ]\n        }\n      ],\n      \"layer\": [\n        {\n          \"mark\": {\n            \"type\": \"rule\",\n            \"color\": \"#C8C6C4\",\n            \"strokeDash\": [\n              3,\n              3\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"transform\": [\n        {\n          \"fold\": [\n            \"Custo elétrico\",\n            \"Custo gasolina\",\n            \"Custo etanol\"\n          ],\n          \"as\": [\n            \"serie\",\n            \"valor\"\n          ]\n        },\n        {\n          \"filter\": \"isValid(datum.valor)\"\n        },\n        {\n          \"calculate\": \"datum.serie == ''Custo elétrico'' ? ''Elétrico'' : datum.serie == ''Custo gasolina'' ? ''Gasolina'' : datum.serie == ''Custo etanol'' ? ''Etanol'' : ''''\",\n          \"as\": \"Energia\"\n        }\n      ],\n      \"layer\": [\n        {\n          \"mark\": {\n            \"type\": \"line\",\n            \"interpolate\": \"monotone\"\n          },\n          \"encoding\": {\n            \"y\": {\n              \"field\": \"valor\",\n              \"type\": \"quantitative\",\n              \"title\": \"R$ por 100 km\",\n              \"axis\": {\n                \"format\": \"$,.0f\",\n                \"tickCount\": 5\n              }\n            },\n            \"color\": {\n              \"field\": \"Energia\",\n              \"type\": \"nominal\",\n              \"scale\": {\n                \"domain\": [\n                  \"Elétrico\",\n                  \"Gasolina\",\n                  \"Etanol\"\n                ],\n                \"range\": [\n                  \"#E0B000\",\n                  \"#191919\",\n                  \"#A19F9D\"\n                ]\n              },\n              \"legend\": {\n                \"orient\": \"top\",\n                \"title\": null,\n                \"direction\": \"horizontal\"\n              }\n            },\n            \"strokeWidth\": {\n              \"condition\": {\n                \"test\": \"datum.Energia == ''Elétrico''\",\n                \"value\": 3\n              },\n              \"value\": 2\n            }\n          }\n        },\n        {\n          \"mark\": {\n            \"type\": \"circle\",\n            \"size\": 50,\n            \"opacity\": 0.01\n          },\n          \"encoding\": {\n            \"y\": {\n              \"field\": \"valor\",\n              \"type\": \"quantitative\"\n            },\n            \"tooltip\": [\n              {\n                \"field\": \"Mês\",\n                \"type\": \"temporal\",\n                \"timeUnit\": \"yearmonth\",\n                \"title\": \"Mês\",\n                \"format\": \"%b/%Y\"\n              },\n              {\n                \"field\": \"Custo elétrico\",\n                \"title\": \"Elétrico (R$/100 km)\",\n                \"format\": \"$,.2f\"\n              },\n              {\n                \"field\": \"Custo gasolina\",\n                \"title\": \"Gasolina (R$/100 km)\",\n                \"format\": \"$,.2f\"\n              },\n              {\n                \"field\": \"Custo etanol\",\n                \"title\": \"Etanol (R$/100 km)\",\n                \"format\": \"$,.2f\"\n              },\n              {\n                \"field\": \"Preço eletricidade\",\n                \"title\": \"Eletricidade (R$/kWh)\",\n                \"format\": \"$,.3f\"\n              },\n              {\n                \"field\": \"Preço gasolina\",\n                \"title\": \"Gasolina (R$/l)\",\n                \"format\": \"$,.2f\"\n              },\n              {\n                \"field\": \"Preço etanol\",\n                \"title\": \"Etanol (R$/l)\",\n                \"format\": \"$,.2f\"\n              }\n            ]\n          }\n        }\n      ]\n    }\n  ]\n}'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

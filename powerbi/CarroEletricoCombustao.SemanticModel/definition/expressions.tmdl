@@ -1,0 +1,12 @@
+/// Pasta com os Parquet da camada gold (python -m custo_km.exportar grava em gold/)
+expression PastaGold = "C:\repo\carro-eletrico-x-combustao\gold\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 8027cd8e-67c5-5587-bc43-32db32b729a4
+
+	annotation PBI_ResultType = Text
+
+/// Pasta referencias/ do repositório (preço dos carros)
+expression PastaReferencias = "C:\repo\carro-eletrico-x-combustao\referencias\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 52bc6769-eaf0-5495-8cc2-659cc5790bcf
+
+	annotation PBI_ResultType = Text
+

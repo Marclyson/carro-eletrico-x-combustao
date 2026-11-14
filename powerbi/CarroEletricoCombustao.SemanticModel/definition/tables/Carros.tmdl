@@ -1,0 +1,64 @@
+/// Preço de tabela no site oficial de cada montadora (referencias/precos_carros.csv)
+table Carros
+	isHidden
+	lineageTag: 512f3630-e0e6-51bc-9a77-3ab1519c87e8
+
+	column veiculo
+		dataType: string
+		isKey
+		lineageTag: fa8c2292-97da-567d-8afa-d90892c5db28
+		summarizeBy: none
+		sourceColumn: veiculo
+
+	column versao_site
+		dataType: string
+		lineageTag: dde9588b-585b-5bc2-b536-e5138ed668b4
+		summarizeBy: none
+		sourceColumn: versao_site
+
+	column preco_tabela
+		dataType: int64
+		formatString: #,0
+		lineageTag: 693bc591-c2ca-5a6e-907b-7d0a9cc7d991
+		summarizeBy: none
+		sourceColumn: preco_tabela
+
+	column preco_oferta
+		dataType: int64
+		formatString: #,0
+		lineageTag: 7559ac88-1066-5b69-be48-cca261f7b151
+		summarizeBy: none
+		sourceColumn: preco_oferta
+
+	column data_consulta
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 75748013-09d8-5ceb-9ee4-e028220733ab
+		summarizeBy: none
+		sourceColumn: data_consulta
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column observacao
+		dataType: string
+		lineageTag: 4fd9be5d-5447-54d0-b126-ad4be932ff18
+		summarizeBy: none
+		sourceColumn: observacao
+
+	column link_fonte
+		dataType: string
+		lineageTag: ec51bc8f-7dc9-5af1-baef-5a2cc35034e4
+		summarizeBy: none
+		sourceColumn: link_fonte
+
+	partition Carros = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents(PastaReferencias & "precos_carros.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Cabecalho = Table.PromoteHeaders(Fonte, [PromoteAllScalars = true]),
+				    Tipos = Table.TransformColumnTypes(Cabecalho, {{"veiculo", type text}, {"versao_site", type text}, {"preco_tabela", Int64.Type}, {"preco_oferta", Int64.Type}, {"data_consulta", type date}, {"observacao", type text}, {"link_fonte", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

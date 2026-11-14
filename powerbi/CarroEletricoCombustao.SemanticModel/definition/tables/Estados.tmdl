@@ -1,0 +1,54 @@
+/// UF, capital e distribuidora de energia da capital (gold/dim_uf)
+table Estados
+	lineageTag: 83c1ef26-d36f-5c47-9cfa-14d7e7cc40d0
+
+	column UF
+		dataType: string
+		isKey
+		lineageTag: 688f87fb-4343-552b-89ac-3c00595ef104
+		summarizeBy: none
+		sourceColumn: UF
+
+	column Estado
+		dataType: string
+		lineageTag: d8401088-7e47-5f53-9848-4a488b56e146
+		summarizeBy: none
+		sourceColumn: Estado
+
+	column 'Região'
+		dataType: string
+		lineageTag: 1fe51fb7-ddd2-5668-96d6-42e9ed1fd53b
+		summarizeBy: none
+		sourceColumn: Região
+
+	column Capital
+		dataType: string
+		lineageTag: c687aaf4-132d-5aab-92a8-c20d40ef3f9b
+		summarizeBy: none
+		sourceColumn: Capital
+
+	column Distribuidora
+		dataType: string
+		lineageTag: ec64b6f8-8337-56c9-a15d-f7aaa559e4ab
+		summarizeBy: none
+		sourceColumn: Distribuidora
+
+	column cnpj
+		dataType: int64
+		isHidden
+		lineageTag: 03b5feca-f027-5173-b764-ed792909f6ba
+		summarizeBy: none
+		sourceColumn: cnpj
+
+	partition Estados = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_uf.parquet")),
+				    Colunas = Table.SelectColumns(Fonte, {"uf", "nome", "regiao", "capital", "sig_agente", "cnpj"}),
+				    Nomes = Table.RenameColumns(Colunas, {{"uf", "UF"}, {"nome", "Estado"}, {"regiao", "Região"}, {"capital", "Capital"}, {"sig_agente", "Distribuidora"}}),
+				    Tipos = Table.TransformColumnTypes(Nomes, {{"UF", type text}, {"Estado", type text}, {"Região", type text}, {"Capital", type text}, {"Distribuidora", type text}, {"cnpj", Int64.Type}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,185 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "name": "destaques",
+  "position": {
+    "x": 868,
+    "y": 524,
+    "z": 1700,
+    "height": 184,
+    "width": 388,
+    "tabOrder": 1700
+  },
+  "visual": {
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6865",
+    "query": {
+      "queryState": {
+        "content": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "html Destaques estados"
+                }
+              },
+              "queryRef": "_Medidas.html Destaques estados",
+              "nativeQueryRef": "html Destaques estados"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "compatibility": [
+        {
+          "properties": {
+            "legacyRendering": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylesheet": [
+        {
+          "properties": {
+            "stylesheet": {
+              "expr": {
+                "Literal": {
+                  "Value": "'*{font-family:''Segoe UI'',sans-serif;box-sizing:border-box}html,body{margin:0}.vazio{font-size:13px;color:#8A8886}.tit{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#F2C811;font-weight:700;margin-bottom:8px}\nul{list-style:none;margin:0;padding:0}\nli{position:relative;padding:0 0 8px 14px;font-size:12px;line-height:1.35;color:#FFFFFF}\nli:before{content:'''';position:absolute;left:0;top:6px;width:6px;height:6px;background:#F2C811}\nb{color:#FFFFFF;font-weight:700}.nota{font-size:10px;color:#C8C6C4;margin-top:2px;line-height:1.35}\n.vazio{color:#C8C6C4}'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#191919'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Destaques das capitais nos últimos 12 meses'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

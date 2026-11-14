@@ -1,0 +1,71 @@
+/// Meses de jan. 2012 ao último mês com todos os dados (gold/dim_tempo)
+table 'Calendário'
+	lineageTag: aec96be7-45ea-554d-b5bf-920fbd1c3410
+	dataCategory: Time
+
+	/// Primeiro dia do mês
+	column 'Mês'
+		dataType: dateTime
+		isKey
+		formatString: mmm/yyyy
+		lineageTag: 88bdcdb6-4433-5533-885d-d5fcfc0ea6b3
+		summarizeBy: none
+		sourceColumn: Mês
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		lineageTag: ab644be2-3449-5c6b-9d7a-3a0f95f8ca1e
+		summarizeBy: none
+		sourceColumn: Ano
+
+	column mes_num
+		dataType: int64
+		isHidden
+		lineageTag: e5840cee-54a6-551e-acf9-0af33bd6e822
+		summarizeBy: none
+		sourceColumn: mes_num
+
+	column ipca_variacao
+		dataType: double
+		isHidden
+		lineageTag: 723efa7b-6e98-52cf-8969-a1c85cdfffe9
+		summarizeBy: none
+		sourceColumn: ipca_variacao
+
+	column indice_ipca
+		dataType: double
+		isHidden
+		lineageTag: ab351777-ea66-5011-b6ad-3f21f3fd536a
+		summarizeBy: none
+		sourceColumn: indice_ipca
+
+	/// Multiplica um valor do mês para reais do último mês
+	column fator_real
+		dataType: double
+		isHidden
+		lineageTag: 46aad779-44e7-5988-8d35-93fd5191f4dc
+		summarizeBy: none
+		sourceColumn: fator_real
+
+	column salario_minimo
+		dataType: double
+		isHidden
+		lineageTag: de92f582-fd11-5f07-afc1-1a36690c8513
+		summarizeBy: none
+		sourceColumn: salario_minimo
+
+	partition 'Calendário' = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_tempo.parquet")),
+				    Colunas = Table.SelectColumns(Fonte, {"mes", "ano", "mes_num", "ipca_variacao", "indice_ipca", "fator_real", "salario_minimo"}),
+				    Nomes = Table.RenameColumns(Colunas, {{"mes", "Mês"}, {"ano", "Ano"}}),
+				    Tipos = Table.TransformColumnTypes(Nomes, {{"Mês", type date}, {"Ano", Int64.Type}, {"mes_num", Int64.Type}, {"ipca_variacao", type number}, {"indice_ipca", type number}, {"fator_real", type number}, {"salario_minimo", type number}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

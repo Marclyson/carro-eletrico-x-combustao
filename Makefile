@@ -1,4 +1,4 @@
-.PHONY: install carga gold incremental test check
+.PHONY: install carga gold painel incremental test check
 
 install:
 	pip install -r requirements.txt
@@ -8,6 +8,9 @@ carga:
 
 gold:
 	python -m custo_km.transformar && python -m custo_km.exportar
+
+painel:
+	python scripts/pbip/gerar_pbip.py
 
 incremental:
 	python scripts/conferir_incremental.py

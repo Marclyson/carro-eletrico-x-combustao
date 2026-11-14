@@ -1,0 +1,20 @@
+/// Preço de compra escolhido
+table 'Preço do carro elétrico (R$)'
+	lineageTag: 86d68f3f-ab1a-5e9a-bff0-5f8ca44fab22
+
+	column 'Preço do carro elétrico (R$)'
+		dataType: int64
+		formatString: #,0
+		lineageTag: eb293843-c85c-5375-a0a4-ef74dfab8e3b
+		summarizeBy: none
+		sourceColumn: Preço do carro elétrico (R$)
+
+	partition 'Preço do carro elétrico (R$)' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"Preço do carro elétrico (R$)" = Int64.Type], List.Transform(List.Numbers(80000, 69, 2500), each {_}))
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

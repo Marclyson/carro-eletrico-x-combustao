@@ -1,0 +1,20 @@
+/// Preço do kWh no carregador público
+table 'Carregador público'
+	lineageTag: 0ae66e25-fe33-593a-9304-7300a7324080
+
+	column 'Carregador público (R$/kWh)'
+		dataType: double
+		formatString: 0.00
+		lineageTag: 1abd93b2-fcb0-5bff-b50f-b3ab45727c85
+		summarizeBy: none
+		sourceColumn: Carregador público (R$/kWh)
+
+	partition 'Carregador público' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"Carregador público (R$/kWh)" = type number], List.Transform(List.Numbers(1, 11, 0.25), each {_}))
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

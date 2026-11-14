@@ -1,0 +1,210 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "name": "imputados",
+  "position": {
+    "x": 856,
+    "y": 86,
+    "z": 900,
+    "height": 622,
+    "width": 400,
+    "tabOrder": 900
+  },
+  "visual": {
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6865",
+    "query": {
+      "queryState": {
+        "content": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "html Imputados"
+                }
+              },
+              "queryRef": "_Medidas.html Imputados",
+              "nativeQueryRef": "html Imputados"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "compatibility": [
+        {
+          "properties": {
+            "legacyRendering": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylesheet": [
+        {
+          "properties": {
+            "stylesheet": {
+              "expr": {
+                "Literal": {
+                  "Value": "'*{font-family:''Segoe UI'',sans-serif;box-sizing:border-box}html,body{margin:0}.vazio{font-size:13px;color:#8A8886}.tit{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#967100;font-weight:700;margin:10px 0 4px 0}\n.tit:first-child{margin-top:0}\np,li{font-size:12px;line-height:1.45;color:#323130;margin:0 0 6px 0}\nul{margin:0 0 4px 0;padding-left:16px}b{color:#191919}\na{color:#191919;text-decoration:underline;text-decoration-color:#F2C811}\ntable{border-collapse:collapse;width:100%}\nth{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#8A8886;text-align:left;font-weight:600;border-bottom:1px solid #E1DFDD;padding:3px 6px}\ntd{font-size:11px;color:#323130;border-bottom:1px solid #EDEBE9;padding:3px 6px;vertical-align:top}\ntd.n{text-align:right;font-variant-numeric:tabular-nums}\n.aviso{border-left:3px solid #F2C811;background:#FBF8EC;padding:6px 10px;font-size:11px;color:#323130;margin-top:8px;line-height:1.4}'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E1DFDD'"
+                    }
+                  }
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tabela com os meses preenchidos por UF'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

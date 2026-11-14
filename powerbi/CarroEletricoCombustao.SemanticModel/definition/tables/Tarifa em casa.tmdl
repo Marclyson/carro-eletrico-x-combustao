@@ -1,0 +1,32 @@
+/// Tarifa de quem recarrega em casa
+table 'Tarifa em casa'
+	lineageTag: 53d1b403-b304-5731-bf88-99afff552fca
+
+	column 'Tarifa em casa'
+		dataType: string
+		lineageTag: e7756f87-ec42-5a5b-9b54-e28878d05d6c
+		summarizeBy: none
+		sourceColumn: Tarifa em casa
+		sortByColumn: ordem
+
+	column ordem
+		dataType: int64
+		isHidden
+		lineageTag: 82013afe-1495-5521-8ad1-df61346eaf25
+		summarizeBy: none
+		sourceColumn: ordem
+
+	partition 'Tarifa em casa' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(
+				        type table [#"Tarifa em casa" = type text, #"ordem" = Int64.Type],
+				        {
+				        {"Convencional", 1},
+				        {"Branca (fora de ponta)", 2}
+				        })
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

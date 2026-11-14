@@ -1,0 +1,32 @@
+/// Real (corrigido pelo IPCA até o último mês) ou nominal
+table Valores
+	lineageTag: 1a549c85-6424-5183-b642-125710d00b38
+
+	column Valores
+		dataType: string
+		lineageTag: 7810ef95-1621-556b-bb19-73ed8f8371cd
+		summarizeBy: none
+		sourceColumn: Valores
+		sortByColumn: ordem
+
+	column ordem
+		dataType: int64
+		isHidden
+		lineageTag: 69c39a2c-59f9-5107-80b9-119b491257aa
+		summarizeBy: none
+		sourceColumn: ordem
+
+	partition Valores = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(
+				        type table [#"Valores" = type text, #"ordem" = Int64.Type],
+				        {
+				        {"Real", 1},
+				        {"Nominal", 2}
+				        })
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

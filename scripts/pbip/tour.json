@@ -1,0 +1,122 @@
+{
+  "paginas": {
+    "visao_geral": {
+      "sigla": "vg",
+      "passos": [
+        {"alvo": [24, 116, 1062, 56], "lado": "baixo", "titulo": "Filtros da página",
+         "mostra": "Estado, par de carros, período e tipo de valor. O padrão é Brasil, Kwid × Dolphin Mini, a série toda, em reais de hoje e com tributos.",
+         "ler": "Sem estado escolhido, o painel usa a média simples das 27 capitais. A linha abaixo do título repete o que está valendo.",
+         "logica": "Real corrige cada mês pelo IPCA até ago./2026. Sem tributos tira ICMS, PIS/Cofins e CIDE onde eles estão separados.",
+         "medidas": "[_Comparação], [_Real] e [_Com tributos] leem as escolhas; sem escolha, valem os padrões.",
+         "atencao": "Estado e par de carros valem para todas as páginas."},
+        {"alvo": [24, 182, 1232, 112], "lado": "baixo", "titulo": "Custo do último mês",
+         "mostra": "Quanto custa rodar 100 km no último mês do período com cada energia, e quantas vezes o elétrico sai mais barato.",
+         "ler": "O cartão amarelo é o elétrico. As horas de salário mínimo comparam o custo com a renda de quem ganha o mínimo.",
+         "logica": "Custo = preço da energia × consumo do carro no PBE Veicular. O carro de 2026 é o mesmo em todos os meses.",
+         "medidas": "[Custo elétrico], [Custo gasolina] e [Custo etanol]: R$ por 100 km. [Vezes mais barato] = gasolina ÷ elétrico. [Horas de SM elétrico] e [Horas de SM gasolina] = custo ÷ (salário mínimo ÷ 220 h).",
+         "atencao": "As horas de salário mínimo usam sempre o preço com tributos e o valor do próprio mês."},
+        {"alvo": [24, 306, 800, 402], "lado": "direita", "titulo": "Custo mês a mês desde 2012",
+         "mostra": "O custo de rodar 100 km com eletricidade, gasolina e etanol, mês a mês.",
+         "ler": "As linhas verticais tracejadas marcam mudanças de tributo e a bandeira de escassez hídrica. Passe o mouse para ver o preço da energia no mês.",
+         "logica": "Média simples das capitais escolhidas. Em valor real, todos os meses ficam em reais de ago./2026.",
+         "medidas": "[Custo elétrico], [Custo gasolina], [Custo etanol] e [Marco legal]; na dica, [Preço eletricidade], [Preço gasolina] e [Preço etanol]."},
+        {"alvo": [836, 306, 420, 402], "lado": "esquerda", "titulo": "Etanol ou gasolina?",
+         "mostra": "O preço do litro de etanol dividido pelo da gasolina.",
+         "ler": "Abaixo da linha amarela, o etanol rende mais por real neste carro. A linha cinza é a regra dos 70 % usada nos postos.",
+         "logica": "A linha amarela é o km/l com etanol dividido pelo km/l com gasolina do carro escolhido. No Kwid: 10,5 ÷ 14,9 = 70,5 %.",
+         "medidas": "[Razão de preço etanol/gasolina] e [Razão de rendimento do carro].",
+         "atencao": "Usa o preço com tributos e nominal; a razão não muda com o IPCA."}
+      ]
+    },
+    "impostos": {
+      "sigla": "im",
+      "passos": [
+        {"alvo": [24, 182, 610, 300], "lado": "baixo", "titulo": "Gasolina em parcelas",
+         "mostra": "O custo de 100 km a gasolina separado em preço sem tributos, ICMS, PIS/Cofins e CIDE.",
+         "ler": "O ICMS em amarelo aparece em jun./2023, quando passa a ser um valor por litro. Antes disso ele está dentro da faixa clara de cima.",
+         "logica": "PIS/Cofins e CIDE por litro de gasolina A, vezes a parte de gasolina A na gasolina C. Vale a regra em vigor no dia 15 de cada mês.",
+         "medidas": "[Gasolina: sem tributos], [Gasolina: sem federais, ICMS dentro], [Gasolina: ICMS], [Gasolina: PIS/Cofins] e [Gasolina: CIDE].",
+         "atencao": "De jul. a dez./2022 a LC 194 zerou PIS/Cofins e CIDE."},
+        {"alvo": [646, 182, 610, 300], "lado": "baixo", "titulo": "Eletricidade em parcelas",
+         "mostra": "O custo de 100 km com eletricidade separado em tarifa com bandeira, ICMS e PIS/Cofins.",
+         "ler": "A faixa clara sobe com as bandeiras de 2021 e 2022. O ICMS em amarelo cai a partir de jul./2022.",
+         "logica": "Imposto por dentro: preço = base ÷ (1 − ICMS − PIS/Cofins), com a alíquota efetiva que a distribuidora da capital faturou (SAMP).",
+         "medidas": "[Eletricidade: sem tributos], [Eletricidade: ICMS] e [Eletricidade: PIS/Cofins]."},
+        {"alvo": [24, 494, 610, 214], "lado": "direita", "titulo": "Quanto do preço é tributo",
+         "mostra": "A parte do preço que é tributo, mês a mês.",
+         "ler": "Na gasolina, o tracejado até mai./2023 conta só os tributos federais.",
+         "logica": "Soma dos tributos por litro ou kWh dividida pelo preço final.",
+         "medidas": "[% tributos eletricidade] e [% tributos gasolina]."},
+        {"alvo": [646, 494, 610, 214], "lado": "esquerda", "titulo": "Marcos legais",
+         "mostra": "As mudanças de tributo e a bandeira que movem as curvas, com a norma de cada uma.",
+         "ler": "A data é o dia em que a regra passou a valer.",
+         "logica": "Os valores por período ficam em referencias/tributos_combustivel.csv, com o link oficial de cada norma."}
+      ]
+    },
+    "estados": {
+      "sigla": "es",
+      "passos": [
+        {"alvo": [906, 116, 330, 56], "lado": "baixo", "titulo": "Métrica do mapa",
+         "mostra": "O que o mapa e o ranking mostram: custo do elétrico, custo da gasolina, economia do elétrico ou ICMS efetivo da energia.",
+         "ler": "Tudo nesta página é a média dos 12 meses que terminam no fim do período escolhido.",
+         "medidas": "[Valor do mapa] troca de medida conforme [Métrica escolhida]."},
+        {"alvo": [24, 182, 440, 526], "lado": "direita", "titulo": "Mapa das capitais",
+         "mostra": "As 27 UFs numa grade que segue, de longe, o desenho do mapa.",
+         "ler": "Quanto mais escuro, maior o valor. Clique numa UF para filtrar a página; Ctrl+clique soma UFs.",
+         "logica": "Cada UF usa a distribuidora de energia e os postos da capital.",
+         "medidas": "[Valor do mapa]; na dica, [Custo elétrico 12m], [Custo gasolina 12m], [Economia 12m], [Tarifa sem tributos 12m], [ICMS efetivo 12m] e os meses preenchidos.",
+         "atencao": "O AM está sem alíquota válida no SAMP desde nov./2022: o ICMS repete o último mês válido."},
+        {"alvo": [476, 182, 380, 526], "lado": "direita", "titulo": "Ranking",
+         "mostra": "As capitais em ordem da métrica escolhida, do maior valor para o menor.",
+         "ler": "Clique numa barra para filtrar a página.",
+         "medidas": "[Valor do mapa]."},
+        {"alvo": [868, 182, 388, 330], "lado": "esquerda", "titulo": "Energia cara ou imposto alto?",
+         "mostra": "Cada capital pela tarifa sem tributos e pelo ICMS efetivo da energia.",
+         "ler": "As linhas tracejadas são as medianas. No canto de cima, à direita, ficam as capitais com as duas coisas acima da mediana.",
+         "logica": "Tarifa = tarifa residencial com bandeira, sem tributos. ICMS efetivo = ICMS ÷ preço final.",
+         "medidas": "[Tarifa sem tributos 12m] e [ICMS efetivo 12m].",
+         "atencao": "Mostra como as duas coisas andam juntas, não que uma cause a outra."},
+        {"alvo": [868, 524, 388, 184], "lado": "esquerda", "titulo": "Destaques",
+         "mostra": "Os extremos do período: elétrico mais barato e mais caro, maior economia e maior ICMS.",
+         "medidas": "[Custo elétrico 12m], [Economia 12m] e [ICMS efetivo 12m]."}
+      ]
+    },
+    "simulador": {
+      "sigla": "si",
+      "passos": [
+        {"alvo": [24, 116, 1232, 56], "lado": "baixo", "titulo": "Escolhas do simulador",
+         "mostra": "Estado, par de carros, km por ano, quanto recarrega em casa, tarifa de casa, carregador público e anos de uso.",
+         "ler": "Sem escolha, valem 12.000 km por ano, 80 % em casa na tarifa convencional, carregador a R$ 2,00/kWh e 10 anos.",
+         "logica": "Energia e gasolina com o preço médio real dos últimos 12 meses da UF, com tributos.",
+         "medidas": "[Km por ano escolhido], [Recarga em casa escolhida], [Tarifa em casa escolhida], [Carregador escolhido] e [Anos de uso escolhidos]."},
+        {"alvo": [24, 182, 300, 120], "lado": "direita", "titulo": "Preço dos carros",
+         "mostra": "O preço de compra dos dois carros.",
+         "ler": "Sem escolha, vale o preço de tabela no site da montadora em 14/11/2026. O E-KWID saiu de linha e não tem preço: escolha um valor.",
+         "medidas": "[Preço do carro a combustão] e [Preço do carro elétrico]."},
+        {"alvo": [336, 182, 920, 112], "lado": "baixo", "titulo": "Resultado",
+         "mostra": "Energia por km, economia por ano, diferença na compra, tempo para empatar e saldo no fim dos anos de uso.",
+         "logica": "Elétrico por km = consumo × (parte em casa × tarifa de casa + resto × carregador). Anos para pagar = diferença na compra ÷ economia por ano.",
+         "medidas": "[Elétrico por km (12m)], [Gasolina por km (12m)], [Economia por ano], [Diferença na compra] e [Anos para pagar].",
+         "atencao": "Sem juros nem reajuste: é uma conta simples, para comparar."},
+        {"alvo": [336, 306, 920, 402], "lado": "esquerda", "titulo": "Custo acumulado",
+         "mostra": "Quanto cada carro custa somando o preço de compra e a energia, ano a ano.",
+         "ler": "A linha amarela vertical marca o ano em que as duas curvas se cruzam.",
+         "medidas": "[Custo acumulado combustão], [Custo acumulado elétrico] e [Anos para pagar]."},
+        {"alvo": [24, 312, 300, 396], "lado": "direita", "titulo": "Hipóteses",
+         "mostra": "De onde vem o preço dos carros, as hipóteses da conta e o que fica fora dela."}
+      ]
+    },
+    "metodo": {
+      "sigla": "me",
+      "passos": [
+        {"alvo": [24, 86, 820, 622], "lado": "direita", "titulo": "Método e fontes",
+         "mostra": "A pergunta do painel, as fontes com link, as regras de cálculo e o que ficou fora."},
+        {"alvo": [856, 86, 400, 622], "lado": "esquerda", "titulo": "Meses preenchidos",
+         "mostra": "Quantos meses de cada UF tiveram tarifa ou ICMS preenchidos.",
+         "ler": "São 176 meses por UF, de jan./2012 a ago./2026.",
+         "logica": "Tarifa do SAMP = receita de energia ÷ kWh da classe residencial, sem a bandeira. ICMS imputado = alíquota do mês válido mais próximo.",
+         "medidas": "[Meses com tarifa do SAMP] e [Meses com ICMS imputado]."}
+      ]
+    }
+  }
+}

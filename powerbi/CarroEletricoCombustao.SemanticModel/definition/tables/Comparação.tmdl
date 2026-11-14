@@ -1,0 +1,61 @@
+/// Pares de carro a combustão e elétrico do painel
+table 'Comparação'
+	lineageTag: 3ce6d4d9-ccae-5ae1-88f4-e63ee135535d
+
+	column 'Comparação'
+		dataType: string
+		lineageTag: 503887e4-2f56-574f-a518-d1dfb6c996a0
+		summarizeBy: none
+		sourceColumn: Comparação
+		sortByColumn: ordem
+
+	column ordem
+		dataType: int64
+		isHidden
+		lineageTag: a20a0c43-e2dd-58e2-a832-da247508690b
+		summarizeBy: none
+		sourceColumn: ordem
+
+	column carro_combustao
+		dataType: string
+		isHidden
+		lineageTag: 19481be3-1408-5b0b-aa22-b7943d92bc0f
+		summarizeBy: none
+		sourceColumn: carro_combustao
+
+	column carro_eletrico
+		dataType: string
+		isHidden
+		lineageTag: 500d51ab-4584-55a7-935a-ea3723a51aaa
+		summarizeBy: none
+		sourceColumn: carro_eletrico
+
+	column nome_combustao
+		dataType: string
+		isHidden
+		lineageTag: caa4aeb5-95df-5f70-87fc-84e87be25d48
+		summarizeBy: none
+		sourceColumn: nome_combustao
+
+	column nome_eletrico
+		dataType: string
+		isHidden
+		lineageTag: 7db74ca8-ec81-5a76-a58d-a751ffcd601f
+		summarizeBy: none
+		sourceColumn: nome_eletrico
+
+	partition 'Comparação' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(
+				        type table [#"Comparação" = type text, #"ordem" = Int64.Type, #"carro_combustao" = type text, #"carro_eletrico" = type text, #"nome_combustao" = type text, #"nome_eletrico" = type text],
+				        {
+				        {"Kwid × Dolphin Mini", 1, "kwid", "dolphin_mini", "Kwid", "Dolphin Mini"},
+				        {"Polo Track × Dolphin Mini", 2, "polo_track", "dolphin_mini", "Polo Track", "Dolphin Mini"},
+				        {"Kwid × E-KWID (fora de linha)", 3, "kwid", "e_kwid", "Kwid", "E-KWID"}
+				        })
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

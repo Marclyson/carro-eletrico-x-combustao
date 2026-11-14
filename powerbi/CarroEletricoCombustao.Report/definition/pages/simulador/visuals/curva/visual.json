@@ -1,0 +1,306 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "name": "curva",
+  "position": {
+    "x": 336,
+    "y": 306,
+    "z": 2000,
+    "height": 402,
+    "width": 920,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+    "query": {
+      "queryState": {
+        "dataset": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ano de uso"
+                    }
+                  },
+                  "Property": "Ano de uso"
+                }
+              },
+              "queryRef": "Ano de uso.Ano de uso",
+              "nativeQueryRef": "Ano de uso"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Custo acumulado combustão"
+                }
+              },
+              "queryRef": "_Medidas.Custo acumulado combustão",
+              "nativeQueryRef": "Custo acumulado combustão"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Custo acumulado elétrico"
+                }
+              },
+              "queryRef": "_Medidas.Custo acumulado elétrico",
+              "nativeQueryRef": "Custo acumulado elétrico"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Rótulo combustão"
+                }
+              },
+              "queryRef": "_Medidas.Rótulo combustão",
+              "nativeQueryRef": "Rótulo combustão"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Rótulo elétrico"
+                }
+              },
+              "queryRef": "_Medidas.Rótulo elétrico",
+              "nativeQueryRef": "Rótulo elétrico"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Anos para pagar"
+                }
+              },
+              "queryRef": "_Medidas.Anos para pagar",
+              "nativeQueryRef": "Anos para pagar"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "vega": [
+        {
+          "properties": {
+            "jsonSpec": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"data\": {\n    \"name\": \"dataset\"\n  },\n  \"width\": \"container\",\n  \"height\": \"container\",\n  \"transform\": [\n    {\n      \"fold\": [\n        \"Custo acumulado combustão\",\n        \"Custo acumulado elétrico\"\n      ],\n      \"as\": [\n        \"serie\",\n        \"valor\"\n      ]\n    },\n    {\n      \"filter\": \"isValid(datum.valor)\"\n    },\n    {\n      \"calculate\": \"datum.serie == ''Custo acumulado combustão'' ? datum[''Rótulo combustão''] : datum[''Rótulo elétrico'']\",\n      \"as\": \"Carro\"\n    },\n    {\n      \"calculate\": \"datum.serie == ''Custo acumulado combustão'' ? 1 : 2\",\n      \"as\": \"tipo\"\n    }\n  ],\n  \"layer\": [\n    {\n      \"transform\": [\n        {\n          \"joinaggregate\": [\n            {\n              \"op\": \"max\",\n              \"field\": \"Ano de uso\",\n              \"as\": \"amax\"\n            }\n          ]\n        },\n        {\n          \"window\": [\n            {\n              \"op\": \"row_number\",\n              \"as\": \"k\"\n            }\n          ]\n        },\n        {\n          \"filter\": \"datum.k == 1\"\n        },\n        {\n          \"filter\": \"isValid(datum[''Anos para pagar'']) && datum[''Anos para pagar''] > 0 && datum[''Anos para pagar''] <= datum.amax\"\n        }\n      ],\n      \"layer\": [\n        {\n          \"mark\": {\n            \"type\": \"rule\",\n            \"color\": \"#F2C811\",\n            \"strokeWidth\": 2\n          },\n          \"encoding\": {\n            \"x\": {\n              \"field\": \"Anos para pagar\",\n              \"type\": \"quantitative\"\n            }\n          }\n        },\n        {\n          \"transform\": [\n            {\n              \"filter\": \"(datum[''Anos para pagar''] <= 0.6 * datum.amax)\"\n            }\n          ],\n          \"mark\": {\n            \"type\": \"text\",\n            \"align\": \"left\",\n            \"baseline\": \"top\",\n            \"dx\": 6,\n            \"fontSize\": 11,\n            \"fontWeight\": \"bold\",\n            \"color\": \"#967100\"\n          },\n          \"encoding\": {\n            \"x\": {\n              \"field\": \"Anos para pagar\",\n              \"type\": \"quantitative\"\n            },\n            \"y\": {\n              \"value\": 4\n            },\n            \"text\": {\n              \"value\": \"empata aqui\"\n            }\n          }\n        },\n        {\n          \"transform\": [\n            {\n              \"filter\": \"!(datum[''Anos para pagar''] <= 0.6 * datum.amax)\"\n            }\n          ],\n          \"mark\": {\n            \"type\": \"text\",\n            \"align\": \"right\",\n            \"baseline\": \"top\",\n            \"dx\": -6,\n            \"fontSize\": 11,\n            \"fontWeight\": \"bold\",\n            \"color\": \"#967100\"\n          },\n          \"encoding\": {\n            \"x\": {\n              \"field\": \"Anos para pagar\",\n              \"type\": \"quantitative\"\n            },\n            \"y\": {\n              \"value\": 4\n            },\n            \"text\": {\n              \"value\": \"empata aqui\"\n            }\n          }\n        }\n      ]\n    },\n    {\n      \"mark\": {\n        \"type\": \"line\",\n        \"strokeWidth\": 3,\n        \"point\": {\n          \"filled\": true,\n          \"size\": 40\n        }\n      },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"Ano de uso\",\n          \"type\": \"quantitative\",\n          \"title\": \"Anos de uso\",\n          \"axis\": {\n            \"tickMinStep\": 1,\n            \"format\": \"d\"\n          }\n        },\n        \"y\": {\n          \"field\": \"valor\",\n          \"type\": \"quantitative\",\n          \"title\": \"Compra + energia acumulada\",\n          \"scale\": {\n            \"zero\": false\n          },\n          \"axis\": {\n            \"format\": \"$,.0f\",\n            \"tickCount\": 5\n          }\n        },\n        \"color\": {\n          \"field\": \"Carro\",\n          \"type\": \"nominal\",\n          \"sort\": {\n            \"field\": \"tipo\",\n            \"op\": \"min\"\n          },\n          \"scale\": {\n            \"range\": [\n              \"#191919\",\n              \"#E0B000\"\n            ]\n          },\n          \"legend\": {\n            \"orient\": \"top\",\n            \"title\": null,\n            \"direction\": \"horizontal\"\n          }\n        },\n        \"tooltip\": [\n          {\n            \"field\": \"Carro\"\n          },\n          {\n            \"field\": \"Ano de uso\",\n            \"title\": \"Ano\"\n          },\n          {\n            \"field\": \"valor\",\n            \"title\": \"Compra + energia\",\n            \"format\": \"$,.0f\"\n          }\n        ]\n      }\n    }\n  ]\n}'"
+                }
+              }
+            },
+            "jsonConfig": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"locale\": {\n    \"number\": {\n      \"decimal\": \",\",\n      \"thousands\": \".\",\n      \"grouping\": [\n        3\n      ],\n      \"currency\": [\n        \"R$ \",\n        \"\"\n      ]\n    },\n    \"time\": {\n      \"dateTime\": \"%A, %e de %B de %Y. %X\",\n      \"date\": \"%d/%m/%Y\",\n      \"time\": \"%H:%M:%S\",\n      \"periods\": [\n        \"AM\",\n        \"PM\"\n      ],\n      \"days\": [\n        \"domingo\",\n        \"segunda\",\n        \"terça\",\n        \"quarta\",\n        \"quinta\",\n        \"sexta\",\n        \"sábado\"\n      ],\n      \"shortDays\": [\n        \"dom\",\n        \"seg\",\n        \"ter\",\n        \"qua\",\n        \"qui\",\n        \"sex\",\n        \"sáb\"\n      ],\n      \"months\": [\n        \"janeiro\",\n        \"fevereiro\",\n        \"março\",\n        \"abril\",\n        \"maio\",\n        \"junho\",\n        \"julho\",\n        \"agosto\",\n        \"setembro\",\n        \"outubro\",\n        \"novembro\",\n        \"dezembro\"\n      ],\n      \"shortMonths\": [\n        \"jan\",\n        \"fev\",\n        \"mar\",\n        \"abr\",\n        \"mai\",\n        \"jun\",\n        \"jul\",\n        \"ago\",\n        \"set\",\n        \"out\",\n        \"nov\",\n        \"dez\"\n      ]\n    }\n  },\n  \"autosize\": {\n    \"type\": \"fit\",\n    \"contains\": \"padding\"\n  },\n  \"background\": \"transparent\",\n  \"font\": \"Segoe UI, Open Sans, sans-serif\",\n  \"view\": {\n    \"stroke\": null\n  },\n  \"axis\": {\n    \"labelColor\": \"#605E5C\",\n    \"titleColor\": \"#605E5C\",\n    \"labelFontSize\": 10,\n    \"titleFontSize\": 10,\n    \"titleFontWeight\": \"normal\",\n    \"gridColor\": \"#EDEBE9\",\n    \"domain\": false,\n    \"tickColor\": \"#E1DFDD\"\n  },\n  \"axisX\": {\n    \"grid\": false\n  },\n  \"legend\": {\n    \"labelColor\": \"#605E5C\",\n    \"titleColor\": \"#605E5C\",\n    \"labelFontSize\": 10,\n    \"symbolType\": \"square\"\n  },\n  \"bar\": {\n    \"cornerRadiusEnd\": 0\n  },\n  \"line\": {\n    \"strokeWidth\": 2\n  }\n}'"
+                }
+              }
+            },
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'vegaLite'"
+                }
+              }
+            },
+            "renderMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'svg'"
+                }
+              }
+            },
+            "enableTooltips": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "developer": [
+        {
+          "properties": {
+            "locale": {
+              "expr": {
+                "Literal": {
+                  "Value": "'pt-BR'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custo acumulado: compra mais energia'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#191919'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E1DFDD'"
+                    }
+                  }
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Linhas com o custo acumulado dos dois carros por ano de uso; a linha amarela marca o ano em que empatam'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,809 @@
+/// Medidas do painel
+table _Medidas
+	lineageTag: 901b6f49-72fc-5dd3-bb6e-032767cbf2f6
+
+	/// Par escolhido; sem escolha, Kwid × Dolphin Mini
+	measure '_Comparação' = SELECTEDVALUE ( 'Comparação'[Comparação], "Kwid × Dolphin Mini" )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: fc57abd7-ecbf-5f59-bddb-cac00e303be6
+
+	measure '_Carro combustão' =
+			VAR _c = [_Comparação]
+			RETURN
+			    CALCULATE ( MAX ( 'Comparação'[carro_combustao] ), REMOVEFILTERS ( 'Comparação' ), 'Comparação'[Comparação] = _c )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 17a39e03-fb61-5cdf-9316-65e222b3b956
+
+	measure '_Carro elétrico' =
+			VAR _c = [_Comparação]
+			RETURN
+			    CALCULATE ( MAX ( 'Comparação'[carro_eletrico] ), REMOVEFILTERS ( 'Comparação' ), 'Comparação'[Comparação] = _c )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: e8dd41e2-dd4c-51e5-9452-0bfc5cb183bc
+
+	measure '_Nome combustão' =
+			VAR _c = [_Comparação]
+			RETURN
+			    CALCULATE ( MAX ( 'Comparação'[nome_combustao] ), REMOVEFILTERS ( 'Comparação' ), 'Comparação'[Comparação] = _c )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 22fe3996-5357-5430-8018-fa856e1194f8
+
+	measure '_Nome elétrico' =
+			VAR _c = [_Comparação]
+			RETURN
+			    CALCULATE ( MAX ( 'Comparação'[nome_eletrico] ), REMOVEFILTERS ( 'Comparação' ), 'Comparação'[Comparação] = _c )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 06ebfb56-2c8e-5638-b316-8d15706727bc
+
+	/// Verdadeiro quando o painel mostra valores reais (padrão)
+	measure _Real = SELECTEDVALUE ( 'Valores'[Valores], "Real" ) = "Real"
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 2ec610cb-1019-581a-bc16-d178a57a665b
+
+	/// Verdadeiro quando o painel mostra o preço ao consumidor (padrão)
+	measure '_Com tributos' = SELECTEDVALUE ( 'Tributos'[Tributos], "Com tributos" ) = "Com tributos"
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 72b9fdd3-3634-5ef2-b62a-8009f44163d2
+
+	/// R$/km conforme as escolhas real/nominal e com/sem tributos; média simples das UFs
+	measure '_Custo km' =
+			VAR _real = [_Real]
+			VAR _com = [_Com tributos]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _real && _com, AVERAGE ( 'Custo por km'[custo_km_real] ),
+			        _com, AVERAGE ( 'Custo por km'[custo_km] ),
+			        _real, AVERAGE ( 'Custo por km'[custo_km_sem_tributos_real] ),
+			        AVERAGEX ( 'Custo por km', 'Custo por km'[custo_km_sem_tributos_real] / RELATED ( 'Calendário'[fator_real] ) )
+			    )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 393ef19c-cb56-5988-90d0-6a285db0249a
+
+	/// Litros ou kWh por km do carro escolhido (PBE Veicular)
+	measure '_Consumo gasolina' =
+			VAR _ch = [_Carro combustão] & "_gasolina"
+			RETURN
+			    CALCULATE ( MAX ( 'Veículos'[consumo_por_km] ), REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 5984360b-fd3d-51b1-9354-13d9b72f5dce
+
+	/// Litros ou kWh por km do carro escolhido (PBE Veicular)
+	measure '_Consumo etanol' =
+			VAR _ch = [_Carro combustão] & "_etanol"
+			RETURN
+			    CALCULATE ( MAX ( 'Veículos'[consumo_por_km] ), REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: d0961264-aa7c-5331-9ca9-c8c967f003f5
+
+	/// Litros ou kWh por km do carro escolhido (PBE Veicular)
+	measure '_Consumo elétrico' =
+			VAR _ch = [_Carro elétrico] & "_eletricidade"
+			RETURN
+			    CALCULATE ( MAX ( 'Veículos'[consumo_por_km] ), REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: f7023470-8202-5ea5-aa69-85dd3c64a8e8
+
+	measure '_Último mês com dados' = CALCULATE ( MAX ( 'Calendário'[Mês] ), REMOVEFILTERS ( 'Calendário' ) )
+		formatString: mmm/yyyy
+		isHidden
+		displayFolder: Apoio
+		lineageTag: cc997ffc-94ab-5bff-8c66-b44f0f80938b
+
+	/// R$ para rodar 100 km com o carro elétrico
+	measure 'Custo elétrico' =
+			VAR _ch = [_Carro elétrico] & "_eletricidade"
+			RETURN
+			    CALCULATE ( [_Custo km], REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch ) * 100
+		formatString: \R$ #,0.00
+		displayFolder: Custo por 100 km
+		lineageTag: 416d68cf-3adb-578e-a7d8-b5fb06ff0f47
+
+	/// R$ para rodar 100 km com o carro a combustão e gasolina
+	measure 'Custo gasolina' =
+			VAR _ch = [_Carro combustão] & "_gasolina"
+			RETURN
+			    CALCULATE ( [_Custo km], REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch ) * 100
+		formatString: \R$ #,0.00
+		displayFolder: Custo por 100 km
+		lineageTag: 459f01e5-b091-5c3e-81c1-23bd1013f298
+
+	/// R$ para rodar 100 km com o carro a combustão e etanol
+	measure 'Custo etanol' =
+			VAR _ch = [_Carro combustão] & "_etanol"
+			RETURN
+			    CALCULATE ( [_Custo km], REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch ) * 100
+		formatString: \R$ #,0.00
+		displayFolder: Custo por 100 km
+		lineageTag: ece8d68d-84f9-5e83-83c5-50ec9d152cb7
+
+	/// Quantas vezes o custo da gasolina cabe no custo do elétrico
+	measure 'Vezes mais barato' = DIVIDE ( [Custo gasolina], [Custo elétrico] )
+		formatString: 0.0
+		displayFolder: Custo por 100 km
+		lineageTag: 2cb2beda-7ca8-527f-aa8c-ee3ea2f6d831
+
+	/// R$ economizados a cada 100 km ao trocar a gasolina pelo elétrico
+	measure 'Economia do elétrico' = [Custo gasolina] - [Custo elétrico]
+		formatString: \R$ #,0.00
+		displayFolder: Custo por 100 km
+		lineageTag: fe8dd525-c720-5768-b0e3-b7ca6e448cca
+
+	/// Horas de trabalho com salário mínimo (220 h/mês) para pagar 100 km, com tributos
+	measure 'Horas de SM elétrico' =
+			VAR _ch = [_Carro elétrico] & "_eletricidade"
+			RETURN
+			    CALCULATE ( AVERAGE ( 'Custo por km'[horas_sm_100km] ), REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch )
+		formatString: 0.0
+		displayFolder: Custo por 100 km
+		lineageTag: 31e5bdb4-a77e-5ece-83c2-43e43f75291e
+
+	/// Horas de trabalho com salário mínimo (220 h/mês) para pagar 100 km, com tributos
+	measure 'Horas de SM gasolina' =
+			VAR _ch = [_Carro combustão] & "_gasolina"
+			RETURN
+			    CALCULATE ( AVERAGE ( 'Custo por km'[horas_sm_100km] ), REMOVEFILTERS ( 'Veículos' ), 'Veículos'[chave_veiculo] = _ch )
+		formatString: 0.0
+		displayFolder: Custo por 100 km
+		lineageTag: f7beb6f5-6c4a-5e8c-949d-4a15ebb89217
+
+	/// Rótulo dos marcos anotados no gráfico de linhas
+	measure 'Marco legal' =
+			VAR _m = MAX ( 'Calendário'[Mês] )
+			RETURN
+			    IF (
+			        HASONEVALUE ( 'Calendário'[Mês] ),
+			        SWITCH (
+			            _m,
+			            DATE ( 2015, 5, 1 ), "CIDE volta e PIS/Cofins sobe",
+			            DATE ( 2017, 8, 1 ), "PIS/Cofins da gasolina dobra",
+			            DATE ( 2021, 9, 1 ), "Bandeira escassez hídrica",
+			            DATE ( 2022, 7, 1 ), "LC 194: teto do ICMS, federais zerados",
+			            DATE ( 2023, 6, 1 ), "ICMS da gasolina por litro"
+			        )
+			    )
+		isHidden
+		displayFolder: Custo por 100 km
+		lineageTag: 6997c0fa-108e-518c-b3ab-4f9c5ee8338e
+
+	measure '_Preço unit' =
+			VAR _real = [_Real]
+			VAR _com = [_Com tributos]
+			RETURN
+			    AVERAGEX (
+			        'Preço da energia',
+			        IF ( _com, 'Preço da energia'[preco], 'Preço da energia'[preco_sem_tributos] ) * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 )
+			    )
+		isHidden
+		displayFolder: Apoio
+		lineageTag: 21f39b94-99fa-5350-ac55-fb050fd00650
+
+	/// Preço médio das capitais, por litro ou kWh, conforme real/nominal e com/sem tributos
+	measure 'Preço gasolina' = CALCULATE ( [_Preço unit], 'Energias'[energia] = "gasolina" )
+		formatString: \R$ #,0.00
+		displayFolder: Preço da energia
+		lineageTag: 284403d2-fbeb-5101-aa59-1d1e698f02ac
+
+	/// Preço médio das capitais, por litro ou kWh, conforme real/nominal e com/sem tributos
+	measure 'Preço etanol' = CALCULATE ( [_Preço unit], 'Energias'[energia] = "etanol" )
+		formatString: \R$ #,0.00
+		displayFolder: Preço da energia
+		lineageTag: 493199df-f536-518d-b054-49387c63c01d
+
+	/// Preço médio das capitais, por litro ou kWh, conforme real/nominal e com/sem tributos
+	measure 'Preço eletricidade' = CALCULATE ( [_Preço unit], 'Energias'[energia] = "eletricidade" )
+		formatString: \R$ #,0.000
+		displayFolder: Preço da energia
+		lineageTag: e518fc08-45dc-569f-973b-5d2a9eda08cc
+
+	/// Preço do litro de etanol dividido pelo da gasolina, nas bombas
+	measure 'Razão de preço etanol/gasolina' =
+			DIVIDE (
+			    CALCULATE ( AVERAGE ( 'Preço da energia'[preco] ), 'Energias'[energia] = "etanol" ),
+			    CALCULATE ( AVERAGE ( 'Preço da energia'[preco] ), 'Energias'[energia] = "gasolina" )
+			)
+		formatString: 0.0%
+		displayFolder: Preço da energia
+		lineageTag: ea1850a7-d398-54c0-8894-a6ad2a818472
+
+	/// km/l com etanol dividido por km/l com gasolina: abaixo disso, o etanol compensa
+	measure 'Razão de rendimento do carro' = DIVIDE ( [_Consumo gasolina], [_Consumo etanol] )
+		formatString: 0.0%
+		displayFolder: Preço da energia
+		lineageTag: cc74f115-847f-55b1-b61f-c58dcf7a5287
+
+	/// Gasolina sem ICMS, PIS/Cofins e CIDE (a partir de jun. 2023, quando o ICMS passa a ser por litro)
+	measure 'Gasolina: sem tributos' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo gasolina]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', IF ( NOT ISBLANK ( 'Preço da energia'[icms_unit] ), 'Preço da energia'[preco_sem_tributos] ) * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "gasolina"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: 0fb3e058-f296-534d-bb36-11ca17036f94
+
+	/// Gasolina sem PIS/Cofins e CIDE, com o ICMS estadual dentro (até mai. 2023)
+	measure 'Gasolina: sem federais, ICMS dentro' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo gasolina]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', IF ( ISBLANK ( 'Preço da energia'[icms_unit] ), 'Preço da energia'[preco_sem_tributos] ) * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "gasolina"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: 916b6b9e-743a-5495-9357-a73a813c5fd1
+
+	/// ICMS por litro da gasolina
+	measure 'Gasolina: ICMS' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo gasolina]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[icms_unit] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "gasolina"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: 502af2de-ae90-5190-b373-d21b21ace14b
+
+	measure 'Gasolina: PIS/Cofins' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo gasolina]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[pis_cofins_unit] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "gasolina"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: c4838355-18e8-572a-93d8-88ed816fa45e
+
+	measure 'Gasolina: CIDE' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo gasolina]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[cide_unit] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "gasolina"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: bdd71c30-6d7b-53a6-9a48-6ee61a009bf0
+
+	/// Tarifa residencial mais a bandeira, sem ICMS e PIS/Cofins
+	measure 'Eletricidade: sem tributos' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo elétrico]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[preco_sem_tributos] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "eletricidade"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: 7c369afa-c2cf-55ae-8a7e-6dc5b8b38980
+
+	measure 'Eletricidade: ICMS' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo elétrico]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[icms_unit] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "eletricidade"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: 800f1942-c849-5e8e-abc8-517a0f8789ac
+
+	measure 'Eletricidade: PIS/Cofins' =
+			VAR _real = [_Real]
+			VAR _cons = [_Consumo elétrico]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[pis_cofins_unit] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "eletricidade"
+			    ) * _cons * 100
+		formatString: \R$ #,0.00
+		displayFolder: Tributos por 100 km
+		lineageTag: 0b248827-ca77-509b-9d66-8995323e7eda
+
+	/// Parte do preço da eletricidade que é ICMS e PIS/Cofins
+	measure '% tributos eletricidade' =
+			CALCULATE (
+			    DIVIDE ( SUM ( 'Preço da energia'[icms_unit] ) + SUM ( 'Preço da energia'[pis_cofins_unit] ), SUM ( 'Preço da energia'[preco] ) ),
+			    'Energias'[energia] = "eletricidade"
+			)
+		formatString: 0.0%
+		displayFolder: Tributos por 100 km
+		lineageTag: 1289612a-dc39-598e-8d99-0013327aee4a
+
+	/// Parte do preço da gasolina que é tributo separado (até mai. 2023, só os federais)
+	measure '% tributos gasolina' =
+			CALCULATE (
+			    DIVIDE ( SUM ( 'Preço da energia'[icms_unit] ) + SUM ( 'Preço da energia'[pis_cofins_unit] ) + SUM ( 'Preço da energia'[cide_unit] ), SUM ( 'Preço da energia'[preco] ) ),
+			    'Energias'[energia] = "gasolina"
+			)
+		formatString: 0.0%
+		displayFolder: Tributos por 100 km
+		lineageTag: d296264f-7b8c-5477-925c-02978e8f1277
+
+	/// Média dos 12 meses que terminam no fim do período
+	measure 'Custo elétrico 12m' = CALCULATE ( [Custo elétrico], DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH ) )
+		formatString: \R$ #,0.00
+		displayFolder: Estados
+		lineageTag: 07a05f88-f8eb-5e47-a501-2c9a684b4b6f
+
+	/// Média dos 12 meses que terminam no fim do período
+	measure 'Custo gasolina 12m' = CALCULATE ( [Custo gasolina], DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH ) )
+		formatString: \R$ #,0.00
+		displayFolder: Estados
+		lineageTag: 4100b628-a76a-5c19-a293-19633a2f2fee
+
+	/// R$ economizados por 100 km com o elétrico, média de 12 meses
+	measure 'Economia 12m' = [Custo gasolina 12m] - [Custo elétrico 12m]
+		formatString: \R$ #,0.00
+		displayFolder: Estados
+		lineageTag: 508bec02-28fc-5260-aab4-50b9ffa4084e
+
+	/// ICMS dividido pelo preço final da energia residencial (alíquota efetiva do SAMP)
+	measure 'ICMS efetivo 12m' =
+			CALCULATE (
+			    DIVIDE ( SUM ( 'Preço da energia'[icms_unit] ), SUM ( 'Preço da energia'[preco] ) ),
+			    'Energias'[energia] = "eletricidade",
+			    DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH )
+			)
+		formatString: 0.0%
+		displayFolder: Estados
+		lineageTag: f0c51b2e-a050-5306-b07b-236287f7ab89
+
+	/// Tarifa residencial mais bandeira, sem ICMS e PIS/Cofins, em R$/kWh
+	measure 'Tarifa sem tributos 12m' =
+			VAR _real = [_Real]
+			RETURN
+			    CALCULATE (
+			        AVERAGEX ( 'Preço da energia', 'Preço da energia'[preco_sem_tributos] * IF ( _real, RELATED ( 'Calendário'[fator_real] ), 1 ) ),
+			        'Energias'[energia] = "eletricidade",
+			        DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH )
+			    )
+		formatString: \R$ #,0.000
+		displayFolder: Estados
+		lineageTag: cd57cca3-55c2-51a9-acf7-dc3ce4e39f19
+
+	/// Meses em que a tarifa homologada faltava na base da ANEEL e entrou a tarifa média do SAMP
+	measure 'Meses com tarifa do SAMP' =
+			CALCULATE (
+			    COUNTROWS ( 'Preço da energia' ),
+			    'Energias'[energia] = "eletricidade",
+			    'Preço da energia'[tarifa_imputada] = TRUE ()
+			)
+		formatString: #,0
+		displayFolder: Estados
+		lineageTag: 94ee060f-068a-5dd8-bce3-e5e61a33df14
+
+	/// Meses em que a alíquota do SAMP era inválida ou faltava e veio do mês válido mais próximo
+	measure 'Meses com ICMS imputado' =
+			CALCULATE (
+			    COUNTROWS ( 'Preço da energia' ),
+			    'Energias'[energia] = "eletricidade",
+			    'Preço da energia'[icms_imputado] = TRUE ()
+			)
+		formatString: #,0
+		displayFolder: Estados
+		lineageTag: 48924421-7002-5800-af7f-99f618e9935b
+
+	measure 'Métrica escolhida' = SELECTEDVALUE ( 'Métrica do mapa'[Métrica do mapa], "Custo do elétrico (R$/100 km)" )
+		displayFolder: Estados
+		lineageTag: 42b03f4a-89e4-52f0-8ac6-82e1e79f9ddc
+
+	/// Valor da métrica escolhida, nos últimos 12 meses do período
+	measure 'Valor do mapa' =
+			SWITCH (
+			    [Métrica escolhida],
+			    "Custo da gasolina (R$/100 km)", [Custo gasolina 12m],
+			    "Economia do elétrico (R$/100 km)", [Economia 12m],
+			    "ICMS efetivo da eletricidade", [ICMS efetivo 12m],
+			    [Custo elétrico 12m]
+			)
+		formatString: 0.00
+		displayFolder: Estados
+		lineageTag: d7dd5a6b-94f7-5304-a8a9-7a24e15e778a
+
+	measure 'Km por ano escolhido' = SELECTEDVALUE ( 'Km por ano'[Km por ano], 12000 )
+		formatString: #,0
+		displayFolder: Simulador
+		lineageTag: 749674c9-0b0e-5d05-8c73-7763e8a84174
+
+	measure 'Recarga em casa escolhida' = SELECTEDVALUE ( 'Recarga em casa (%)'[Recarga em casa (%)], 80 ) / 100
+		formatString: 0%
+		displayFolder: Simulador
+		lineageTag: f2be9b33-ea50-5b31-92ca-dfd764ee9375
+
+	measure 'Tarifa em casa escolhida' = SELECTEDVALUE ( 'Tarifa em casa'[Tarifa em casa], "Convencional" )
+		displayFolder: Simulador
+		lineageTag: b81cdf6a-e9be-5260-b632-dc387bbb0b13
+
+	/// Hipótese de R$ 2,00/kWh quando nada é escolhido
+	measure 'Carregador escolhido' = SELECTEDVALUE ( 'Carregador público'[Carregador público (R$/kWh)], 2 )
+		formatString: \R$ #,0.00
+		displayFolder: Simulador
+		lineageTag: abe95fe0-c2da-5347-9598-ac46e6d935d5
+
+	measure 'Anos de uso escolhidos' = SELECTEDVALUE ( 'Anos de uso'[Anos de uso], 10 )
+		formatString: 0
+		displayFolder: Simulador
+		lineageTag: a677b82b-1142-58a3-9086-60e9754ee6c0
+
+	/// Valor escolhido na lista; sem escolha, o preço de tabela no site da montadora
+	measure 'Preço do carro a combustão' =
+			VAR _c = [_Carro combustão]
+			VAR _site = CALCULATE ( MAX ( 'Carros'[preco_tabela] ), REMOVEFILTERS ( 'Carros' ), 'Carros'[veiculo] = _c )
+			RETURN
+			    SELECTEDVALUE ( 'Preço do carro a combustão (R$)'[Preço do carro a combustão (R$)], _site )
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: b0979131-a931-549f-a318-ea7eed5a6a40
+
+	/// Valor escolhido na lista; sem escolha, o preço de tabela no site da montadora
+	measure 'Preço do carro elétrico' =
+			VAR _c = [_Carro elétrico]
+			VAR _site = CALCULATE ( MAX ( 'Carros'[preco_tabela] ), REMOVEFILTERS ( 'Carros' ), 'Carros'[veiculo] = _c )
+			RETURN
+			    SELECTEDVALUE ( 'Preço do carro elétrico (R$)'[Preço do carro elétrico (R$)], _site )
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: eb38e27a-5bc9-523c-a3d4-2b5e819dbeb3
+
+	measure 'Preço de site combustão' =
+			VAR _c = [_Carro combustão]
+			RETURN
+			    CALCULATE ( MAX ( 'Carros'[preco_tabela] ), REMOVEFILTERS ( 'Carros' ), 'Carros'[veiculo] = _c )
+		formatString: \R$ #,0
+		isHidden
+		displayFolder: Simulador
+		lineageTag: b87f8457-afe5-5922-a8e8-95ac980bc936
+
+	measure 'Preço de site elétrico' =
+			VAR _c = [_Carro elétrico]
+			RETURN
+			    CALCULATE ( MAX ( 'Carros'[preco_tabela] ), REMOVEFILTERS ( 'Carros' ), 'Carros'[veiculo] = _c )
+		formatString: \R$ #,0
+		isHidden
+		displayFolder: Simulador
+		lineageTag: 39dddb76-3b3d-5573-95ad-585b37f0c5ff
+
+	/// R$/km do carro a combustão com gasolina, média real dos últimos 12 meses
+	measure 'Gasolina por km (12m)' =
+			VAR _ch = [_Carro combustão] & "_gasolina"
+			RETURN
+			    CALCULATE (
+			        AVERAGE ( 'Custo por km'[custo_km_real] ),
+			        REMOVEFILTERS ( 'Veículos' ),
+			        'Veículos'[chave_veiculo] = _ch,
+			        DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH )
+			    )
+		formatString: \R$ #,0.000
+		displayFolder: Simulador
+		lineageTag: 78de3723-23a3-5441-ae90-b50c0c813b8c
+
+	/// Tarifa residencial convencional com tributos e bandeira, R$/kWh, média real de 12 meses
+	measure 'Tarifa convencional (12m)' =
+			CALCULATE (
+			    AVERAGEX ( 'Preço da energia', 'Preço da energia'[preco] * RELATED ( 'Calendário'[fator_real] ) ),
+			    'Energias'[energia] = "eletricidade",
+			    DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH )
+			)
+		formatString: \R$ #,0.000
+		displayFolder: Simulador
+		lineageTag: e6ba0627-efdd-50ec-a992-a6394555897e
+
+	/// Tarifa branca fora de ponta com tributos e bandeira, R$/kWh, média real de 12 meses
+	measure 'Tarifa branca fora de ponta (12m)' =
+			CALCULATE (
+			    AVERAGEX ( 'Preço da energia', 'Preço da energia'[tarifa_branca_fp_kwh] * RELATED ( 'Calendário'[fator_real] ) ),
+			    'Energias'[energia] = "eletricidade",
+			    DATESINPERIOD ( 'Calendário'[Mês], MAX ( 'Calendário'[Mês] ), -12, MONTH )
+			)
+		formatString: \R$ #,0.000
+		displayFolder: Simulador
+		lineageTag: d084be20-91ba-53f2-a9d4-8bafdacaf0b2
+
+	/// Tarifa usada para a recarga em casa; sem tarifa branca na UF, usa a convencional
+	measure 'Tarifa em casa (12m)' =
+			VAR _conv = [Tarifa convencional (12m)]
+			RETURN
+			    IF ( [Tarifa em casa escolhida] = "Convencional", _conv, COALESCE ( [Tarifa branca fora de ponta (12m)], _conv ) )
+		formatString: \R$ #,0.000
+		displayFolder: Simulador
+		lineageTag: e1f5b78f-6e92-5262-92bf-68ffa408986b
+
+	/// R$/km do elétrico misturando recarga em casa e no carregador público
+	measure 'Elétrico por km (12m)' =
+			VAR _p = [Recarga em casa escolhida]
+			VAR _cons = [_Consumo elétrico]
+			RETURN
+			    IF ( NOT ISBLANK ( _cons ), _cons * ( _p * [Tarifa em casa (12m)] + ( 1 - _p ) * [Carregador escolhido] ) )
+		formatString: \R$ #,0.000
+		displayFolder: Simulador
+		lineageTag: 217b688b-886e-5c09-a790-f46f30c5f428
+
+	measure 'Custo por ano combustão' = [Km por ano escolhido] * [Gasolina por km (12m)]
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: 9f766288-985c-517e-ac7e-3100220967c1
+
+	measure 'Custo por ano elétrico' = [Km por ano escolhido] * [Elétrico por km (12m)]
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: 2cf9a1c6-2363-5739-a6d4-04534140ce65
+
+	/// Quanto o elétrico economiza por ano em energia
+	measure 'Economia por ano' = [Custo por ano combustão] - [Custo por ano elétrico]
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: 6e84a445-1e03-5a69-bbb8-2394f8868013
+
+	/// Quanto o elétrico custa a mais na compra
+	measure 'Diferença na compra' = [Preço do carro elétrico] - [Preço do carro a combustão]
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: fee5aefa-e6e0-5858-83e9-4a49e8aba557
+
+	/// Anos até a economia em energia pagar a diferença na compra (0 se o elétrico já custa menos)
+	measure 'Anos para pagar' =
+			VAR _d = [Diferença na compra]
+			VAR _e = [Economia por ano]
+			RETURN
+			    SWITCH ( TRUE (), ISBLANK ( _d ), BLANK (), _d <= 0, 0, _e <= 0, BLANK (), DIVIDE ( _d, _e ) )
+		formatString: 0.0
+		displayFolder: Simulador
+		lineageTag: b5ac2cb5-e2d1-52ab-b36c-567129ad872d
+
+	/// Preço de compra mais a energia acumulada até o ano do eixo
+	measure 'Custo acumulado combustão' =
+			VAR _a = SELECTEDVALUE ( 'Ano de uso'[Ano de uso] )
+			VAR _p = [Preço do carro a combustão]
+			RETURN
+			    IF ( NOT ISBLANK ( _a ) && NOT ISBLANK ( _p ) && _a <= [Anos de uso escolhidos], _p + _a * [Custo por ano combustão] )
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: 5edb482c-4e2c-5aed-a471-a3398c2ca529
+
+	/// Preço de compra mais a energia acumulada até o ano do eixo
+	measure 'Custo acumulado elétrico' =
+			VAR _a = SELECTEDVALUE ( 'Ano de uso'[Ano de uso] )
+			VAR _p = [Preço do carro elétrico]
+			RETURN
+			    IF ( NOT ISBLANK ( _a ) && NOT ISBLANK ( _p ) && _a <= [Anos de uso escolhidos], _p + _a * [Custo por ano elétrico] )
+		formatString: \R$ #,0
+		displayFolder: Simulador
+		lineageTag: afcafa98-b9a7-5d78-8e0d-ce4ee1d33034
+
+	measure 'Rótulo combustão' = [_Nome combustão] & " (gasolina)"
+		isHidden
+		displayFolder: Simulador
+		lineageTag: bde4fd16-5286-5879-8e42-ae94c1d59cd3
+
+	measure 'Rótulo elétrico' = [_Nome elétrico]
+		isHidden
+		displayFolder: Simulador
+		lineageTag: 4f929ca0-02f0-5f18-aaeb-f47aaf77aae3
+
+	/// Linha de contexto abaixo do título
+	measure 'html Contexto' =
+			VAR _uf =
+			    IF (
+			        ISFILTERED ( 'Estados' ),
+			        IF (
+			            HASONEVALUE ( 'Estados'[UF] ),
+			            SELECTEDVALUE ( 'Estados'[Estado] ) & " (capital: " & SELECTEDVALUE ( 'Estados'[Capital] ) & ")",
+			            "média simples de " & COUNTROWS ( VALUES ( 'Estados'[UF] ) ) & " capitais"
+			        ),
+			        "Brasil: média simples das 27 capitais"
+			    )
+			VAR _val = IF ( [_Real], "valores em reais de " & FORMAT ( [_Último mês com dados], "mmm/yyyy" ), "valores nominais" )
+			VAR _tri = IF ( [_Com tributos], "com tributos", "sem os tributos separados" )
+			RETURN
+			    "<div class='ctx'><b>" & [_Comparação] & "</b><span>·</span>" & _uf & "<span>·</span>" & _val
+			        & "<span>·</span>" & _tri & "</div>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: d01a419f-2082-5de4-9056-59fa494d4522
+
+	/// Linha de contexto do simulador
+	measure 'html Contexto simulador' =
+			VAR _uf =
+			    IF (
+			        ISFILTERED ( 'Estados' ) && HASONEVALUE ( 'Estados'[UF] ),
+			        SELECTEDVALUE ( 'Estados'[Estado] ),
+			        "Brasil (média das 27 capitais)"
+			    )
+			VAR _f = MAX ( 'Calendário'[Mês] )
+			RETURN
+			    "<div class='ctx'><b>" & [_Comparação] & "</b><span>·</span>" & _uf
+			        & "<span>·</span>energia com o preço médio de " & FORMAT ( EDATE ( _f, -11 ), "mmm/yyyy" ) & " a "
+			        & FORMAT ( _f, "mmm/yyyy" ) & ", em reais de " & FORMAT ( [_Último mês com dados], "mmm/yyyy" )
+			        & ", com tributos</div>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: c8682c99-95e5-5ecb-ae59-abd24fd1a1fa
+
+	/// Cartões do último mês do período (página Visão geral)
+	measure 'html KPIs' =
+			VAR _f = MAX ( 'Calendário'[Mês] )
+			VAR _el = CALCULATE ( [Custo elétrico], 'Calendário'[Mês] = _f )
+			VAR _ga = CALCULATE ( [Custo gasolina], 'Calendário'[Mês] = _f )
+			VAR _et = CALCULATE ( [Custo etanol], 'Calendário'[Mês] = _f )
+			VAR _pel = CALCULATE ( [Preço eletricidade], 'Calendário'[Mês] = _f )
+			VAR _pga = CALCULATE ( [Preço gasolina], 'Calendário'[Mês] = _f )
+			VAR _pet = CALCULATE ( [Preço etanol], 'Calendário'[Mês] = _f )
+			VAR _hel = CALCULATE ( [Horas de SM elétrico], 'Calendário'[Mês] = _f )
+			VAR _hga = CALCULATE ( [Horas de SM gasolina], 'Calendário'[Mês] = _f )
+			RETURN
+			    IF (
+			        ISBLANK ( _el ) && ISBLANK ( _ga ),
+			        "<div class='vazio'>Sem dados para o período e os filtros escolhidos.</div>",
+			        "<div class='cab'>Custo para rodar 100 km em " & FORMAT ( _f, "mmmm \d\e yyyy" ) & ", último mês do período</div><div class='kpis'>"
+			            & "<div class='card el'><div class='rot'>" & "Elétrico · " & [_Nome elétrico] & "</div><div class='val'>" & FORMAT ( _el, "R$ #,0.00" ) & "</div><div class='sub'>" & "eletricidade a " & FORMAT ( _pel, "R$ #,0.00" ) & " por kWh" & "</div></div>"
+			            & "<div class='card'><div class='rot'>" & "Gasolina · " & [_Nome combustão] & "</div><div class='val'>" & FORMAT ( _ga, "R$ #,0.00" ) & "</div><div class='sub'>" & "gasolina a " & FORMAT ( _pga, "R$ #,0.00" ) & " por litro" & "</div></div>"
+			            & "<div class='card'><div class='rot'>" & "Etanol · " & [_Nome combustão] & "</div><div class='val'>" & FORMAT ( _et, "R$ #,0.00" ) & "</div><div class='sub'>" & "etanol a " & FORMAT ( _pet, "R$ #,0.00" ) & " por litro" & "</div></div>"
+			            & "<div class='card'><div class='rot'>" & "Vantagem do elétrico" & "</div><div class='val'>" & FORMAT ( DIVIDE ( _ga, _el ), "0.0" ) & "<span class='un'> vezes</span>" & "</div><div class='sub'>" & "mais barato que a gasolina: " & FORMAT ( _ga - _el, "R$ #,0.00" ) & " a menos a cada 100 km" & "</div></div>"
+			            & "<div class='card'><div class='rot'>" & "Horas de salário mínimo" & "</div><div class='val'>" & FORMAT ( _hel, "0.0" ) & "<span class='un'> h</span> <span class='vs'>×</span> " & FORMAT ( _hga, "0.0" ) & "<span class='un'> h</span>" & "</div><div class='sub'>" & "de trabalho para pagar 100 km: elétrico × gasolina" & "</div></div>"
+			            & "</div>"
+			    )
+		isHidden
+		displayFolder: Visual
+		lineageTag: 44e584e2-51aa-5544-bc53-53d44926e4e7
+
+	/// Tabela dos marcos legais (página Impostos)
+	measure 'html Marcos' = "<div class='tit'>Marcos legais</div><table><tr><th>Quando</th><th>O que mudou</th><th>Norma</th></tr><tr><td>25/06/2012</td><td>CIDE da gasolina vai a zero</td><td>Decreto 7.764/2012</td></tr><tr><td>01/05/2015</td><td>CIDE volta (R$ 0,10/l) e PIS/Cofins da gasolina sobe para R$ 0,38/l</td><td>Decreto 8.395/2015</td></tr><tr><td>21/07/2017</td><td>PIS/Cofins da gasolina vai a R$ 0,79/l</td><td>Decreto 9.101/2017</td></tr><tr><td>set./2021</td><td>Bandeira Escassez Hídrica: R$ 0,142 a mais por kWh, até abr./2022</td><td>ANEEL, bandeiras tarifárias</td></tr><tr><td>23/06/2022</td><td>Combustível e energia viram bens essenciais (ICMS no teto da alíquota geral); PIS/Cofins e CIDE zerados até dez./2022</td><td>LC 194/2022</td></tr><tr><td>01/03/2023</td><td>PIS/Cofins da gasolina volta em parte (R$ 0,47/l)</td><td>MP 1.163/2023</td></tr><tr><td>01/06/2023</td><td>ICMS da gasolina passa a ser um valor por litro, igual no país (R$ 1,22)</td><td>LC 192/2022; Convênio ICMS 15/2023</td></tr><tr><td>29/06/2023</td><td>PIS/Cofins da gasolina volta a R$ 0,79/l</td><td>fim da MP 1.163/2023</td></tr><tr><td>01/01/2026</td><td>ICMS por litro da gasolina chega a R$ 1,57</td><td>Convênio ICMS 112/2025</td></tr></table><div class='aviso'>Na gasolina até mai./2023 e no etanol em toda a série, o ICMS estadual fica dentro da parcela sem tributos federais: o painel separa só os tributos nacionais e o ICMS por litro, que vale igual em todo o país.</div>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: 53d0fa0a-4853-5b21-9585-798af043efb4
+
+	/// Destaques da página Estados
+	measure 'html Destaques estados' =
+			VAR _t =
+			    FILTER (
+			        ADDCOLUMNS ( VALUES ( 'Estados'[UF] ), "@el", [Custo elétrico 12m], "@ec", [Economia 12m], "@ic", [ICMS efetivo 12m] ),
+			        NOT ISBLANK ( [@el] )
+			    )
+			VAR _bar = TOPN ( 1, _t, [@el], ASC )
+			VAR _car = TOPN ( 1, _t, [@el], DESC )
+			VAR _eco = TOPN ( 1, _t, [@ec], DESC )
+			VAR _icm = TOPN ( 1, _t, [@ic], DESC )
+			VAR _f = MAX ( 'Calendário'[Mês] )
+			RETURN
+			    IF (
+			        COUNTROWS ( _t ) = 0,
+			        "<div class='vazio'>Sem dados para o período escolhido.</div>",
+			        "<div class='tit'>Destaques · 12 meses até " & FORMAT ( _f, "mmm/yyyy" ) & "</div><ul>"
+			            & "<li>Elétrico mais barato de rodar: <b>" & MAXX ( _bar, 'Estados'[UF] ) & "</b>, "
+			            & FORMAT ( MAXX ( _bar, [@el] ), "R$ #,0.00" ) & " por 100 km.</li>"
+			            & "<li>Mais caro: <b>" & MAXX ( _car, 'Estados'[UF] ) & "</b>, "
+			            & FORMAT ( MAXX ( _car, [@el] ), "R$ #,0.00" ) & " por 100 km.</li>"
+			            & "<li>Maior economia contra a gasolina: <b>" & MAXX ( _eco, 'Estados'[UF] ) & "</b>, "
+			            & FORMAT ( MAXX ( _eco, [@ec] ), "R$ #,0.00" ) & " por 100 km.</li>"
+			            & "<li>Maior ICMS na conta de luz: <b>" & MAXX ( _icm, 'Estados'[UF] ) & "</b>, "
+			            & FORMAT ( MAXX ( _icm, [@ic] ), "0.0%" ) & " do preço.</li>"
+			            & "</ul><div class='nota'>Tarifa da distribuidora da capital. A dica do mapa mostra os meses com tarifa "
+			            & "ou ICMS preenchidos.</div>"
+			    )
+		isHidden
+		displayFolder: Visual
+		lineageTag: 1ad11c50-12a6-5ef4-a6d1-8e282c13843b
+
+	/// Resultado do simulador
+	measure 'html Simulador resultado' =
+			VAR _pc = [Preço do carro a combustão]
+			VAR _pe = [Preço do carro elétrico]
+			VAR _gk = [Gasolina por km (12m)]
+			VAR _ek = [Elétrico por km (12m)]
+			VAR _eco = [Economia por ano]
+			VAR _dif = [Diferença na compra]
+			VAR _anos = [Anos para pagar]
+			VAR _n = [Anos de uso escolhidos]
+			VAR _sem_preco = ISBLANK ( _pe ) || ISBLANK ( _pc )
+			VAR _saldo = _n * _eco - _dif
+			VAR _pay =
+			    SWITCH (
+			        TRUE (),
+			        _sem_preco, "<div class='val'>—</div><div class='sub'>escolha o preço do carro na lista</div>",
+			        _dif <= 0, "<div class='val'>Na compra</div><div class='sub'>o elétrico já custa menos</div>",
+			        ISBLANK ( _anos ), "<div class='val'>Não paga</div><div class='sub'>a energia do elétrico sai mais cara</div>",
+			        "<div class='val'>" & FORMAT ( _anos, "0.0" ) & "<span class='un'> anos</span></div><div class='sub'>"
+			            & IF ( _anos <= _n, "dentro dos " & _n & " anos de uso", "depois dos " & _n & " anos de uso" ) & "</div>"
+			    )
+			RETURN
+			    "<div class='kpis'>"
+			        & "<div class='card'><div class='rot'>" & "Energia por km" & "</div><div class='val'>" & FORMAT ( _ek, "R$ #,0.00" ) & "<span class='vs'> × </span>" & FORMAT ( _gk, "R$ #,0.00" ) & "</div><div class='sub'>" & [_Nome elétrico] & " × " & [_Nome combustão] & " a gasolina" & "</div></div>"
+			        & "<div class='card'><div class='rot'>" & "Economia por ano" & "</div><div class='val'>" & FORMAT ( _eco, "R$ #,0" ) & "</div><div class='sub'>" & "com " & FORMAT ( [Km por ano escolhido], "#,0" ) & " km por ano" & "</div></div>"
+			        & "<div class='card'><div class='rot'>" & "Diferença na compra" & "</div><div class='val'>" & IF ( _sem_preco, "—", FORMAT ( _dif, "R$ #,0" ) ) & "</div><div class='sub'>" & IF ( _sem_preco, "sem preço de site para o " & [_Nome elétrico], FORMAT ( _pe, "R$ #,0" ) & " − " & FORMAT ( _pc, "R$ #,0" ) ) & "</div></div>"
+			        & "<div class='card el'><div class='rot'>Paga a diferença em</div>" & _pay & "</div>"
+			        & "<div class='card'><div class='rot'>" & "Saldo em " & _n & " anos" & "</div><div class='val'>" & IF ( _sem_preco, "—", FORMAT ( ABS ( _saldo ), "R$ #,0" ) ) & "</div><div class='sub'>" & IF ( _sem_preco, "", IF ( _saldo >= 0, "a favor do elétrico", "a favor do carro a combustão" ) ) & "</div></div>"
+			        & "</div>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: cc640e49-e037-58a5-9ba5-47ccf969f438
+
+	/// Notas do simulador
+	measure 'html Simulador notas' =
+			VAR _pc = [Preço de site combustão]
+			VAR _pe = [Preço de site elétrico]
+			VAR _data = FORMAT ( CALCULATE ( MAX ( 'Carros'[data_consulta] ), REMOVEFILTERS ( 'Carros' ) ), "dd/mm/yyyy" )
+			RETURN
+			    "<div class='tit'>Preço dos carros</div><p>Sem escolha nas listas acima, vale o preço de tabela no site da montadora em "
+			        & _data & ": <b>" & [_Nome combustão] & "</b>, " & IF ( ISBLANK ( _pc ), "sem preço", FORMAT ( _pc, "R$ #,0" ) )
+			        & ", e <b>" & [_Nome elétrico] & "</b>, "
+			        & IF ( ISBLANK ( _pe ), "fora de linha, sem preço no site", FORMAT ( _pe, "R$ #,0" ) ) & ".</p>"
+			        & "<div class='tit'>Hipóteses</div><ul><li>Carregador público a R$ 2,00/kWh quando nada é escolhido; não há "
+			        & "base oficial desse preço.</li><li>O carro a combustão roda com gasolina.</li><li>Energia e gasolina com o "
+			        & "preço médio real dos últimos 12 meses, sem projeção de reajuste.</li><li>Tarifa branca: só o horário fora de "
+			        & "ponta; onde ela falta, vale a convencional.</li></ul>"
+			        & "<div class='tit'>Fica fora da conta</div><p>Manutenção, seguro, IPVA, depreciação, troca de bateria e juros "
+			        & "do financiamento.</p>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: 7b453a3e-0d9c-51da-a52e-88c7d1935b7b
+
+	/// Texto da página Método e fontes
+	measure 'html Método' = "<div class='tit'>A pergunta</div><p>Quanto custa rodar 100 km com um carro popular elétrico e com um a combustão, quanto disso é imposto e em quantos anos a diferença na compra se paga.</p><div class='tit'>Fontes</div><ul><li><b>Preço da gasolina e do etanol</b>: <a href='https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/serie-historica-do-levantamento-de-precos' target='_blank'>ANP, série histórica do levantamento de preços (média mensal por estado)</a></li><li><b>Tarifa residencial</b>: <a href='https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica' target='_blank'>ANEEL, tarifas homologadas das distribuidoras</a></li><li><b>Bandeiras</b>: <a href='https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias' target='_blank'>ANEEL, acionamento das bandeiras tarifárias</a></li><li><b>ICMS e PIS/Cofins da energia</b>: <a href='https://dadosabertos.aneel.gov.br/dataset/samp' target='_blank'>ANEEL, SAMP (receitas e tributos faturados por distribuidora)</a></li><li><b>IPCA e salário mínimo</b>: <a href='https://www3.bcb.gov.br/sgspub' target='_blank'>Banco Central, séries 433 e 1619 do SGS</a></li><li><b>Consumo dos carros</b>: <a href='https://www.gov.br/inmetro/pt-br/assuntos/regulamentacao/avaliacao-da-conformidade/programa-brasileiro-de-etiquetagem/tabelas-de-eficiencia-energetica/veiculos-automotivos-pbe-veicular' target='_blank'>Inmetro, PBE Veicular 2026 (Polo Track: tabela de 2025)</a></li><li><b>Tributos da gasolina e do etanol</b>: Leis, decretos e convênios do Confaz, um por período</li><li><b>Preço dos carros</b>: Sites oficiais da Renault, da Volkswagen e da BYD, consultados em 14/11/2026</li></ul><div class='tit'>Regras de cálculo</div><ul><li>Custo por km = preço da energia × consumo do carro no PBE Veicular. O carro de 2026 é aplicado aos preços de cada mês desde jan./2012.</li><li>Eletricidade: tarifa residencial B1 convencional da distribuidora da capital, vigente no dia 15, mais a bandeira do mês. ICMS e PIS/Cofins entram por dentro: preço = base ÷ (1 − ICMS − PIS/Cofins), com a alíquota efetiva que a distribuidora faturou na classe residencial (SAMP).</li><li>Mês sem tarifa homologada na base da ANEEL usa a tarifa média faturada do SAMP; mês com alíquota inválida usa a do mês válido mais próximo. A contagem por UF está ao lado.</li><li>Gasolina: PIS/Cofins e CIDE por litro de gasolina A, vezes a parte de gasolina A na gasolina C (80 % em 2012, 68 % desde ago./2026). ICMS por litro a partir de jun./2023.</li><li>Brasil = média simples das 27 capitais. Valor real = corrigido pelo IPCA até o último mês com todos os dados. Horas de salário mínimo = custo de 100 km ÷ (salário mínimo ÷ 220 h).</li></ul><div class='tit'>O que ficou fora</div><ul><li>O ICMS estadual em percentual da gasolina (até mai./2023) e do etanol: a alíquota e a base de cálculo mudam por estado e por período, sem uma série oficial única.</li><li>Preços fora das capitais, tarifa social, GNV e diesel.</li><li>No simulador: manutenção, seguro, IPVA, depreciação e bateria.</li></ul>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: 0686b9b1-5555-5c35-bbff-6d73d6e4bf7d
+
+	/// Tabela de meses imputados por UF (página Método)
+	measure 'html Imputados' =
+			VAR _linhas =
+			    CONCATENATEX (
+			        SUMMARIZE ( 'Estados', 'Estados'[UF], 'Estados'[Distribuidora] ),
+			        VAR _t = [Meses com tarifa do SAMP]
+			        VAR _i = [Meses com ICMS imputado]
+			        RETURN
+			            "<tr><td>" & 'Estados'[UF] & "</td><td>" & 'Estados'[Distribuidora]
+			                & "</td><td class='n'>" & FORMAT ( COALESCE ( _t, 0 ), "0" ) & "</td><td class='n'>"
+			                & FORMAT ( COALESCE ( _i, 0 ), "0" ) & "</td></tr>",
+			        "",
+			        'Estados'[UF], ASC
+			    )
+			VAR _n = COUNTROWS ( VALUES ( 'Calendário'[Mês] ) )
+			RETURN
+			    "<div class='tit'>Meses preenchidos, por UF</div><p>Total de " & _n & " meses por UF. Tarifa do SAMP: a "
+			        & "tarifa homologada faltava na base da ANEEL. ICMS imputado: a alíquota do mês era inválida ou faltava.</p>"
+			        & "<table><tr><th>UF</th><th>Distribuidora</th><th class='n'>Tarifa do SAMP</th><th class='n'>ICMS imputado</th></tr>"
+			        & _linhas & "</table>"
+		isHidden
+		displayFolder: Visual
+		lineageTag: 5d072e65-53be-5d02-a4e7-ff2e08ca909f
+
+	column _
+		dataType: string
+		isHidden
+		lineageTag: 0afa58f9-9c60-548a-8d69-c7bb2032737c
+		summarizeBy: none
+		sourceColumn: _
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"_" = type text], {})
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

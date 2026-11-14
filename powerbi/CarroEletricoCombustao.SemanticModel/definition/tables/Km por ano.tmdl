@@ -1,0 +1,20 @@
+/// Quilômetros rodados por ano no simulador
+table 'Km por ano'
+	lineageTag: 5d973f5b-f1d1-57ee-a08f-cd1cff62ad2b
+
+	column 'Km por ano'
+		dataType: int64
+		formatString: #,0
+		lineageTag: d5ba775a-bef9-5231-be32-9207f0edd52f
+		summarizeBy: none
+		sourceColumn: Km por ano
+
+	partition 'Km por ano' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"Km por ano" = Int64.Type], List.Transform(List.Numbers(4000, 14, 2000), each {_}))
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

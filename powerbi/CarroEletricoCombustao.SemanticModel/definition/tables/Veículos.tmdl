@@ -1,0 +1,78 @@
+/// Carro e energia, com o consumo do PBE Veicular do Inmetro (gold/dim_veiculo)
+table 'Veículos'
+	lineageTag: 8a2757b0-40c6-52db-8e76-76f4b31fed10
+
+	column chave_veiculo
+		dataType: string
+		isKey
+		isHidden
+		lineageTag: fff2a5f5-eace-5e3b-8ef9-c63b1c48909f
+		summarizeBy: none
+		sourceColumn: chave_veiculo
+
+	column veiculo
+		dataType: string
+		isHidden
+		lineageTag: 21fb9c86-e71e-5f97-824b-0f26703d2765
+		summarizeBy: none
+		sourceColumn: veiculo
+
+	column energia
+		dataType: string
+		isHidden
+		lineageTag: 8835a88d-070c-5447-b08d-a1af369bafbe
+		summarizeBy: none
+		sourceColumn: energia
+
+	column Modelo
+		dataType: string
+		lineageTag: 10d59681-78a0-52fb-bf08-2bc4bd999ecf
+		summarizeBy: none
+		sourceColumn: Modelo
+
+	column 'Versão'
+		dataType: string
+		lineageTag: 73839e50-5273-511f-aeb5-cbe0ae35cff6
+		summarizeBy: none
+		sourceColumn: Versão
+
+	column consumo_por_km
+		dataType: double
+		isHidden
+		lineageTag: a4b1c34f-9361-5d30-8f9f-ea3f8e2240fe
+		summarizeBy: none
+		sourceColumn: consumo_por_km
+
+	column unidade
+		dataType: string
+		isHidden
+		lineageTag: 45b80314-076a-5b42-b1a4-1a31e66a9089
+		summarizeBy: none
+		sourceColumn: unidade
+
+	column co2_escapamento_g_km
+		dataType: int64
+		isHidden
+		lineageTag: 4626ea78-4b76-5bce-a1f0-b6d757a52b0b
+		summarizeBy: none
+		sourceColumn: co2_escapamento_g_km
+
+	column ano_pbe
+		dataType: int64
+		isHidden
+		lineageTag: 96081d92-6a50-5642-b37f-fb3d7e1756b2
+		summarizeBy: none
+		sourceColumn: ano_pbe
+
+	partition 'Veículos' = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_veiculo.parquet")),
+				    Colunas = Table.SelectColumns(Fonte, {"chave_veiculo", "veiculo", "energia", "modelo", "versao", "consumo_por_km", "unidade", "co2_escapamento_g_km", "ano_pbe"}),
+				    Nomes = Table.RenameColumns(Colunas, {{"modelo", "Modelo"}, {"versao", "Versão"}}),
+				    Tipos = Table.TransformColumnTypes(Nomes, {{"chave_veiculo", type text}, {"veiculo", type text}, {"energia", type text}, {"Modelo", type text}, {"Versão", type text}, {"consumo_por_km", type number}, {"unidade", type text}, {"co2_escapamento_g_km", Int64.Type}, {"ano_pbe", Int64.Type}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

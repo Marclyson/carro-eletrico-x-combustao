@@ -1,0 +1,20 @@
+/// Preço de compra escolhido
+table 'Preço do carro a combustão (R$)'
+	lineageTag: 989ac5a5-b52e-5d97-9a68-52d3e5d78fd0
+
+	column 'Preço do carro a combustão (R$)'
+		dataType: int64
+		formatString: #,0
+		lineageTag: 31a7b9cd-d516-5c28-98b9-a9706d49988b
+		summarizeBy: none
+		sourceColumn: Preço do carro a combustão (R$)
+
+	partition 'Preço do carro a combustão (R$)' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"Preço do carro a combustão (R$)" = Int64.Type], List.Transform(List.Numbers(50000, 61, 2500), each {_}))
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

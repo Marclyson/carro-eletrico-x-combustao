@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "tour_vg",
+      "displayName": "Tour – Visão geral",
+      "children": [
+        "tour_vg_off",
+        "tour_vg_1",
+        "tour_vg_2",
+        "tour_vg_3",
+        "tour_vg_4"
+      ]
+    },
+    {
+      "name": "tour_im",
+      "displayName": "Tour – Impostos",
+      "children": [
+        "tour_im_off",
+        "tour_im_1",
+        "tour_im_2",
+        "tour_im_3",
+        "tour_im_4"
+      ]
+    },
+    {
+      "name": "tour_es",
+      "displayName": "Tour – Estados",
+      "children": [
+        "tour_es_off",
+        "tour_es_1",
+        "tour_es_2",
+        "tour_es_3",
+        "tour_es_4",
+        "tour_es_5"
+      ]
+    },
+    {
+      "name": "tour_si",
+      "displayName": "Tour – Simulador",
+      "children": [
+        "tour_si_off",
+        "tour_si_1",
+        "tour_si_2",
+        "tour_si_3",
+        "tour_si_4",
+        "tour_si_5"
+      ]
+    },
+    {
+      "name": "tour_me",
+      "displayName": "Tour – Método e fontes",
+      "children": [
+        "tour_me_off",
+        "tour_me_1",
+        "tour_me_2"
+      ]
+    }
+  ]
+}

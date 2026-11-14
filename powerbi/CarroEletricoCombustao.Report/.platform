@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "CarroEletricoCombustao"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "00f7b0f5-3997-52d1-a7f8-da81f0b8e0ac"
+  }
+}

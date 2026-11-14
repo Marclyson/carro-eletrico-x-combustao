@@ -1,0 +1,102 @@
+/// Custo por km de cada carro e energia, por mês e UF (gold/fato_custo_km_mensal)
+table 'Custo por km'
+	lineageTag: 69f3c40f-2399-5846-a84f-4158d97d7b47
+
+	column mes
+		dataType: dateTime
+		isHidden
+		formatString: mmm/yyyy
+		lineageTag: 52bf5e49-5263-59f6-b5d8-2493a40d7480
+		summarizeBy: none
+		sourceColumn: mes
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column uf
+		dataType: string
+		isHidden
+		lineageTag: 4666f507-bbe9-515b-b8bf-60665c2d831c
+		summarizeBy: none
+		sourceColumn: uf
+
+	column chave_veiculo
+		dataType: string
+		isHidden
+		lineageTag: 28d7b836-fb46-5f5b-bd72-4978b1f587ed
+		summarizeBy: none
+		sourceColumn: chave_veiculo
+
+	column veiculo
+		dataType: string
+		isHidden
+		lineageTag: 1a9e5a9c-055c-5152-909b-f475f73ca7a7
+		summarizeBy: none
+		sourceColumn: veiculo
+
+	column energia
+		dataType: string
+		isHidden
+		lineageTag: 1db18a17-3d54-55ac-9fa6-a76076acf6a8
+		summarizeBy: none
+		sourceColumn: energia
+
+	column custo_km
+		dataType: double
+		isHidden
+		lineageTag: 86a8658a-d816-5a8b-a70e-cd5965556eba
+		summarizeBy: none
+		sourceColumn: custo_km
+
+	column custo_km_real
+		dataType: double
+		isHidden
+		lineageTag: ad6dc400-4e06-52c7-87bd-88309ad31013
+		summarizeBy: none
+		sourceColumn: custo_km_real
+
+	column custo_km_sem_tributos_real
+		dataType: double
+		isHidden
+		lineageTag: d9c79df1-91d9-526e-b521-e760ef489e6a
+		summarizeBy: none
+		sourceColumn: custo_km_sem_tributos_real
+
+	column horas_sm_100km
+		dataType: double
+		isHidden
+		lineageTag: f980eb72-2ee3-522f-96c7-d28a60842986
+		summarizeBy: none
+		sourceColumn: horas_sm_100km
+
+	column co2_g_km
+		dataType: double
+		isHidden
+		lineageTag: bd2b94ef-14c6-5fc3-8f83-eef124cb49c8
+		summarizeBy: none
+		sourceColumn: co2_g_km
+
+	column icms_imputado
+		dataType: boolean
+		isHidden
+		lineageTag: 84d5f5f1-4a69-5a1c-a7f2-4719f51a2854
+		summarizeBy: none
+		sourceColumn: icms_imputado
+
+	column tarifa_imputada
+		dataType: boolean
+		isHidden
+		lineageTag: 40fc21ce-cd74-5b7f-8828-0cb90c8f5a10
+		summarizeBy: none
+		sourceColumn: tarifa_imputada
+
+	partition 'Custo por km' = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "fato_custo_km_mensal.parquet")),
+				    Colunas = Table.SelectColumns(Fonte, {"mes", "uf", "chave_veiculo", "veiculo", "energia", "custo_km", "custo_km_real", "custo_km_sem_tributos_real", "horas_sm_100km", "co2_g_km", "icms_imputado", "tarifa_imputada"}),
+				    Tipos = Table.TransformColumnTypes(Colunas, {{"mes", type date}, {"uf", type text}, {"chave_veiculo", type text}, {"veiculo", type text}, {"energia", type text}, {"custo_km", type number}, {"custo_km_real", type number}, {"custo_km_sem_tributos_real", type number}, {"horas_sm_100km", type number}, {"co2_g_km", type number}, {"icms_imputado", type logical}, {"tarifa_imputada", type logical}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

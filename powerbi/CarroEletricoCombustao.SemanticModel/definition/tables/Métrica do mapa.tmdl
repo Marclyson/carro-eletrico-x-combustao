@@ -1,0 +1,34 @@
+/// O que o mapa e o ranking de estados mostram
+table 'Métrica do mapa'
+	lineageTag: 39555dcd-f639-5ec7-aaaa-e45078688b7d
+
+	column 'Métrica do mapa'
+		dataType: string
+		lineageTag: 2653d1ee-d695-51d5-b492-1dee42847699
+		summarizeBy: none
+		sourceColumn: Métrica do mapa
+		sortByColumn: ordem
+
+	column ordem
+		dataType: int64
+		isHidden
+		lineageTag: f247afb8-981d-542a-bf1c-d979aec29c06
+		summarizeBy: none
+		sourceColumn: ordem
+
+	partition 'Métrica do mapa' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(
+				        type table [#"Métrica do mapa" = type text, #"ordem" = Int64.Type],
+				        {
+				        {"Custo do elétrico (R$/100 km)", 1},
+				        {"Custo da gasolina (R$/100 km)", 2},
+				        {"Economia do elétrico (R$/100 km)", 3},
+				        {"ICMS efetivo da eletricidade", 4}
+				        })
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

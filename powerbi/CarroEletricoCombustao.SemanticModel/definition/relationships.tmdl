@@ -1,0 +1,24 @@
+relationship 26620d4b-3e08-52f7-8749-65afab3124f2
+	fromColumn: 'Custo por km'.mes
+	toColumn: 'Calendário'.'Mês'
+
+relationship 820f13a1-4b97-5457-9083-55d2bc3b4085
+	fromColumn: 'Custo por km'.uf
+	toColumn: Estados.UF
+
+relationship 2808ba9c-c4f0-5741-8471-f55c4371ba93
+	fromColumn: 'Custo por km'.chave_veiculo
+	toColumn: 'Veículos'.chave_veiculo
+
+relationship dc9bc856-00e6-5a7f-bd1f-07e5b594b06a
+	fromColumn: 'Preço da energia'.mes
+	toColumn: 'Calendário'.'Mês'
+
+relationship ac15ffaf-454e-5061-9266-d20ee3bb3ee2
+	fromColumn: 'Preço da energia'.uf
+	toColumn: Estados.UF
+
+relationship a49c6236-59c9-58b7-91b4-a4061c061007
+	fromColumn: 'Preço da energia'.energia
+	toColumn: Energias.energia
+

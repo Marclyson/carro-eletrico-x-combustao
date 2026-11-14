@@ -1,0 +1,109 @@
+/// Preço por litro ou kWh, com os tributos separados (gold/preco_energia_mensal)
+table 'Preço da energia'
+	lineageTag: 155d3225-bb03-53b9-bf80-b3f95ca65093
+
+	column mes
+		dataType: dateTime
+		isHidden
+		formatString: mmm/yyyy
+		lineageTag: 57f4a922-3a3e-5dc8-8014-d3138cf1b299
+		summarizeBy: none
+		sourceColumn: mes
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column uf
+		dataType: string
+		isHidden
+		lineageTag: 49716e88-60a1-5f85-be27-b321ba57ef4e
+		summarizeBy: none
+		sourceColumn: uf
+
+	column energia
+		dataType: string
+		isHidden
+		lineageTag: fc60ef32-8199-5ddc-85ca-98463f9088a7
+		summarizeBy: none
+		sourceColumn: energia
+
+	column preco
+		dataType: double
+		isHidden
+		lineageTag: 71378d22-abaa-5436-8c3e-6f52f10c43ff
+		summarizeBy: none
+		sourceColumn: preco
+
+	column unidade
+		dataType: string
+		isHidden
+		lineageTag: 20912deb-10e2-5cb9-81c9-b22e9f507770
+		summarizeBy: none
+		sourceColumn: unidade
+
+	column icms_unit
+		dataType: double
+		isHidden
+		lineageTag: 4e3dfbe4-16d7-5433-8fd2-c2c64af402a3
+		summarizeBy: none
+		sourceColumn: icms_unit
+
+	column pis_cofins_unit
+		dataType: double
+		isHidden
+		lineageTag: 916212e4-90f1-5092-b3b4-877dc66e3888
+		summarizeBy: none
+		sourceColumn: pis_cofins_unit
+
+	column cide_unit
+		dataType: double
+		isHidden
+		lineageTag: b8513e9f-879c-5672-a85b-40dcdfab0968
+		summarizeBy: none
+		sourceColumn: cide_unit
+
+	column preco_sem_tributos
+		dataType: double
+		isHidden
+		lineageTag: b156a02b-a98d-5aa5-b0d9-ccb6ed69fca3
+		summarizeBy: none
+		sourceColumn: preco_sem_tributos
+
+	column icms_imputado
+		dataType: boolean
+		isHidden
+		lineageTag: fd405c05-222a-5829-abec-b6b11bf06cc9
+		summarizeBy: none
+		sourceColumn: icms_imputado
+
+	column tarifa_imputada
+		dataType: boolean
+		isHidden
+		lineageTag: ec87ddbc-39e4-54d6-8d09-754c90df2204
+		summarizeBy: none
+		sourceColumn: tarifa_imputada
+
+	column bandeira_kwh
+		dataType: double
+		isHidden
+		lineageTag: 16cd5fa3-7ff2-52c5-a52e-4b6049b61600
+		summarizeBy: none
+		sourceColumn: bandeira_kwh
+
+	column tarifa_branca_fp_kwh
+		dataType: double
+		isHidden
+		lineageTag: e632881f-dcd4-5364-9e7e-7a5e68db11eb
+		summarizeBy: none
+		sourceColumn: tarifa_branca_fp_kwh
+
+	partition 'Preço da energia' = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "preco_energia_mensal.parquet")),
+				    Colunas = Table.SelectColumns(Fonte, {"mes", "uf", "energia", "preco", "unidade", "icms_unit", "pis_cofins_unit", "cide_unit", "preco_sem_tributos", "icms_imputado", "tarifa_imputada", "bandeira_kwh", "tarifa_branca_fp_kwh"}),
+				    Tipos = Table.TransformColumnTypes(Colunas, {{"mes", type date}, {"uf", type text}, {"energia", type text}, {"preco", type number}, {"unidade", type text}, {"icms_unit", type number}, {"pis_cofins_unit", type number}, {"cide_unit", type number}, {"preco_sem_tributos", type number}, {"icms_imputado", type logical}, {"tarifa_imputada", type logical}, {"bandeira_kwh", type number}, {"tarifa_branca_fp_kwh", type number}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

@@ -1,3 +1,11 @@
 [tool.ruff]
 line-length = 110
 target-version = "py312"
+# Copiados sem mudança de estilo da skill dome-powerbi-architect (Dome IA); o código do painel é o resto de scripts/pbip.
+extend-exclude = [
+    "scripts/pbip/acessibilidade_pbir.py",
+    "scripts/pbip/gerar_tour_pbir.py",
+    "scripts/pbip/interatividade_pbir.py",
+    "scripts/pbip/layout_celular_pbir.py",
+    "scripts/pbip/validar_pbip.py",
+]

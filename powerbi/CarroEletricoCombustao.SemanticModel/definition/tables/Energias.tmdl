@@ -1,0 +1,41 @@
+/// Gasolina, etanol e eletricidade
+table Energias
+	lineageTag: cb3469b7-f126-5594-9ed4-099a3d09cc99
+
+	column energia
+		dataType: string
+		isKey
+		isHidden
+		lineageTag: 2fafae30-24c0-5452-81c3-8ebb49a44cb3
+		summarizeBy: none
+		sourceColumn: energia
+
+	column Energia
+		dataType: string
+		lineageTag: 6bd8af4b-7504-5213-b40d-b79926fcb4b6
+		summarizeBy: none
+		sourceColumn: Energia
+		sortByColumn: ordem
+
+	column ordem
+		dataType: int64
+		isHidden
+		lineageTag: 3acaab12-5e84-510c-a881-10757e6471f0
+		summarizeBy: none
+		sourceColumn: ordem
+
+	partition Energias = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(
+				        type table [#"energia" = type text, #"Energia" = type text, #"ordem" = Int64.Type],
+				        {
+				        {"gasolina", "Gasolina", 1},
+				        {"etanol", "Etanol", 2},
+				        {"eletricidade", "Eletricidade", 3}
+				        })
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

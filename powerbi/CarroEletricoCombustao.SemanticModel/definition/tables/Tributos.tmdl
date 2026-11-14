@@ -1,0 +1,32 @@
+/// Preço ao consumidor ou sem os tributos separados
+table Tributos
+	lineageTag: b34dcd5e-3168-5766-97cd-5bc0ee5a69ed
+
+	column Tributos
+		dataType: string
+		lineageTag: 45072cf6-44c2-5ea5-bb3a-64f8215be19e
+		summarizeBy: none
+		sourceColumn: Tributos
+		sortByColumn: ordem
+
+	column ordem
+		dataType: int64
+		isHidden
+		lineageTag: 33c314d0-6194-5ad8-8127-b9867cd10469
+		summarizeBy: none
+		sourceColumn: ordem
+
+	partition Tributos = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(
+				        type table [#"Tributos" = type text, #"ordem" = Int64.Type],
+				        {
+				        {"Com tributos", 1},
+				        {"Sem tributos", 2}
+				        })
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

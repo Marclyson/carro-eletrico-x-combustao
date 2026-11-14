@@ -1,0 +1,20 @@
+/// Parte da energia do elétrico recarregada em casa
+table 'Recarga em casa (%)'
+	lineageTag: 9f79b633-7a8a-506f-b845-a46286a0e285
+
+	column 'Recarga em casa (%)'
+		dataType: int64
+		formatString: 0
+		lineageTag: e911fafa-9b67-5716-b174-afcedf98310c
+		summarizeBy: none
+		sourceColumn: Recarga em casa (%)
+
+	partition 'Recarga em casa (%)' = m
+		mode: import
+		source =
+				let
+				    Fonte = #table(type table [#"Recarga em casa (%)" = Int64.Type], List.Transform(List.Numbers(0, 11, 10), each {_}))
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

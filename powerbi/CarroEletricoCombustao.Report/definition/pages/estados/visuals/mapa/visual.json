@@ -1,0 +1,404 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "name": "mapa",
+  "position": {
+    "x": 24,
+    "y": 182,
+    "z": 1400,
+    "height": 526,
+    "width": 440,
+    "tabOrder": 1400
+  },
+  "visual": {
+    "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+    "query": {
+      "queryState": {
+        "dataset": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Estados"
+                    }
+                  },
+                  "Property": "UF"
+                }
+              },
+              "queryRef": "Estados.UF",
+              "nativeQueryRef": "UF"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Estados"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "Estados.Estado",
+              "nativeQueryRef": "Estado"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Estados"
+                    }
+                  },
+                  "Property": "Capital"
+                }
+              },
+              "queryRef": "Estados.Capital",
+              "nativeQueryRef": "Capital"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Valor do mapa"
+                }
+              },
+              "queryRef": "_Medidas.Valor do mapa",
+              "nativeQueryRef": "Valor do mapa"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Métrica escolhida"
+                }
+              },
+              "queryRef": "_Medidas.Métrica escolhida",
+              "nativeQueryRef": "Métrica escolhida"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Custo elétrico 12m"
+                }
+              },
+              "queryRef": "_Medidas.Custo elétrico 12m",
+              "nativeQueryRef": "Custo elétrico 12m"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Custo gasolina 12m"
+                }
+              },
+              "queryRef": "_Medidas.Custo gasolina 12m",
+              "nativeQueryRef": "Custo gasolina 12m"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Economia 12m"
+                }
+              },
+              "queryRef": "_Medidas.Economia 12m",
+              "nativeQueryRef": "Economia 12m"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Tarifa sem tributos 12m"
+                }
+              },
+              "queryRef": "_Medidas.Tarifa sem tributos 12m",
+              "nativeQueryRef": "Tarifa sem tributos 12m"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "ICMS efetivo 12m"
+                }
+              },
+              "queryRef": "_Medidas.ICMS efetivo 12m",
+              "nativeQueryRef": "ICMS efetivo 12m"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Meses com tarifa do SAMP"
+                }
+              },
+              "queryRef": "_Medidas.Meses com tarifa do SAMP",
+              "nativeQueryRef": "Meses com tarifa do SAMP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Meses com ICMS imputado"
+                }
+              },
+              "queryRef": "_Medidas.Meses com ICMS imputado",
+              "nativeQueryRef": "Meses com ICMS imputado"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "vega": [
+        {
+          "properties": {
+            "jsonSpec": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"data\": {\n    \"name\": \"dataset\"\n  },\n  \"width\": \"container\",\n  \"height\": \"container\",\n  \"transform\": [\n    {\n      \"lookup\": \"UF\",\n      \"from\": {\n        \"data\": {\n          \"values\": [\n            {\n              \"uf\": \"RR\",\n              \"c\": 2,\n              \"r\": 0\n            },\n            {\n              \"uf\": \"AP\",\n              \"c\": 3,\n              \"r\": 0\n            },\n            {\n              \"uf\": \"AM\",\n              \"c\": 1,\n              \"r\": 1\n            },\n            {\n              \"uf\": \"PA\",\n              \"c\": 2,\n              \"r\": 1\n            },\n            {\n              \"uf\": \"MA\",\n              \"c\": 3,\n              \"r\": 1\n            },\n            {\n              \"uf\": \"CE\",\n              \"c\": 4,\n              \"r\": 1\n            },\n            {\n              \"uf\": \"RN\",\n              \"c\": 5,\n              \"r\": 1\n            },\n            {\n              \"uf\": \"AC\",\n              \"c\": 0,\n              \"r\": 2\n            },\n            {\n              \"uf\": \"RO\",\n              \"c\": 1,\n              \"r\": 2\n            },\n            {\n              \"uf\": \"TO\",\n              \"c\": 2,\n              \"r\": 2\n            },\n            {\n              \"uf\": \"PI\",\n              \"c\": 3,\n              \"r\": 2\n            },\n            {\n              \"uf\": \"PE\",\n              \"c\": 4,\n              \"r\": 2\n            },\n            {\n              \"uf\": \"PB\",\n              \"c\": 5,\n              \"r\": 2\n            },\n            {\n              \"uf\": \"MT\",\n              \"c\": 1,\n              \"r\": 3\n            },\n            {\n              \"uf\": \"GO\",\n              \"c\": 2,\n              \"r\": 3\n            },\n            {\n              \"uf\": \"BA\",\n              \"c\": 3,\n              \"r\": 3\n            },\n            {\n              \"uf\": \"SE\",\n              \"c\": 4,\n              \"r\": 3\n            },\n            {\n              \"uf\": \"AL\",\n              \"c\": 5,\n              \"r\": 3\n            },\n            {\n              \"uf\": \"MS\",\n              \"c\": 1,\n              \"r\": 4\n            },\n            {\n              \"uf\": \"DF\",\n              \"c\": 2,\n              \"r\": 4\n            },\n            {\n              \"uf\": \"MG\",\n              \"c\": 3,\n              \"r\": 4\n            },\n            {\n              \"uf\": \"ES\",\n              \"c\": 4,\n              \"r\": 4\n            },\n            {\n              \"uf\": \"PR\",\n              \"c\": 1,\n              \"r\": 5\n            },\n            {\n              \"uf\": \"SP\",\n              \"c\": 2,\n              \"r\": 5\n            },\n            {\n              \"uf\": \"RJ\",\n              \"c\": 3,\n              \"r\": 5\n            },\n            {\n              \"uf\": \"RS\",\n              \"c\": 0,\n              \"r\": 6\n            },\n            {\n              \"uf\": \"SC\",\n              \"c\": 1,\n              \"r\": 6\n            }\n          ]\n        },\n        \"key\": \"uf\",\n        \"fields\": [\n          \"c\",\n          \"r\"\n        ]\n      }\n    },\n    {\n      \"joinaggregate\": [\n        {\n          \"op\": \"min\",\n          \"field\": \"Valor do mapa\",\n          \"as\": \"vmin\"\n        },\n        {\n          \"op\": \"max\",\n          \"field\": \"Valor do mapa\",\n          \"as\": \"vmax\"\n        }\n      ]\n    },\n    {\n      \"calculate\": \"(datum[''Valor do mapa''] - datum.vmin) / max(datum.vmax - datum.vmin, 1e-9)\",\n      \"as\": \"t\"\n    },\n    {\n      \"calculate\": \"indexof(datum[''Métrica escolhida''], ''ICMS'') >= 0 ? format(datum[''Valor do mapa''], ''.1%'') : format(datum[''Valor do mapa''], ''$,.2f'')\",\n      \"as\": \"rotulo\"\n    }\n  ],\n  \"encoding\": {\n    \"x\": {\n      \"field\": \"c\",\n      \"type\": \"ordinal\",\n      \"axis\": null,\n      \"scale\": {\n        \"domain\": [\n          0,\n          1,\n          2,\n          3,\n          4,\n          5\n        ],\n        \"paddingInner\": 0.08\n      }\n    },\n    \"y\": {\n      \"field\": \"r\",\n      \"type\": \"ordinal\",\n      \"axis\": null,\n      \"scale\": {\n        \"domain\": [\n          0,\n          1,\n          2,\n          3,\n          4,\n          5,\n          6\n        ],\n        \"paddingInner\": 0.08\n      }\n    }\n  },\n  \"layer\": [\n    {\n      \"mark\": {\n        \"type\": \"rect\"\n      },\n      \"encoding\": {\n        \"color\": {\n          \"field\": \"Valor do mapa\",\n          \"type\": \"quantitative\",\n          \"scale\": {\n            \"range\": [\n              \"#F3F2F1\",\n              \"#252423\"\n            ]\n          },\n          \"legend\": null\n        },\n        \"tooltip\": [\n          {\n            \"field\": \"Métrica escolhida\",\n            \"title\": \"Métrica\"\n          },\n          {\n            \"field\": \"rotulo\",\n            \"title\": \"Valor (12 meses)\"\n          },\n          {\n            \"field\": \"Estado\"\n          },\n          {\n            \"field\": \"Capital\"\n          },\n          {\n            \"field\": \"Custo elétrico 12m\",\n            \"title\": \"Elétrico (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Custo gasolina 12m\",\n            \"title\": \"Gasolina (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Economia 12m\",\n            \"title\": \"Economia (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Tarifa sem tributos 12m\",\n            \"title\": \"Tarifa sem tributos (R$/kWh)\",\n            \"format\": \"$,.3f\"\n          },\n          {\n            \"field\": \"ICMS efetivo 12m\",\n            \"title\": \"ICMS efetivo da energia\",\n            \"format\": \".1%\"\n          },\n          {\n            \"field\": \"Meses com tarifa do SAMP\",\n            \"title\": \"Meses com tarifa do SAMP (série toda)\"\n          },\n          {\n            \"field\": \"Meses com ICMS imputado\",\n            \"title\": \"Meses com ICMS imputado (série toda)\"\n          }\n        ],\n        \"opacity\": {\n          \"condition\": {\n            \"test\": \"datum.__selected__ == ''off''\",\n            \"value\": 0.25\n          },\n          \"value\": 1\n        }\n      }\n    },\n    {\n      \"mark\": {\n        \"type\": \"text\",\n        \"baseline\": \"bottom\",\n        \"dy\": -1,\n        \"fontSize\": 12,\n        \"fontWeight\": \"bold\"\n      },\n      \"encoding\": {\n        \"text\": {\n          \"field\": \"UF\"\n        },\n        \"color\": {\n          \"condition\": {\n            \"test\": \"datum.t > 0.5\",\n            \"value\": \"#FFFFFF\"\n          },\n          \"value\": \"#191919\"\n        },\n        \"opacity\": {\n          \"condition\": {\n            \"test\": \"datum.__selected__ == ''off''\",\n            \"value\": 0.25\n          },\n          \"value\": 1\n        }\n      }\n    },\n    {\n      \"mark\": {\n        \"type\": \"text\",\n        \"baseline\": \"top\",\n        \"dy\": 3,\n        \"fontSize\": 9\n      },\n      \"encoding\": {\n        \"text\": {\n          \"field\": \"rotulo\"\n        },\n        \"color\": {\n          \"condition\": {\n            \"test\": \"datum.t > 0.5\",\n            \"value\": \"#FFFFFF\"\n          },\n          \"value\": \"#191919\"\n        },\n        \"opacity\": {\n          \"condition\": {\n            \"test\": \"datum.__selected__ == ''off''\",\n            \"value\": 0.25\n          },\n          \"value\": 1\n        }\n      }\n    }\n  ]\n}'"
+                }
+              }
+            },
+            "jsonConfig": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"locale\": {\n    \"number\": {\n      \"decimal\": \",\",\n      \"thousands\": \".\",\n      \"grouping\": [\n        3\n      ],\n      \"currency\": [\n        \"R$ \",\n        \"\"\n      ]\n    },\n    \"time\": {\n      \"dateTime\": \"%A, %e de %B de %Y. %X\",\n      \"date\": \"%d/%m/%Y\",\n      \"time\": \"%H:%M:%S\",\n      \"periods\": [\n        \"AM\",\n        \"PM\"\n      ],\n      \"days\": [\n        \"domingo\",\n        \"segunda\",\n        \"terça\",\n        \"quarta\",\n        \"quinta\",\n        \"sexta\",\n        \"sábado\"\n      ],\n      \"shortDays\": [\n        \"dom\",\n        \"seg\",\n        \"ter\",\n        \"qua\",\n        \"qui\",\n        \"sex\",\n        \"sáb\"\n      ],\n      \"months\": [\n        \"janeiro\",\n        \"fevereiro\",\n        \"março\",\n        \"abril\",\n        \"maio\",\n        \"junho\",\n        \"julho\",\n        \"agosto\",\n        \"setembro\",\n        \"outubro\",\n        \"novembro\",\n        \"dezembro\"\n      ],\n      \"shortMonths\": [\n        \"jan\",\n        \"fev\",\n        \"mar\",\n        \"abr\",\n        \"mai\",\n        \"jun\",\n        \"jul\",\n        \"ago\",\n        \"set\",\n        \"out\",\n        \"nov\",\n        \"dez\"\n      ]\n    }\n  },\n  \"autosize\": {\n    \"type\": \"fit\",\n    \"contains\": \"padding\"\n  },\n  \"background\": \"transparent\",\n  \"font\": \"Segoe UI, Open Sans, sans-serif\",\n  \"view\": {\n    \"stroke\": null\n  },\n  \"axis\": {\n    \"labelColor\": \"#605E5C\",\n    \"titleColor\": \"#605E5C\",\n    \"labelFontSize\": 10,\n    \"titleFontSize\": 10,\n    \"titleFontWeight\": \"normal\",\n    \"gridColor\": \"#EDEBE9\",\n    \"domain\": false,\n    \"tickColor\": \"#E1DFDD\"\n  },\n  \"axisX\": {\n    \"grid\": false\n  },\n  \"legend\": {\n    \"labelColor\": \"#605E5C\",\n    \"titleColor\": \"#605E5C\",\n    \"labelFontSize\": 10,\n    \"symbolType\": \"square\"\n  },\n  \"bar\": {\n    \"cornerRadiusEnd\": 0\n  },\n  \"line\": {\n    \"strokeWidth\": 2\n  }\n}'"
+                }
+              }
+            },
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'vegaLite'"
+                }
+              }
+            },
+            "renderMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'svg'"
+                }
+              }
+            },
+            "enableTooltips": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableSelection": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "selectionMaxDataPoints": {
+              "expr": {
+                "Literal": {
+                  "Value": "250D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "developer": [
+        {
+          "properties": {
+            "locale": {
+              "expr": {
+                "Literal": {
+                  "Value": "'pt-BR'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Mapa das capitais (12 meses até o fim do período)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#191919'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E1DFDD'"
+                    }
+                  }
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Mapa em grade das 27 UFs colorido pela métrica escolhida'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
