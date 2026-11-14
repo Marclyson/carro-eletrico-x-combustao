@@ -3,10 +3,10 @@
   "name": "tour_si_2_mask2",
   "position": {
     "x": 0,
-    "y": 178,
+    "y": 120,
     "z": 30041,
-    "height": 128,
-    "width": 20,
+    "height": 120,
+    "width": 332,
     "tabOrder": 30041
   },
   "visual": {

@@ -3,43 +3,185 @@
   "espaco": 8,
   "paginas": {
     "visao_geral": [
-      {"visual": "titulo", "altura": 64},
-      {"visual": "contexto", "altura": 52, "css": ".ctx{white-space:normal;line-height:1.4}"},
-      [{"visual": "filtro_estado", "altura": 56}, {"visual": "filtro_comparacao", "altura": 56}],
-      [{"visual": "filtro_valores", "altura": 56}, {"visual": "filtro_tributos", "altura": 56}],
-      {"visual": "filtro_periodo", "altura": 56},
-      {"visual": "kpis", "altura": 360, "css": ".kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}.card:last-child{grid-column:1/3}.val{font-size:20px}"},
-      {"visual": "linha_custo", "altura": 320, "spec": {"remover_texto": true}},
-      {"visual": "razao_etanol", "altura": 300}
+      {
+        "visual": "titulo",
+        "altura": 64
+      },
+      {
+        "visual": "contexto",
+        "altura": 52,
+        "css": ".ctx{white-space:normal;line-height:1.4}"
+      },
+      {
+        "visual": "kpis",
+        "altura": 360,
+        "css": ".kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}.card:last-child{grid-column:1/3}.val{font-size:20px}"
+      },
+      {
+        "visual": "linha_custo",
+        "altura": 320,
+        "spec": {
+          "remover_texto": true
+        }
+      },
+      {
+        "visual": "razao_etanol",
+        "altura": 300
+      }
     ],
     "impostos": [
-      {"visual": "titulo", "altura": 64},
-      {"visual": "contexto", "altura": 52, "css": ".ctx{white-space:normal;line-height:1.4}"},
-      [{"visual": "filtro_estado", "altura": 56}, {"visual": "filtro_comparacao", "altura": 56}],
-      {"visual": "parcelas_gasolina", "altura": 300},
-      {"visual": "parcelas_eletricidade", "altura": 300},
-      {"visual": "pct_tributos", "altura": 260},
-      {"visual": "marcos", "altura": 700}
+      {
+        "visual": "titulo",
+        "altura": 64
+      },
+      {
+        "visual": "contexto",
+        "altura": 52,
+        "css": ".ctx{white-space:normal;line-height:1.4}"
+      },
+      {
+        "visual": "parcelas_gasolina",
+        "altura": 300
+      },
+      {
+        "visual": "parcelas_eletricidade",
+        "altura": 300
+      },
+      {
+        "visual": "pct_tributos",
+        "altura": 260
+      },
+      {
+        "visual": "marcos",
+        "altura": 700
+      }
     ],
     "estados": [
-      {"visual": "titulo", "altura": 64},
-      {"visual": "contexto", "altura": 52, "css": ".ctx{white-space:normal;line-height:1.4}"},
-      [{"visual": "filtro_comparacao", "altura": 56}, {"visual": "filtro_metrica", "altura": 56}],
-      {"visual": "mapa", "altura": 420},
-      {"visual": "destaques", "altura": 230},
-      {"visual": "ranking", "altura": 560}
+      {
+        "visual": "titulo",
+        "altura": 64
+      },
+      {
+        "visual": "contexto",
+        "altura": 52,
+        "css": ".ctx{white-space:normal;line-height:1.4}"
+      },
+      {
+        "visual": "rotulo_filtro_metrica",
+        "altura": 20
+      },
+      {
+        "visual": "filtro_metrica",
+        "altura": 44
+      },
+      {
+        "visual": "mapa",
+        "altura": 420
+      },
+      {
+        "visual": "destaques",
+        "altura": 230
+      },
+      {
+        "visual": "ranking",
+        "altura": 560
+      }
     ],
     "simulador": [
-      {"visual": "titulo", "altura": 64},
-      {"visual": "contexto", "altura": 64, "css": ".ctx{white-space:normal;line-height:1.4}"},
-      [{"visual": "filtro_estado", "altura": 56}, {"visual": "filtro_comparacao", "altura": 56}],
-      [{"visual": "filtro_km", "altura": 56}, {"visual": "filtro_recarga", "altura": 56}],
-      [{"visual": "filtro_tarifa", "altura": 56}, {"visual": "filtro_carregador", "altura": 56}],
-      [{"visual": "filtro_anos", "altura": 56}, {"visual": "filtro_preco_combustao", "altura": 56}],
-      {"visual": "filtro_preco_eletrico", "altura": 56},
-      {"visual": "resultado", "altura": 380, "css": ".kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}.card:last-child{grid-column:1/3}.val{font-size:20px}"},
-      {"visual": "curva", "altura": 320},
-      {"visual": "notas", "altura": 520}
+      {
+        "visual": "titulo",
+        "altura": 64
+      },
+      {
+        "visual": "contexto",
+        "altura": 64,
+        "css": ".ctx{white-space:normal;line-height:1.4}"
+      },
+      {
+        "visual": "escolhas_titulo",
+        "altura": 20
+      },
+      [
+        {
+          "visual": "rotulo_filtro_km",
+          "altura": 20
+        },
+        {
+          "visual": "rotulo_filtro_recarga",
+          "altura": 20
+        }
+      ],
+      [
+        {
+          "visual": "filtro_km",
+          "altura": 44
+        },
+        {
+          "visual": "filtro_recarga",
+          "altura": 44
+        }
+      ],
+      [
+        {
+          "visual": "rotulo_filtro_tarifa",
+          "altura": 20
+        },
+        {
+          "visual": "rotulo_filtro_carregador",
+          "altura": 20
+        }
+      ],
+      [
+        {
+          "visual": "filtro_tarifa",
+          "altura": 44
+        },
+        {
+          "visual": "filtro_carregador",
+          "altura": 44
+        }
+      ],
+      {
+        "visual": "rotulo_filtro_anos",
+        "altura": 20
+      },
+      {
+        "visual": "filtro_anos",
+        "altura": 44
+      },
+      [
+        {
+          "visual": "rotulo_filtro_preco_combustao",
+          "altura": 20
+        },
+        {
+          "visual": "rotulo_filtro_preco_eletrico",
+          "altura": 20
+        }
+      ],
+      [
+        {
+          "visual": "filtro_preco_combustao",
+          "altura": 44
+        },
+        {
+          "visual": "filtro_preco_eletrico",
+          "altura": 44
+        }
+      ],
+      {
+        "visual": "resultado",
+        "altura": 380,
+        "css": ".kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}.card:last-child{grid-column:1/3}.val{font-size:20px}"
+      },
+      {
+        "visual": "curva",
+        "altura": 320
+      },
+      {
+        "visual": "notas",
+        "altura": 520
+      }
     ]
   }
 }

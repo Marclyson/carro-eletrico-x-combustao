@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_si_4_moldura",
   "position": {
-    "x": 332,
-    "y": 302,
+    "x": 20,
+    "y": 420,
     "z": 30082,
-    "height": 410,
-    "width": 928,
+    "height": 292,
+    "width": 308,
     "tabOrder": 30082
   },
   "visual": {

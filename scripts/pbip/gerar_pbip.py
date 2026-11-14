@@ -7,6 +7,7 @@ Regera tudo do zero: modelo, páginas, tour de documentação, filtro cruzado do
 e roda o validador no fim. Alterações feitas à mão no Desktop se perdem; mude este script em vez disso.
 """
 
+import json
 import os
 import subprocess
 import sys
@@ -49,11 +50,46 @@ def gerar(pbi: Path) -> int:
     print(f"relatório: {len(paginas)} páginas, {sum(len(p.visuais) for p in paginas)} visuais")
     (pbi / f"{NOME}.pbip").write_text(PBIP % NOME, encoding="utf-8", newline="\n")
     d = str(pbi / f"{NOME}.Report" / "definition")
-    rodar("interatividade_pbir.py", d, "estados/mapa", "estados/ranking", "estados/dispersao")
     rodar("gerar_tour_pbir.py", d, str(AQUI / "tour.json"))
+    indicadores_gaveta(Path(d), [p.nome for p in paginas])
     rodar("layout_celular_pbir.py", d, str(AQUI / "celular.json"))
     r = subprocess.run([sys.executable, str(AQUI / "validar_pbip.py"), str(pbi)], text=True, encoding="utf-8", check=False, env=ENV)
     return r.returncode
+
+
+SCHEMA_BM = "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json"
+
+
+def indicadores_gaveta(d: Path, paginas: list[str]):
+    """Indicadores filtros_<sigla>_abrir/fechar, só de exibição (suppressData: não mexem nos filtros escolhidos).
+    Roda depois do tour, que recria a pasta bookmarks. Abrir a gaveta fecha o tour e vice-versa."""
+    bm_dir = d / "bookmarks"
+    meta = json.loads((bm_dir / "bookmarks.json").read_text(encoding="utf-8"))
+    for pg in paginas:
+        if not (d / "pages" / pg / "visuals" / relatorio.GAVETA).exists():
+            continue
+        sg = relatorio.SIGLA[pg]
+        tour = next((i for i in meta["items"] if i["name"] == f"tour_{sg}"), {"children": []})["children"]
+        grupos_tour = [n for n in tour if not n.endswith("_off")]
+        for n in tour:  # passos do tour fecham a gaveta
+            f = bm_dir / f"{n}.bookmark.json"
+            bm = json.loads(f.read_text(encoding="utf-8"))
+            bm["explorationState"]["sections"][pg]["visualContainerGroups"][relatorio.GAVETA] = {"isHidden": True}
+            f.write_text(json.dumps(bm, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+        filhos = []
+        for acao, oculto in (("abrir", False), ("fechar", True)):
+            nome = f"filtros_{sg}_{acao}"
+            grupos = {relatorio.GAVETA: {"isHidden": oculto}, **{g: {"isHidden": True} for g in grupos_tour}}
+            bm = {"$schema": SCHEMA_BM, "displayName": f"Filtros – {acao}", "name": nome,
+                  "options": {"targetVisualNames": [], "suppressData": True},
+                  "explorationState": {"version": "1.3", "activeSection": pg,
+                                       "sections": {pg: {"visualContainers": {}, "visualContainerGroups": grupos}}}}
+            (bm_dir / f"{nome}.bookmark.json").write_text(json.dumps(bm, ensure_ascii=False, indent=2),
+                                                          encoding="utf-8", newline="\n")
+            filhos.append(nome)
+        meta["items"].append({"name": f"filtros_{sg}", "displayName": f"Filtros – {pg}", "children": filhos})
+    (bm_dir / "bookmarks.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8",
+                                           newline="\n")
 
 
 PBIP = """{

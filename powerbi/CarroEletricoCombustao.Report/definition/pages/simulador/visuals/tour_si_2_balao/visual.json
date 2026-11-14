@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_si_2_balao",
   "position": {
-    "x": 340,
-    "y": 178,
+    "x": 920,
+    "y": 252,
     "z": 30043,
-    "height": 268,
+    "height": 375,
     "width": 340,
     "tabOrder": 30043
   },
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "PASSO 2 DE 5",
+                    "value": "PASSO 2 DE 4",
                     "textStyle": {
                       "fontSize": "8pt",
                       "fontWeight": "bold",
@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Preço dos carros",
+                    "value": "Resultado",
                     "textStyle": {
                       "fontSize": "13pt",
                       "fontWeight": "bold",
@@ -55,7 +55,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "O preço de compra dos dois carros.",
+                    "value": "Energia por km, economia por ano, diferença na compra, tempo para empatar e saldo no fim dos anos de uso.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -67,7 +67,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "COMO LER",
+                    "value": "LÓGICA",
                     "textStyle": {
                       "fontSize": "8pt",
                       "fontWeight": "bold",
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Sem escolha, vale o preço de tabela no site da montadora em 14/11/2026. O E-KWID saiu de linha e não tem preço: escolha um valor.",
+                    "value": "Elétrico por km = consumo × (parte em casa × tarifa de casa + resto × carregador). Anos para pagar = diferença na compra ÷ economia por ano.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -103,7 +103,31 @@
               {
                 "textRuns": [
                   {
-                    "value": "[Preço do carro a combustão] e [Preço do carro elétrico].",
+                    "value": "[Elétrico por km (12m)], [Gasolina por km (12m)], [Economia por ano], [Diferença na compra] e [Anos para pagar].",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "fontWeight": "normal",
+                      "color": "#FFFFFF"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ATENÇÃO",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontWeight": "bold",
+                      "color": "#F2C811"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Sem juros nem reajuste: é uma conta simples, para comparar.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

@@ -15,9 +15,53 @@ def test_gera_pbip_valido(tmp_path):
     assert gerar_pbip.gerar(tmp_path) == 0
     relatorio = tmp_path / f"{gerar_pbip.NOME}.Report" / "definition"
     paginas = json.loads((relatorio / "pages" / "pages.json").read_text(encoding="utf-8"))["pageOrder"]
-    assert paginas == ["visao_geral", "impostos", "estados", "simulador", "metodo"]
-    for pagina in paginas:  # botão Documentação em todas as páginas
+    assert paginas == ["visao_geral", "impostos", "estados", "simulador", "metodo", "dica_mes", "dica_uf"]
+    for pagina in paginas[:5]:  # botão Documentação em todas as páginas do relatório
         assert any((relatorio / "pages" / pagina / "visuals").glob("tour_*_btn_doc"))
+
+
+def test_paginas_ocultas_dicas_e_gaveta(tmp_path):
+    gerar_pbip.gerar(tmp_path)
+    rel = tmp_path / f"{gerar_pbip.NOME}.Report" / "definition"
+    pg = {p.parent.name: json.loads(p.read_text(encoding="utf-8")) for p in (rel / "pages").glob("*/page.json")}
+    # só a primeira página aparece na lista do Power BI; a troca é pelas abas do relatório
+    assert [n for n, p in pg.items() if p.get("visibility") != "HiddenInViewMode"] == ["visao_geral"]
+    assert pg["dica_uf"]["type"] == pg["dica_mes"]["type"] == "Tooltip"
+    for pagina, visual, dica in [("visao_geral", "linha_custo", "dica_mes"), ("estados", "mapa", "dica_uf"),
+                                 ("estados", "dispersao", "dica_uf")]:
+        v = json.loads((rel / "pages" / pagina / "visuals" / visual / "visual.json").read_text(encoding="utf-8"))
+        assert v["visual"]["visualContainerObjects"]["visualTooltip"][0]["properties"]["section"]["expr"]["Literal"][
+            "Value"] == f"'{dica}'"
+    # gaveta: grupo oculto, segmentações dentro dele e indicadores que não mexem nos filtros
+    for pagina, sg in [("visao_geral", "vg"), ("impostos", "im"), ("estados", "es"), ("simulador", "si")]:
+        g = json.loads((rel / "pages" / pagina / "visuals" / "filtros_gaveta" / "visual.json").read_text(encoding="utf-8"))
+        assert g["isHidden"] is True
+        f = json.loads((rel / "pages" / pagina / "visuals" / "filtro_comparacao" / "visual.json").read_text(encoding="utf-8"))
+        assert f["parentGroupName"] == "filtros_gaveta"
+        bm = json.loads((rel / "bookmarks" / f"filtros_{sg}_abrir.bookmark.json").read_text(encoding="utf-8"))
+        assert bm["options"]["suppressData"] is True
+    assert not (rel / "pages" / "estados" / "visuals" / "filtro_estado").exists()  # na página Estados a UF é pelo mapa
+    # realce cruzado entre os gráficos de Estados (não filtra: as medianas da dispersão ficam paradas)
+    tipos = {(i["source"], i["target"]): i["type"] for i in pg["estados"]["visualInteractions"]}
+    assert tipos[("mapa", "dispersao")] == "HighlightFilter" and tipos[("mapa", "destaques")] == "NoFilter"
+
+
+def test_listas_de_selecao_unica_tem_valor_padrao(tmp_path):
+    """Seleção única marca o 1º item da lista quando nada está escolhido; o padrão do DAX nunca valeria."""
+    gerar_pbip.gerar(tmp_path)
+    rel = tmp_path / f"{gerar_pbip.NOME}.Report" / "definition"
+    padroes = {}
+    for f in (rel / "pages").glob("*/visuals/*/visual.json"):
+        v = json.loads(f.read_text(encoding="utf-8")).get("visual", {})
+        if v.get("visualType") != "slicer":
+            continue
+        unico = "selection" in v["objects"]
+        filtro = v["objects"]["general"][0]["properties"].get("filter")
+        assert not unico or filtro, f"{f.parent.name} sem valor padrão"
+        if filtro:
+            padroes[f.parent.name] = filtro["filter"]["Where"][0]["Condition"]["In"]["Values"][0][0]["Literal"]["Value"]
+    assert padroes["filtro_km"] == "12000L" and padroes["filtro_recarga"] == "80L"
+    assert padroes["filtro_carregador"] == "2D" and padroes["filtro_anos"] == "10L"
 
 
 def test_medidas_sem_duplicata_e_textos_balanceados(tmp_path):

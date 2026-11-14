@@ -10,7 +10,7 @@
     "tabOrder": 30060
   },
   "visualGroup": {
-    "displayName": "Tour 3 - Resultado",
+    "displayName": "Tour 3 - Custo acumulado",
     "groupMode": "ScaleMode",
     "objects": {
       "background": [

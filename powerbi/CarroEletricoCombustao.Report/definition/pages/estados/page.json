@@ -4,5 +4,53 @@
   "displayName": "Estados",
   "displayOption": "FitToPage",
   "height": 720,
-  "width": 1280
+  "width": 1280,
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "mapa",
+      "target": "ranking",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "mapa",
+      "target": "dispersao",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "ranking",
+      "target": "mapa",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "ranking",
+      "target": "dispersao",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "dispersao",
+      "target": "mapa",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "dispersao",
+      "target": "ranking",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "mapa",
+      "target": "destaques",
+      "type": "NoFilter"
+    },
+    {
+      "source": "ranking",
+      "target": "destaques",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dispersao",
+      "target": "destaques",
+      "type": "NoFilter"
+    }
+  ]
 }

@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_si_3_prox",
   "position": {
-    "x": 1136,
-    "y": 641,
+    "x": 224,
+    "y": 485,
     "z": 30069,
     "height": 30,
     "width": 110,

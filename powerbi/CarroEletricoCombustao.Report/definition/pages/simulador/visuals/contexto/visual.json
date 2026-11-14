@@ -120,7 +120,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Comparação, estado e tipo de valor em uso'"
+                  "Value": "'Filtros em uso: comparação, estado, período e valores'"
                 }
               }
             }

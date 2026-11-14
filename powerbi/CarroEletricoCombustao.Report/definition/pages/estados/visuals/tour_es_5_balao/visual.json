@@ -3,9 +3,9 @@
   "name": "tour_es_5_balao",
   "position": {
     "x": 512,
-    "y": 500,
+    "y": 444,
     "z": 30103,
-    "height": 212,
+    "height": 268,
     "width": 340,
     "tabOrder": 30103
   },
@@ -80,6 +80,30 @@
                 "textRuns": [
                   {
                     "value": "[Custo elétrico 12m], [Economia 12m] e [ICMS efetivo 12m].",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "fontWeight": "normal",
+                      "color": "#FFFFFF"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ATENÇÃO",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontWeight": "bold",
+                      "color": "#F2C811"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Os destaques olham sempre as 27 capitais; o clique no mapa não os muda.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

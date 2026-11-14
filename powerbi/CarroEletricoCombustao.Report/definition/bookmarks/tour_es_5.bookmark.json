@@ -27,6 +27,9 @@
           },
           "tour_es_5": {
             "isHidden": false
+          },
+          "filtros_gaveta": {
+            "isHidden": true
           }
         }
       }

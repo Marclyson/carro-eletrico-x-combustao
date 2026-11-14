@@ -3,10 +3,10 @@
   "name": "tour_si_1_moldura",
   "position": {
     "x": 20,
-    "y": 112,
+    "y": 120,
     "z": 30022,
-    "height": 64,
-    "width": 1240,
+    "height": 298,
+    "width": 308,
     "tabOrder": 30022
   },
   "visual": {

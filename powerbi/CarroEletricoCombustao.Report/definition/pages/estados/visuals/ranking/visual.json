@@ -3,11 +3,11 @@
   "name": "ranking",
   "position": {
     "x": 476,
-    "y": 182,
-    "z": 1500,
-    "height": 526,
+    "y": 196,
+    "z": 2900,
+    "height": 512,
     "width": 380,
-    "tabOrder": 1500
+    "tabOrder": 2900
   },
   "visual": {
     "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
@@ -194,7 +194,7 @@
             "jsonSpec": {
               "expr": {
                 "Literal": {
-                  "Value": "'{\n  \"data\": {\n    \"name\": \"dataset\"\n  },\n  \"width\": \"container\",\n  \"height\": \"container\",\n  \"padding\": {\n    \"right\": 64\n  },\n  \"transform\": [\n    {\n      \"filter\": \"isValid(datum[''Valor do mapa''])\"\n    },\n    {\n      \"calculate\": \"datum.Capital + '' ('' + datum.UF + '')''\",\n      \"as\": \"lab\"\n    },\n    {\n      \"calculate\": \"indexof(datum[''Métrica escolhida''], ''ICMS'') >= 0 ? format(datum[''Valor do mapa''], ''.1%'') : format(datum[''Valor do mapa''], ''$,.2f'')\",\n      \"as\": \"rotulo\"\n    }\n  ],\n  \"encoding\": {\n    \"y\": {\n      \"field\": \"lab\",\n      \"type\": \"nominal\",\n      \"title\": null,\n      \"sort\": {\n        \"field\": \"Valor do mapa\",\n        \"op\": \"max\",\n        \"order\": \"descending\"\n      },\n      \"axis\": {\n        \"labelLimit\": 130,\n        \"labelFontSize\": 9\n      }\n    }\n  },\n  \"layer\": [\n    {\n      \"mark\": {\n        \"type\": \"bar\",\n        \"color\": \"#252423\",\n        \"height\": {\n          \"band\": 0.72\n        }\n      },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"Valor do mapa\",\n          \"type\": \"quantitative\",\n          \"axis\": null\n        },\n        \"tooltip\": [\n          {\n            \"field\": \"Métrica escolhida\",\n            \"title\": \"Métrica\"\n          },\n          {\n            \"field\": \"rotulo\",\n            \"title\": \"Valor (12 meses)\"\n          },\n          {\n            \"field\": \"Estado\"\n          },\n          {\n            \"field\": \"Capital\"\n          },\n          {\n            \"field\": \"Custo elétrico 12m\",\n            \"title\": \"Elétrico (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Custo gasolina 12m\",\n            \"title\": \"Gasolina (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Economia 12m\",\n            \"title\": \"Economia (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Tarifa sem tributos 12m\",\n            \"title\": \"Tarifa sem tributos (R$/kWh)\",\n            \"format\": \"$,.3f\"\n          },\n          {\n            \"field\": \"ICMS efetivo 12m\",\n            \"title\": \"ICMS efetivo da energia\",\n            \"format\": \".1%\"\n          },\n          {\n            \"field\": \"Meses com tarifa do SAMP\",\n            \"title\": \"Meses com tarifa do SAMP (série toda)\"\n          },\n          {\n            \"field\": \"Meses com ICMS imputado\",\n            \"title\": \"Meses com ICMS imputado (série toda)\"\n          }\n        ],\n        \"opacity\": {\n          \"condition\": {\n            \"test\": \"datum.__selected__ == ''off''\",\n            \"value\": 0.25\n          },\n          \"value\": 1\n        }\n      }\n    },\n    {\n      \"mark\": {\n        \"type\": \"text\",\n        \"align\": \"left\",\n        \"dx\": 4,\n        \"fontSize\": 9,\n        \"color\": \"#605E5C\"\n      },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"Valor do mapa\",\n          \"type\": \"quantitative\"\n        },\n        \"text\": {\n          \"field\": \"rotulo\"\n        },\n        \"opacity\": {\n          \"condition\": {\n            \"test\": \"datum.__selected__ == ''off''\",\n            \"value\": 0.25\n          },\n          \"value\": 1\n        }\n      }\n    }\n  ]\n}'"
+                  "Value": "'{\n  \"data\": {\n    \"name\": \"dataset\"\n  },\n  \"width\": \"container\",\n  \"height\": \"container\",\n  \"padding\": {\n    \"right\": 64\n  },\n  \"transform\": [\n    {\n      \"filter\": \"isValid(datum[''Valor do mapa''])\"\n    },\n    {\n      \"calculate\": \"datum.Capital + '' ('' + datum.UF + '')''\",\n      \"as\": \"lab\"\n    },\n    {\n      \"calculate\": \"indexof(datum[''Métrica escolhida''], ''ICMS'') >= 0 ? format(datum[''Valor do mapa''], ''.1%'') : format(datum[''Valor do mapa''], ''$,.2f'')\",\n      \"as\": \"rotulo\"\n    }\n  ],\n  \"encoding\": {\n    \"y\": {\n      \"field\": \"lab\",\n      \"type\": \"nominal\",\n      \"title\": null,\n      \"sort\": {\n        \"field\": \"Valor do mapa\",\n        \"op\": \"max\",\n        \"order\": \"descending\"\n      },\n      \"axis\": {\n        \"labelLimit\": 130,\n        \"labelFontSize\": 9\n      }\n    }\n  },\n  \"layer\": [\n    {\n      \"mark\": {\n        \"type\": \"bar\",\n        \"color\": \"#252423\",\n        \"height\": {\n          \"band\": 0.72\n        }\n      },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"Valor do mapa\",\n          \"type\": \"quantitative\",\n          \"axis\": null\n        },\n        \"color\": {\n          \"condition\": {\n            \"test\": \"(datum.__selected__ == ''on'' || datum[''Valor do mapa__highlightStatus''] == ''on'')\",\n            \"value\": \"#F2C811\"\n          },\n          \"value\": \"#252423\"\n        },\n        \"opacity\": {\n          \"condition\": [\n            {\n              \"test\": \"datum.__selected__ == ''off''\",\n              \"value\": 0.22\n            },\n            {\n              \"test\": \"datum[''Valor do mapa__highlightStatus''] == ''off''\",\n              \"value\": 0.22\n            }\n          ],\n          \"value\": 1.0\n        },\n        \"tooltip\": [\n          {\n            \"field\": \"Estado\"\n          },\n          {\n            \"field\": \"rotulo\",\n            \"title\": \"Valor (12 meses)\"\n          },\n          {\n            \"field\": \"Custo elétrico 12m\",\n            \"title\": \"Elétrico (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          },\n          {\n            \"field\": \"Custo gasolina 12m\",\n            \"title\": \"Gasolina (R$/100 km)\",\n            \"format\": \"$,.2f\"\n          }\n        ]\n      }\n    },\n    {\n      \"mark\": {\n        \"type\": \"text\",\n        \"align\": \"left\",\n        \"dx\": 4,\n        \"fontSize\": 9,\n        \"color\": \"#605E5C\"\n      },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"Valor do mapa\",\n          \"type\": \"quantitative\"\n        },\n        \"text\": {\n          \"field\": \"rotulo\"\n        },\n        \"opacity\": {\n          \"condition\": [\n            {\n              \"test\": \"datum.__selected__ == ''off''\",\n              \"value\": 0.22\n            },\n            {\n              \"test\": \"datum[''Valor do mapa__highlightStatus''] == ''off''\",\n              \"value\": 0.22\n            }\n          ],\n          \"value\": 1.0\n        }\n      }\n    }\n  ]\n}'"
                 }
               }
             },
@@ -237,6 +237,13 @@
               "expr": {
                 "Literal": {
                   "Value": "250D"
+                }
+              }
+            },
+            "enableHighlight": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -392,6 +399,26 @@
               "expr": {
                 "Literal": {
                   "Value": "'Barras com as 27 capitais ordenadas pela métrica escolhida'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "section": {
+              "expr": {
+                "Literal": {
+                  "Value": "'dica_uf'"
                 }
               }
             }

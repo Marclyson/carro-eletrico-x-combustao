@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_vg_1_balao",
   "position": {
-    "x": 750,
-    "y": 188,
+    "x": 792,
+    "y": 60,
     "z": 30023,
     "height": 431,
     "width": 340,
@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Filtros da página",
+                    "value": "Filtros",
                     "textStyle": {
                       "fontSize": "13pt",
                       "fontWeight": "bold",
@@ -55,7 +55,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Estado, par de carros, período e tipo de valor. O padrão é Brasil, Kwid × Dolphin Mini, a série toda, em reais de hoje e com tributos.",
+                    "value": "Abre a gaveta com estado, par de carros, período, valores e tributos. O número no botão conta os filtros fora do padrão.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Sem estado escolhido, o painel usa a média simples das 27 capitais. A linha abaixo do título repete o que está valendo.",
+                    "value": "Sem estado escolhido, o painel usa a média simples das 27 capitais. A linha abaixo do título resume o que está valendo.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -127,7 +127,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "[_Comparação], [_Real] e [_Com tributos] leem as escolhas; sem escolha, valem os padrões.",
+                    "value": "[_Comparação], [_Real] e [_Com tributos] leem as escolhas; sem escolha, valem os padrões. [Filtros · botão] conta os filtros em uso.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -151,7 +151,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Estado e par de carros valem para todas as páginas.",
+                    "value": "Os filtros valem para todas as páginas.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

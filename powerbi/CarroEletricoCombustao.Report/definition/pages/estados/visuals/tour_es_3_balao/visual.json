@@ -3,9 +3,9 @@
   "name": "tour_es_3_balao",
   "position": {
     "x": 872,
-    "y": 178,
+    "y": 192,
     "z": 30063,
-    "height": 234,
+    "height": 251,
     "width": 340,
     "tabOrder": 30063
   },
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Clique numa barra para filtrar a página.",
+                    "value": "Clique numa barra para realçar a capital nos outros gráficos.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

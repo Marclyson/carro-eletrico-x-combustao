@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_es_1_mask3",
   "position": {
-    "x": 1240,
-    "y": 112,
+    "x": 328,
+    "y": 120,
     "z": 30021,
-    "height": 64,
-    "width": 40,
+    "height": 68,
+    "width": 952,
     "tabOrder": 30021
   },
   "visual": {

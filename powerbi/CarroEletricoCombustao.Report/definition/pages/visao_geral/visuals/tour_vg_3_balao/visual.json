@@ -3,9 +3,9 @@
   "name": "tour_vg_3_balao",
   "position": {
     "x": 840,
-    "y": 302,
+    "y": 244,
     "z": 30063,
-    "height": 375,
+    "height": 426,
     "width": 340,
     "tabOrder": 30063
   },
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "As linhas verticais tracejadas marcam mudanças de tributo e a bandeira de escassez hídrica. Passe o mouse para ver o preço da energia no mês.",
+                    "value": "As linhas tracejadas marcam mudanças de tributo e a bandeira de escassez hídrica. Passe o mouse num mês: a dica compara com o mesmo mês do ano anterior e mostra preços, tributos e horas de salário mínimo.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -127,7 +127,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "[Custo elétrico], [Custo gasolina], [Custo etanol] e [Marco legal]; na dica, [Preço eletricidade], [Preço gasolina] e [Preço etanol].",
+                    "value": "[Custo elétrico], [Custo gasolina], [Custo etanol] e [Marco legal]; na dica, [Preço eletricidade], [Preço gasolina] e [Preço etanol]. A dica é a medida [html Dica mês].",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

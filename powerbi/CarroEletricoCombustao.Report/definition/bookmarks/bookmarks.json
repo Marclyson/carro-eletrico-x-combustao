@@ -43,8 +43,7 @@
         "tour_si_1",
         "tour_si_2",
         "tour_si_3",
-        "tour_si_4",
-        "tour_si_5"
+        "tour_si_4"
       ]
     },
     {
@@ -54,6 +53,38 @@
         "tour_me_off",
         "tour_me_1",
         "tour_me_2"
+      ]
+    },
+    {
+      "name": "filtros_vg",
+      "displayName": "Filtros – visao_geral",
+      "children": [
+        "filtros_vg_abrir",
+        "filtros_vg_fechar"
+      ]
+    },
+    {
+      "name": "filtros_im",
+      "displayName": "Filtros – impostos",
+      "children": [
+        "filtros_im_abrir",
+        "filtros_im_fechar"
+      ]
+    },
+    {
+      "name": "filtros_es",
+      "displayName": "Filtros – estados",
+      "children": [
+        "filtros_es_abrir",
+        "filtros_es_fechar"
+      ]
+    },
+    {
+      "name": "filtros_si",
+      "displayName": "Filtros – simulador",
+      "children": [
+        "filtros_si_abrir",
+        "filtros_si_fechar"
       ]
     }
   ]

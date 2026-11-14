@@ -3,9 +3,9 @@
   "name": "tour_es_2_balao",
   "position": {
     "x": 480,
-    "y": 178,
+    "y": 192,
     "z": 30043,
-    "height": 414,
+    "height": 431,
     "width": 340,
     "tabOrder": 30043
   },
@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Mapa das capitais",
+                    "value": "Mapa das UFs",
                     "textStyle": {
                       "fontSize": "13pt",
                       "fontWeight": "bold",
@@ -55,7 +55,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "As 27 UFs numa grade que segue, de longe, o desenho do mapa.",
+                    "value": "O Brasil com cada UF colorida pela métrica escolhida.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Quanto mais escuro, maior o valor. Clique numa UF para filtrar a página; Ctrl+clique soma UFs.",
+                    "value": "Quanto mais escuro, maior o valor. Clique numa UF para realçá-la no ranking e na dispersão; Ctrl+clique soma UFs. Passe o mouse para ver a ficha da UF: posição entre as 27, composição do preço da energia e os últimos 24 meses.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -127,7 +127,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "[Valor do mapa]; na dica, [Custo elétrico 12m], [Custo gasolina 12m], [Economia 12m], [Tarifa sem tributos 12m], [ICMS efetivo 12m] e os meses preenchidos.",
+                    "value": "[Valor do mapa]; a dica é a medida [html Dica UF].",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

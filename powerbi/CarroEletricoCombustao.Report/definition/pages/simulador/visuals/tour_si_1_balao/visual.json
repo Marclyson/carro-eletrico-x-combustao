@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_si_1_balao",
   "position": {
-    "x": 920,
-    "y": 188,
+    "x": 340,
+    "y": 120,
     "z": 30023,
-    "height": 375,
+    "height": 482,
     "width": 340,
     "tabOrder": 30023
   },
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "PASSO 1 DE 5",
+                    "value": "PASSO 1 DE 4",
                     "textStyle": {
                       "fontSize": "8pt",
                       "fontWeight": "bold",
@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Escolhas do simulador",
+                    "value": "Suas escolhas",
                     "textStyle": {
                       "fontSize": "13pt",
                       "fontWeight": "bold",
@@ -55,7 +55,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Estado, par de carros, km por ano, quanto recarrega em casa, tarifa de casa, carregador público e anos de uso.",
+                    "value": "Km por ano, quanto recarrega em casa, tarifa de casa, carregador público, anos de uso e o preço dos dois carros.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Sem escolha, valem 12.000 km por ano, 80 % em casa na tarifa convencional, carregador a R$ 2,00/kWh e 10 anos.",
+                    "value": "Começa com 12.000 km por ano, 80 % em casa na tarifa convencional, carregador a R$ 2,00/kWh e 10 anos. Preço vazio usa o preço de tabela no site da montadora em 14/11/2026. Estado e carros ficam em Filtros.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
@@ -127,7 +127,31 @@
               {
                 "textRuns": [
                   {
-                    "value": "[Km por ano escolhido], [Recarga em casa escolhida], [Tarifa em casa escolhida], [Carregador escolhido] e [Anos de uso escolhidos].",
+                    "value": "[Km por ano escolhido], [Recarga em casa escolhida], [Tarifa em casa escolhida], [Carregador escolhido], [Anos de uso escolhidos], [Preço do carro a combustão] e [Preço do carro elétrico].",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "fontWeight": "normal",
+                      "color": "#FFFFFF"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ATENÇÃO",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontWeight": "bold",
+                      "color": "#F2C811"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "O E-KWID saiu de linha e não tem preço: escolha um valor.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

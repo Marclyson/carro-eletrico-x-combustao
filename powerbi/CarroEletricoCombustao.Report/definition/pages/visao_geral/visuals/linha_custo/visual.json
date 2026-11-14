@@ -3,11 +3,11 @@
   "name": "linha_custo",
   "position": {
     "x": 24,
-    "y": 306,
-    "z": 1500,
-    "height": 402,
+    "y": 248,
+    "z": 2900,
+    "height": 460,
     "width": 800,
-    "tabOrder": 1500
+    "tabOrder": 2900
   },
   "visual": {
     "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
@@ -322,6 +322,26 @@
               "expr": {
                 "Literal": {
                   "Value": "'Linhas com o custo de rodar 100 km com eletricidade, gasolina e etanol desde 2012, com os marcos legais'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "section": {
+              "expr": {
+                "Literal": {
+                  "Value": "'dica_mes'"
                 }
               }
             }

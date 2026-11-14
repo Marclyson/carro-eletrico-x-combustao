@@ -3,11 +3,11 @@
   "name": "filtro_preco_combustao",
   "position": {
     "x": 24,
-    "y": 182,
-    "z": 1600,
-    "height": 56,
-    "width": 300,
-    "tabOrder": 1600
+    "y": 374,
+    "z": 3400,
+    "height": 40,
+    "width": 142,
+    "tabOrder": 3400
   },
   "visual": {
     "visualType": "slicer",
@@ -54,25 +54,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#605E5C'"
-                    }
-                  }
-                }
-              }
-            },
-            "textSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "9D"
+                  "Value": "false"
                 }
               }
             }
@@ -82,19 +64,6 @@
       "general": [
         {
           "properties": {}
-        }
-      ],
-      "selection": [
-        {
-          "properties": {
-            "strictSingleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
         }
       ]
     },

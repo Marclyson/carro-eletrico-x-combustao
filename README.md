@@ -19,5 +19,6 @@ Quanto custa rodar 1 km com um carro popular a gasolina, a etanol e elétrico no
 - Inmetro, PBE Veicular 2026.
 - Banco Central, SGS 433 (IPCA, produzido pelo IBGE) e 1619 (salário mínimo) (ODbL).
 - MCTI, fator médio mensal de emissão de CO2 do SIN.
+- IBGE, malhas territoriais das UFs (mapa do painel; `python scripts/pbip/malha_uf.py` baixa e simplifica).
 
 Código sob MIT. Projeto de estudo com dados públicos, sem relação com os órgãos citados.

@@ -3,11 +3,11 @@
   "name": "destaques",
   "position": {
     "x": 868,
-    "y": 524,
-    "z": 1700,
-    "height": 184,
+    "y": 506,
+    "z": 3100,
+    "height": 202,
     "width": 388,
-    "tabOrder": 1700
+    "tabOrder": 3100
   },
   "visual": {
     "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6865",

@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_es_1_balao",
   "position": {
-    "x": 900,
-    "y": 188,
+    "x": 8,
+    "y": 200,
     "z": 30023,
     "height": 285,
     "width": 340,
@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Métrica do mapa",
+                    "value": "Métrica do mapa e do ranking",
                     "textStyle": {
                       "fontSize": "13pt",
                       "fontWeight": "bold",

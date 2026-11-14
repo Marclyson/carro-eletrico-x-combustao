@@ -3,9 +3,9 @@
   "name": "tour_es_4_balao",
   "position": {
     "x": 512,
-    "y": 178,
+    "y": 120,
     "z": 30083,
-    "height": 380,
+    "height": 397,
     "width": 340,
     "tabOrder": 30083
   },
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "As linhas tracejadas são as medianas. No canto de cima, à direita, ficam as capitais com as duas coisas acima da mediana.",
+                    "value": "As linhas tracejadas são as medianas das 27 capitais. Realçar uma UF não move as linhas. No canto de cima, à direita, ficam as capitais com as duas coisas acima da mediana.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_es_1_fechar",
   "position": {
-    "x": 1204,
-    "y": 194,
+    "x": 312,
+    "y": 206,
     "z": 30031,
     "height": 28,
     "width": 30,

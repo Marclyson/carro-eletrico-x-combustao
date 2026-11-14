@@ -3,10 +3,10 @@
   "name": "tour_vg_1_mask2",
   "position": {
     "x": 0,
-    "y": 112,
+    "y": 8,
     "z": 30021,
-    "height": 64,
-    "width": 20,
+    "height": 40,
+    "width": 1004,
     "tabOrder": 30021
   },
   "visual": {

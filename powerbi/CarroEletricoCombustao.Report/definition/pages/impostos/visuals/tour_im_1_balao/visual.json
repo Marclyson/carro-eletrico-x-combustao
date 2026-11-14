@@ -3,9 +3,9 @@
   "name": "tour_im_1_balao",
   "position": {
     "x": 298,
-    "y": 281,
+    "y": 264,
     "z": 30023,
-    "height": 431,
+    "height": 448,
     "width": 340,
     "tabOrder": 30023
   },
@@ -79,7 +79,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "O ICMS em amarelo aparece em jun./2023, quando passa a ser um valor por litro. Antes disso ele está dentro da faixa clara de cima.",
+                    "value": "O ICMS em amarelo aparece em jun./2023, quando passa a ser um valor por litro. Antes disso ele está dentro da faixa clara de cima. A dica mostra o total e a parte de cada tributo no mês.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "Filtros – abrir",
+  "name": "filtros_vg_abrir",
+  "options": {
+    "targetVisualNames": [],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "visao_geral",
+    "sections": {
+      "visao_geral": {
+        "visualContainers": {},
+        "visualContainerGroups": {
+          "filtros_gaveta": {
+            "isHidden": false
+          },
+          "tour_vg_1": {
+            "isHidden": true
+          },
+          "tour_vg_2": {
+            "isHidden": true
+          },
+          "tour_vg_3": {
+            "isHidden": true
+          },
+          "tour_vg_4": {
+            "isHidden": true
+          }
+        }
+      }
+    }
+  }
+}

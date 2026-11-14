@@ -5,7 +5,9 @@
     "impostos",
     "estados",
     "simulador",
-    "metodo"
+    "metodo",
+    "dica_mes",
+    "dica_uf"
   ],
   "activePageName": "visao_geral"
 }

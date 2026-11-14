@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "tour_si_4_balao",
   "position": {
-    "x": 8,
-    "y": 302,
+    "x": 340,
+    "y": 420,
     "z": 30083,
-    "height": 268,
+    "height": 156,
     "width": 340,
     "tabOrder": 30083
   },
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "PASSO 4 DE 5",
+                    "value": "PASSO 4 DE 4",
                     "textStyle": {
                       "fontSize": "8pt",
                       "fontWeight": "bold",
@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Custo acumulado",
+                    "value": "Hipóteses",
                     "textStyle": {
                       "fontSize": "13pt",
                       "fontWeight": "bold",
@@ -55,55 +55,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Quanto cada carro custa somando o preço de compra e a energia, ano a ano.",
-                    "textStyle": {
-                      "fontSize": "10pt",
-                      "fontWeight": "normal",
-                      "color": "#FFFFFF"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "COMO LER",
-                    "textStyle": {
-                      "fontSize": "8pt",
-                      "fontWeight": "bold",
-                      "color": "#F2C811"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "A linha amarela vertical marca o ano em que as duas curvas se cruzam.",
-                    "textStyle": {
-                      "fontSize": "10pt",
-                      "fontWeight": "normal",
-                      "color": "#FFFFFF"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "MEDIDAS",
-                    "textStyle": {
-                      "fontSize": "8pt",
-                      "fontWeight": "bold",
-                      "color": "#F2C811"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "[Custo acumulado combustão], [Custo acumulado elétrico] e [Anos para pagar].",
+                    "value": "De onde vem o preço dos carros, as hipóteses da conta e o que fica fora dela.",
                     "textStyle": {
                       "fontSize": "10pt",
                       "fontWeight": "normal",
