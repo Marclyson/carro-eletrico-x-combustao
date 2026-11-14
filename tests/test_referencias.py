@@ -66,6 +66,11 @@ def valor_em(tributos, tributo, produto, dia):
     ("tributo", "produto", "dia", "esperado"),
     [
         ("pis_cofins", "gasolina_a", "2018-01-15", 0.7925),  # Decreto 9.101/2017
+        ("pis_cofins", "gasolina_a", "2022-06-15", 0.7925),  # LC 194/2022 só vale a partir de 23/06/2022
+        ("pis_cofins", "gasolina_a", "2022-07-15", 0.0),  # LC 192/2022, art. 9º-A (LC 194/2022)
+        ("cide", "gasolina_a", "2022-12-15", 0.0),  # LC 192/2022, art. 9º-A (LC 194/2022)
+        ("cide", "gasolina_a", "2023-01-15", 0.10),  # fim do art. 9º-A em 31/12/2022
+        ("pis_cofins", "etanol_hidratado", "2022-09-15", 0.0),  # LC 194/2022, art. 13
         ("pis_cofins", "gasolina_a", "2023-04-15", 0.469998),  # MP 1.163/2023
         ("pis_cofins", "gasolina_a", "2023-07-15", 0.7925),  # MP 1.163 encerrada em 28/06/2023
         ("cide", "gasolina_a", "2014-01-15", 0.0),  # Decreto 7.764/2012
