@@ -12,10 +12,12 @@ TABELA = re.compile(
 )
 
 
-def rodar_sql(con, pasta):
-    """Executa os arquivos .sql da pasta em ordem alfabetica e devolve (tabela, linhas)."""
+def rodar_sql(con, pasta, prefixo="silver"):
+    """Executa os arquivos .sql com o prefixo pedido, em ordem alfabetica, e devolve (tabela, linhas)."""
     resultado = []
     for caminho in sorted(pathlib.Path(pasta).glob("*.sql")):
+        if not caminho.name.startswith(prefixo):
+            continue
         sql = caminho.read_text(encoding="utf-8")
         con.execute(sql)
         for tabela in TABELA.findall(sql):
@@ -32,8 +34,9 @@ def main():
 
     con = duckdb.connect(str(caminho_db))
     try:
-        for tabela, linhas in rodar_sql(con, pasta_sql):
-            print(f"{tabela}: {linhas} linhas")
+        for prefixo in ("silver", "gold"):
+            for tabela, linhas in rodar_sql(con, pasta_sql, prefixo):
+                print(f"{tabela}: {linhas} linhas")
     finally:
         con.close()
 

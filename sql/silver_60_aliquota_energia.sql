@@ -1,3 +1,4 @@
+-- A Receita Energia do SAMP já inclui o adicional da bandeira; por isso Receita Bandeiras não entra no total.
 CREATE OR REPLACE TABLE silver_aliquota_energia AS
 WITH distribuidoras AS (
     SELECT CAST(cnpj AS BIGINT) AS cnpj
@@ -50,7 +51,7 @@ brutos AS (
     FROM (
         SELECT
             a.*,
-            a.icms + a.receita_energia + a.receita_bandeiras + a.pis + a.cofins + a.pis_cofins AS total
+            a.icms + a.receita_energia + a.pis + a.cofins + a.pis_cofins AS total
         FROM agregado a
     )
 ),

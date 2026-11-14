@@ -1,7 +1,7 @@
 -- Tarifa residencial sem impostos de cada distribuidora de capital, mês a mês, em R$/kWh.
 -- Usa a tarifa homologada vigente no dia 15. A base aberta da ANEEL não tem alguns reajustes (a CEMIG não tem os de
 -- 2016, 2019 e 2021, por exemplo); nesses meses entra a tarifa média do SAMP (receita de energia ÷ kWh da classe
--- residencial), que bate com a homologada (mediana da razão = 1,000 nas 27 capitais, 2012 a 2026).
+-- residencial, sem o adicional da bandeira, que a Receita Energia inclui), que bate com a homologada (mediana da razão = 1,000 nas 27 capitais, 2012 a 2026).
 CREATE OR REPLACE TABLE silver_tarifa_mensal AS
 WITH distribuidoras AS (
     SELECT CAST(cnpj AS BIGINT) AS cnpj
@@ -24,20 +24,33 @@ samp AS (
     SELECT
         NumCNPJAgenteDistribuidora AS cnpj,
         DatCompetencia AS mes,
-        sum(CASE WHEN DscDetalheMercado = 'Receita Energia (R$)' THEN VlrMercado END)
-            / nullif(sum(CASE WHEN DscDetalheMercado = 'Energia TUSD (kWh)' THEN VlrMercado END), 0) AS tarifa_kwh
+        (
+            sum(CASE WHEN DscDetalheMercado = 'Receita Energia (R$)' THEN VlrMercado END)
+            - coalesce(sum(CASE WHEN DscDetalheMercado = 'Receita Bandeiras (R$)' THEN VlrMercado END), 0)
+        ) / nullif(sum(CASE WHEN DscDetalheMercado = 'Energia TUSD (kWh)' THEN VlrMercado END), 0) AS tarifa_kwh
     FROM bronze_samp
     WHERE DscSubClasseConsumidor = 'Residencial'
       AND NomTipoMercado IN ('Regular', 'Sistema Isolado - Regular')
       AND upper(DscOpcaoEnergia) = 'CATIVO'
     GROUP BY 1, 2
 )
+-- Exceção: a CEA (AP) faturou em 2012 e 2013 cerca de metade da tarifa homologada (R$ 0,20/kWh contra R$ 0,40 no
+-- SAMP); o que o consumidor pagou de fato é o faturado, então nesses dois anos vale o SAMP.
+, escolha AS (
+    SELECT
+        m.cnpj,
+        m.mes,
+        h.tarifa_kwh AS homologada,
+        s.tarifa_kwh AS samp,
+        m.cnpj = 5965546000109 AND m.mes < DATE '2014-01-01' AND s.tarifa_kwh IS NOT NULL AS excecao_ap
+    FROM meses m
+    LEFT JOIN homologada h USING (cnpj, mes)
+    LEFT JOIN samp s USING (cnpj, mes)
+)
 SELECT
-    m.cnpj,
-    m.mes,
-    coalesce(h.tarifa_kwh, s.tarifa_kwh) AS tarifa_kwh,
-    CASE WHEN h.tarifa_kwh IS NOT NULL THEN 'homologada' ELSE 'samp' END AS fonte_tarifa
-FROM meses m
-LEFT JOIN homologada h USING (cnpj, mes)
-LEFT JOIN samp s USING (cnpj, mes)
-WHERE coalesce(h.tarifa_kwh, s.tarifa_kwh) IS NOT NULL;
+    cnpj,
+    mes,
+    CASE WHEN excecao_ap THEN samp ELSE coalesce(homologada, samp) END AS tarifa_kwh,
+    CASE WHEN homologada IS NOT NULL AND NOT excecao_ap THEN 'homologada' ELSE 'samp' END AS fonte_tarifa
+FROM escolha
+WHERE coalesce(homologada, samp) IS NOT NULL;

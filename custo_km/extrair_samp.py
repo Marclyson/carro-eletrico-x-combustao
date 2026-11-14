@@ -63,8 +63,9 @@ def aliquota_efetiva(con, cnpj, mes):
           AND NomTipoMercado IN ('Regular', 'Sistema Isolado - Regular')
           AND upper(DscOpcaoEnergia) = 'CATIVO'
     """
-    icms, receita_energia, receita_bandeiras, pis, cofins, pis_cofins = con.execute(sql, [cnpj, mes]).fetchone()
-    total = receita_energia + receita_bandeiras + icms + pis + cofins + pis_cofins
+    icms, receita_energia, _receita_bandeiras, pis, cofins, pis_cofins = con.execute(sql, [cnpj, mes]).fetchone()
+    # A Receita Energia já inclui o adicional da bandeira (Receita Bandeiras é um detalhe dela).
+    total = receita_energia + icms + pis + cofins + pis_cofins
     if not icms or not total:
         return None
     return icms / total, (pis + cofins + pis_cofins) / total
