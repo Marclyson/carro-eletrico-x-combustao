@@ -2,3 +2,4 @@
 *.xlsx binary
 *.parquet binary
 *.pdf binary
+tests/fixtures/** -text
