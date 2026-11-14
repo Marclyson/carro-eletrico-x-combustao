@@ -1,5 +1,6 @@
 CREATE OR REPLACE TABLE gold_dim_veiculo AS
 SELECT
+    veiculo || '_' || energia AS chave_veiculo,
     veiculo,
     energia,
     modelo,

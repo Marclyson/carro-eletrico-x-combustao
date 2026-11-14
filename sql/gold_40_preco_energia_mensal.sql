@@ -67,7 +67,9 @@ gasolina AS (
         gt.cide_unit,
         p.preco_medio - gt.pis_cofins_unit - gt.cide_unit - coalesce(gt.icms_unit, 0) AS preco_sem_tributos,
         FALSE AS icms_imputado,
-        FALSE AS tarifa_imputada
+        FALSE AS tarifa_imputada,
+        NULL::DOUBLE AS bandeira_kwh,
+        NULL::DOUBLE AS tarifa_branca_fp_kwh
     FROM silver_precos_combustivel p
     JOIN meses m ON m.mes = p.mes
     JOIN ufs u ON u.uf = p.uf
@@ -86,7 +88,9 @@ etanol AS (
         et.cide_unit,
         p.preco_medio - et.pis_cofins_unit - et.cide_unit AS preco_sem_tributos,
         FALSE AS icms_imputado,
-        FALSE AS tarifa_imputada
+        FALSE AS tarifa_imputada,
+        NULL::DOUBLE AS bandeira_kwh,
+        NULL::DOUBLE AS tarifa_branca_fp_kwh
     FROM silver_precos_combustivel p
     JOIN meses m ON m.mes = p.mes
     JOIN ufs u ON u.uf = p.uf
@@ -99,6 +103,8 @@ eletricidade_base AS (
         t.mes,
         u.uf,
         t.tarifa_kwh + coalesce(b.adicional_kwh, 0) AS base,
+        coalesce(b.adicional_kwh, 0) AS bandeira_kwh,
+        tb.tarifa_branca_fp_kwh + coalesce(b.adicional_kwh, 0) AS base_branca_fp,
         coalesce(a.icms, 0) AS icms,
         coalesce(a.pis_cofins, 0) AS pis_cofins,
         coalesce(a.imputado, FALSE) AS imputado,
@@ -108,6 +114,7 @@ eletricidade_base AS (
     JOIN ufs u ON u.cnpj = t.cnpj
     LEFT JOIN silver_bandeira b ON b.mes = t.mes
     LEFT JOIN silver_aliquota_energia a ON a.cnpj = t.cnpj AND a.mes = t.mes
+    LEFT JOIN silver_tarifa_branca_mensal tb ON tb.cnpj = t.cnpj AND tb.mes = t.mes
 ),
 eletricidade AS (
     SELECT
@@ -121,17 +128,19 @@ eletricidade AS (
         0 AS cide_unit,
         base AS preco_sem_tributos,
         imputado AS icms_imputado,
-        tarifa_imputada
+        tarifa_imputada,
+        bandeira_kwh,
+        preco_com_imposto(base_branca_fp, icms, pis_cofins) AS tarifa_branca_fp_kwh
     FROM eletricidade_base
 )
 SELECT mes, uf, energia, preco, unidade, icms_unit, pis_cofins_unit, cide_unit, preco_sem_tributos,
-       icms_imputado, tarifa_imputada
+       icms_imputado, tarifa_imputada, bandeira_kwh, tarifa_branca_fp_kwh
 FROM gasolina
 UNION ALL
 SELECT mes, uf, energia, preco, unidade, icms_unit, pis_cofins_unit, cide_unit, preco_sem_tributos,
-       icms_imputado, tarifa_imputada
+       icms_imputado, tarifa_imputada, bandeira_kwh, tarifa_branca_fp_kwh
 FROM etanol
 UNION ALL
 SELECT mes, uf, energia, preco, unidade, icms_unit, pis_cofins_unit, cide_unit, preco_sem_tributos,
-       icms_imputado, tarifa_imputada
+       icms_imputado, tarifa_imputada, bandeira_kwh, tarifa_branca_fp_kwh
 FROM eletricidade;

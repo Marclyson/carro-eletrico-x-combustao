@@ -2,6 +2,7 @@ CREATE OR REPLACE TABLE gold_fato_custo_km_mensal AS
 SELECT
     p.mes,
     p.uf,
+    v.chave_veiculo,
     v.veiculo,
     p.energia,
     p.preco * v.consumo_por_km AS custo_km,
@@ -12,7 +13,8 @@ SELECT
         WHEN p.energia = 'eletricidade' THEN v.consumo_por_km * e.tco2_mwh * 1000
         ELSE v.co2_escapamento_g_km
     END AS co2_g_km,
-    p.icms_imputado
+    p.icms_imputado,
+    p.tarifa_imputada
 FROM gold_preco_energia_mensal p
 JOIN gold_dim_veiculo v ON v.energia = p.energia
 JOIN gold_dim_tempo t ON t.mes = p.mes

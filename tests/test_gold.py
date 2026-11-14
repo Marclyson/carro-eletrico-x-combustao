@@ -82,6 +82,11 @@ def carregar_silver(con):
     con.execute("INSERT INTO silver_fator_emissao VALUES (DATE '2026-05-01', 0.05)")
 
 
+def carregar_tarifa_branca(con):
+    con.execute("CREATE TABLE silver_tarifa_branca_mensal (cnpj BIGINT, mes DATE, tarifa_branca_fp_kwh DOUBLE)")
+    con.execute("INSERT INTO silver_tarifa_branca_mensal VALUES (10835932000108, DATE '2026-04-01', 0.60)")
+
+
 def rodar_gold(con):
     for caminho in sorted(PASTA_SQL.glob("gold_*.sql")):
         con.execute(caminho.read_text(encoding="utf-8"))
@@ -92,6 +97,7 @@ def con(monkeypatch):
     monkeypatch.chdir(RAIZ)
     conexao = duckdb.connect(":memory:")
     carregar_silver(conexao)
+    carregar_tarifa_branca(conexao)
     rodar_gold(conexao)
     try:
         yield conexao
@@ -239,3 +245,28 @@ def test_fator_real_usa_o_ultimo_mes_mesmo_com_deflacao(con):
     )
     assert fator_final == pytest.approx(1.0)
     assert fator_anterior == pytest.approx(0.995)
+
+
+def test_bandeira_e_tarifa_branca_da_eletricidade(con):
+    bandeira, branca = con.execute(
+        """
+        SELECT bandeira_kwh, tarifa_branca_fp_kwh
+        FROM gold_preco_energia_mensal
+        WHERE uf = 'PE' AND energia = 'eletricidade' AND mes = DATE '2026-04-01'
+        """
+    ).fetchone()
+    assert bandeira == pytest.approx(0.01885)
+    assert branca == pytest.approx((0.60 + 0.01885) / 0.75)
+
+
+def test_chave_veiculo_liga_fato_e_dimensao(con):
+    sem_par = con.execute(
+        """
+        SELECT count(*)
+        FROM gold_fato_custo_km_mensal f
+        LEFT JOIN gold_dim_veiculo d USING (chave_veiculo)
+        WHERE d.chave_veiculo IS NULL
+        """
+    ).fetchone()[0]
+    assert sem_par == 0
+    assert con.execute("SELECT count(DISTINCT chave_veiculo) FROM gold_dim_veiculo").fetchone()[0] == 6
