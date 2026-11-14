@@ -7,3 +7,6 @@ __pycache__/
 .venv/
 .env
 *.pem
+# PBIP: cache e preferências locais do Power BI Desktop
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
