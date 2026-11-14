@@ -13,7 +13,7 @@ table 'Ano de uso'
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"Ano de uso" = Int64.Type], List.Transform(List.Numbers(0, 16, 1), each {_}))
+				    Fonte = #table(type table [#"Ano de uso" = (Int64.Type)], List.Transform(List.Numbers(0, 16, 1), each {_}))
 				in
 				    Fonte
 

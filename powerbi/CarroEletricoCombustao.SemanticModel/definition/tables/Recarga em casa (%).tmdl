@@ -13,7 +13,7 @@ table 'Recarga em casa (%)'
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"Recarga em casa (%)" = Int64.Type], List.Transform(List.Numbers(0, 11, 10), each {_}))
+				    Fonte = #table(type table [#"Recarga em casa (%)" = (Int64.Type)], List.Transform(List.Numbers(0, 11, 10), each {_}))
 				in
 				    Fonte
 

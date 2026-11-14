@@ -13,7 +13,7 @@ table 'Carregador público'
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"Carregador público (R$/kWh)" = type number], List.Transform(List.Numbers(1, 11, 0.25), each {_}))
+				    Fonte = #table(type table [#"Carregador público (R$/kWh)" = number], List.Transform(List.Numbers(1, 11, 0.25), each {_}))
 				in
 				    Fonte
 

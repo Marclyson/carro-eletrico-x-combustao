@@ -49,7 +49,7 @@ table 'Comparação'
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"Comparação" = type text, #"ordem" = Int64.Type, #"carro_combustao" = type text, #"carro_eletrico" = type text, #"nome_combustao" = type text, #"nome_eletrico" = type text],
+				        type table [#"Comparação" = text, #"ordem" = (Int64.Type), #"carro_combustao" = text, #"carro_eletrico" = text, #"nome_combustao" = text, #"nome_eletrico" = text],
 				        {
 				        {"Kwid × Dolphin Mini", 1, "kwid", "dolphin_mini", "Kwid", "Dolphin Mini"},
 				        {"Polo Track × Dolphin Mini", 2, "polo_track", "dolphin_mini", "Polo Track", "Dolphin Mini"},

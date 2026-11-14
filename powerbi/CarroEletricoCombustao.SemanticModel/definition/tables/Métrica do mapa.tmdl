@@ -21,7 +21,7 @@ table 'Métrica do mapa'
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"Métrica do mapa" = type text, #"ordem" = Int64.Type],
+				        type table [#"Métrica do mapa" = text, #"ordem" = (Int64.Type)],
 				        {
 				        {"Custo do elétrico (R$/100 km)", 1},
 				        {"Custo da gasolina (R$/100 km)", 2},

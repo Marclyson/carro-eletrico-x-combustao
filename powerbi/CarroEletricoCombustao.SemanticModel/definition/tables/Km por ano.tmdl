@@ -13,7 +13,7 @@ table 'Km por ano'
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"Km por ano" = Int64.Type], List.Transform(List.Numbers(4000, 14, 2000), each {_}))
+				    Fonte = #table(type table [#"Km por ano" = (Int64.Type)], List.Transform(List.Numbers(4000, 14, 2000), each {_}))
 				in
 				    Fonte
 

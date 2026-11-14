@@ -25,6 +25,9 @@ def q(nome: str) -> str:
 
 TIPO_M = {"string": "type text", "int64": "Int64.Type", "double": "type number", "date": "type date",
           "boolean": "type logical"}
+# Dentro de "type table [...]" o M aceita só o tipo primitivo (text, number) ou uma expressão entre parênteses;
+# "type text" ali dá "Esperava-se o token ','" ao abrir no Desktop.
+TIPO_LINHA_M = {"string": "text", "int64": "(Int64.Type)", "double": "number", "date": "date", "boolean": "logical"}
 
 
 class Col:
@@ -70,7 +73,7 @@ def m_parquet(arquivo: str, cols: list[Col]) -> str:
 
 
 def m_tabela_fixa(cols: list[Col], linhas: list[tuple]) -> str:
-    tipo = ", ".join(f'#"{c.nome}" = {TIPO_M[c.tipo]}' for c in cols)
+    tipo = ", ".join(f'#"{c.nome}" = {TIPO_LINHA_M[c.tipo]}' for c in cols)
 
     def val(v):
         if v is None:
@@ -84,7 +87,7 @@ def m_tabela_fixa(cols: list[Col], linhas: list[tuple]) -> str:
 
 
 def m_serie(col: Col, inicio, n, passo) -> str:
-    return (f'let\n    Fonte = #table(type table [#"{col.nome}" = {TIPO_M[col.tipo]}], '
+    return (f'let\n    Fonte = #table(type table [#"{col.nome}" = {TIPO_LINHA_M[col.tipo]}], '
             f"List.Transform(List.Numbers({inicio}, {n}, {passo}), each {{_}}))\nin\n    Fonte")
 
 
@@ -239,7 +242,7 @@ def tabelas() -> list[Tabela]:
         T.append(Tabela(nome, desc, [c], m_serie(c, ini, n, passo)))
 
     T.append(Tabela("_Medidas", "Medidas do painel", [Col("_", oculta=True)],
-                    'let\n    Fonte = #table(type table [#"_" = type text], {})\nin\n    Fonte'))
+                    'let\n    Fonte = #table(type table [#"_" = text], {})\nin\n    Fonte'))
     return T
 
 

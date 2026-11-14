@@ -13,7 +13,7 @@ table 'Preço do carro elétrico (R$)'
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"Preço do carro elétrico (R$)" = Int64.Type], List.Transform(List.Numbers(80000, 69, 2500), each {_}))
+				    Fonte = #table(type table [#"Preço do carro elétrico (R$)" = (Int64.Type)], List.Transform(List.Numbers(80000, 69, 2500), each {_}))
 				in
 				    Fonte
 

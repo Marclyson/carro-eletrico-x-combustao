@@ -21,7 +21,7 @@ table 'Tarifa em casa'
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"Tarifa em casa" = type text, #"ordem" = Int64.Type],
+				        type table [#"Tarifa em casa" = text, #"ordem" = (Int64.Type)],
 				        {
 				        {"Convencional", 1},
 				        {"Branca (fora de ponta)", 2}

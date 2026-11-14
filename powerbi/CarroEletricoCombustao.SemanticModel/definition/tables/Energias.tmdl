@@ -29,7 +29,7 @@ table Energias
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"energia" = type text, #"Tipo de energia" = type text, #"ordem" = Int64.Type],
+				        type table [#"energia" = text, #"Tipo de energia" = text, #"ordem" = (Int64.Type)],
 				        {
 				        {"gasolina", "Gasolina", 1},
 				        {"etanol", "Etanol", 2},

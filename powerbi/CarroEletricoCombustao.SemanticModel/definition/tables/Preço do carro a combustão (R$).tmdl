@@ -13,7 +13,7 @@ table 'Preço do carro a combustão (R$)'
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"Preço do carro a combustão (R$)" = Int64.Type], List.Transform(List.Numbers(50000, 61, 2500), each {_}))
+				    Fonte = #table(type table [#"Preço do carro a combustão (R$)" = (Int64.Type)], List.Transform(List.Numbers(50000, 61, 2500), each {_}))
 				in
 				    Fonte
 

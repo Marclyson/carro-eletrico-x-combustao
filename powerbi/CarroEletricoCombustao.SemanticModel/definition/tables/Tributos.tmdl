@@ -21,7 +21,7 @@ table Tributos
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"Tributos" = type text, #"ordem" = Int64.Type],
+				        type table [#"Tributos" = text, #"ordem" = (Int64.Type)],
 				        {
 				        {"Com tributos", 1},
 				        {"Sem tributos", 2}

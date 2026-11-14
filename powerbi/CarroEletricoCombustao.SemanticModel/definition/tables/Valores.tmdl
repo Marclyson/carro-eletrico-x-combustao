@@ -21,7 +21,7 @@ table Valores
 		source =
 				let
 				    Fonte = #table(
-				        type table [#"Valores" = type text, #"ordem" = Int64.Type],
+				        type table [#"Valores" = text, #"ordem" = (Int64.Type)],
 				        {
 				        {"Real", 1},
 				        {"Nominal", 2}

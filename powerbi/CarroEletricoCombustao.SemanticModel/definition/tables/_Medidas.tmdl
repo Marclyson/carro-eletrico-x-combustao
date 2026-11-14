@@ -802,7 +802,7 @@ table _Medidas
 		mode: import
 		source =
 				let
-				    Fonte = #table(type table [#"_" = type text], {})
+				    Fonte = #table(type table [#"_" = text], {})
 				in
 				    Fonte
 
